@@ -5,6 +5,13 @@ VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDeliveryApp", "FoodDeliveryApp\FoodDeliveryApp.csproj", "{C22D009D-2773-4012-81ED-9C6D5C1C7F63}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDeliveryApp.Core", "FoodDeliveryApp.Core\FoodDeliveryApp.Core.csproj", "{D905C7F9-47D9-48C1-8C29-27B408CB8D27}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9756A233-E530-4645-8E79-20B92646E532} = {9756A233-E530-4645-8E79-20B92646E532}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDeliveryApp.Infrastructure", "FoodDeliveryApp.Infrastructure\FoodDeliveryApp.Infrastructure.csproj", "{9756A233-E530-4645-8E79-20B92646E532}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +22,14 @@ Global
 		{C22D009D-2773-4012-81ED-9C6D5C1C7F63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C22D009D-2773-4012-81ED-9C6D5C1C7F63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C22D009D-2773-4012-81ED-9C6D5C1C7F63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D905C7F9-47D9-48C1-8C29-27B408CB8D27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D905C7F9-47D9-48C1-8C29-27B408CB8D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D905C7F9-47D9-48C1-8C29-27B408CB8D27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D905C7F9-47D9-48C1-8C29-27B408CB8D27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9756A233-E530-4645-8E79-20B92646E532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9756A233-E530-4645-8E79-20B92646E532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9756A233-E530-4645-8E79-20B92646E532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9756A233-E530-4645-8E79-20B92646E532}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

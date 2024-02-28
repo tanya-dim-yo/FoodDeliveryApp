@@ -1,4 +1,4 @@
-﻿using FoodDeliveryApp.Data;
+﻿using FoodDeliveryApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

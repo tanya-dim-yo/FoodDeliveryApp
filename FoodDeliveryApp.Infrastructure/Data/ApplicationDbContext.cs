@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace FoodDeliveryApp.Data
+namespace FoodDeliveryApp.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
