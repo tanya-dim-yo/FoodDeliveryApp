@@ -9,5 +9,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
 
         [Required]
         public string Title { get; set; } = string.Empty;
+
+        public virtual IEnumerable<Item> Items { get; set; } = null!;
     }
 }
