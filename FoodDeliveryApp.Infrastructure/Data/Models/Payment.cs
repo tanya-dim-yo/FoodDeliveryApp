@@ -12,10 +12,10 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public decimal Tax { get; set; }
 
         [Required]
-        public decimal Total { get; set; }
+        public decimal SubTotal { get; set; }
 
         [Required]
-        public decimal FinalTotal { get; set; }
+        public decimal PaymentTotal { get; set; }
 
         [Required]
         public string Status { get; set; } = string.Empty;

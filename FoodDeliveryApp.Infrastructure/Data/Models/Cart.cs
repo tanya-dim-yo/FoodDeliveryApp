@@ -15,10 +15,10 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public bool IsActive { get; set; } = true;
 
         [Required]
-        public string ApplicationUserId { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
 
         [Required]
-        public virtual IdentityUser ApplicationUser { get; set; } = null!;
+        public virtual IdentityUser User { get; set; } = null!;
 
         public virtual List<CartItem> CartItems { get; set; } = new List<CartItem>();
     }

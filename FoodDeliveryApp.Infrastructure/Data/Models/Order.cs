@@ -10,10 +10,10 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
-        public string ApplicationUserId { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
 
         [Required]
-        public virtual IdentityUser ApplicationUser { get; set; } = null!;
+        public virtual IdentityUser User { get; set; } = null!;
 
         [Required]
         public DateTime OrderDate { get; set; } = DateTime.Now;
@@ -21,8 +21,10 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         [Required]
         public bool IsNowToBeDelivered { get; set; }
 
+        [Required]
         public DateTime TimeOfDelivery { get; set; }
 
+        [Required]
         public DateTime DateOfDelivery { get; set; }
 
         [Required]
