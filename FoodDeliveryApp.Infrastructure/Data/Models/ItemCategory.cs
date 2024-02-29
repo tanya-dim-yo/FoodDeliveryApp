@@ -12,6 +12,6 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         [MaxLength(ItemCategoryNameMaxLength)]
         public string Title { get; set; } = string.Empty;
 
-        public virtual List<Item> Items { get; set; } = new List<Item>();
+        public virtual IEnumerable<Item> Items { get; set; } = new List<Item>();
     }
 }

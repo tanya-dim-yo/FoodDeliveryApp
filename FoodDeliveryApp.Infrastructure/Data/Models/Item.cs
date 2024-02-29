@@ -22,21 +22,21 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int TotalReviews { get; private set; }
 
         [Required]
-        public bool isPreferred { get; set; }
+        public bool IsFavourite { get; set; }
 
         [Required]
-        public int SpicyCategoryId { get; set; }
-
-        [ForeignKey(nameof(SpicyCategoryId))]
-        public virtual SpicyCategory SpicyCategory { get; set; } = null!;
-
-        [Required]
-        public bool isVeggie { get; set; }
+        public bool IsVeggie { get; set; }
 
         [Required]
         public int ItemCategoryId { get; set; }
 
         [ForeignKey(nameof(ItemCategoryId))]
         public virtual ItemCategory ItemCategory { get; set; } = null!;
+
+        [Required]
+        public int SpicyCategoryId { get; set; }
+
+        [ForeignKey(nameof(SpicyCategoryId))]
+        public virtual SpicyCategory SpicyCategory { get; set; } = null!;
     }
 }

@@ -12,7 +12,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         [Required]
         public string UserId { get; set; } = string.Empty;
 
-        [Required]
+        [ForeignKey(nameof(UserId))]
         public virtual IdentityUser User { get; set; } = null!;
 
         [Required]
@@ -31,9 +31,24 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public decimal SubTotal { get; set; }
 
         [Required]
+        public decimal ServiceFee { get; set; }
+
+        [Required]
+        public decimal Tax { get; set; }
+
+        [Required]
         public decimal OrderTotal { get; set; }
-        
-        public string CouponId { get; set; } = string.Empty;
+
+        [Required]
+        public bool IsPaidOnDelivery { get; set; }
+
+        [Required]
+        public int CartId { get; set; }
+
+        [ForeignKey(nameof(CartId))]
+        public virtual Cart Cart { get; set; } = null!;
+
+        public string? CouponId { get; set; }
 
         [ForeignKey(nameof(CouponId))]
         public virtual Coupon Coupon { get; set; } = null!;

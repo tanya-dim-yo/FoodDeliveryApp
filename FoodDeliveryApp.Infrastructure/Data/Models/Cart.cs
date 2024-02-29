@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
@@ -9,17 +10,14 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
-        public DateTime CreationDate { get; set; } = DateTime.Now;
-
-        [Required]
         public bool IsActive { get; set; } = true;
 
         [Required]
         public string UserId { get; set; } = string.Empty;
 
-        [Required]
+        [ForeignKey(nameof(UserId))]
         public virtual IdentityUser User { get; set; } = null!;
 
-        public virtual List<CartItem> CartItems { get; set; } = new List<CartItem>();
+        public virtual IEnumerable<CartItem> CartItems { get; set; } = new List<CartItem>();
     }
 }

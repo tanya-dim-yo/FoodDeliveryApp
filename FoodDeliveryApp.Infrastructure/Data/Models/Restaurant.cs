@@ -42,6 +42,6 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
 
         public int TotalReviews { get; private set; }
 
-        public virtual List<Item> Items { get; set; } = new List<Item>();
+        public virtual IEnumerable<Item> Items { get; set; } = new List<Item>();
     }
 }
