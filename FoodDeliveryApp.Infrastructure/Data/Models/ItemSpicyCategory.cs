@@ -2,7 +2,7 @@
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
-    public class SpicyCategory
+    public class ItemSpicyCategory
     {
         [Key]
         public int Id { get; set; }

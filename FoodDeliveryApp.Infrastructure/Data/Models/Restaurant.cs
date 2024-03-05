@@ -36,6 +36,12 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public string DeliveryTime { get; set; } = string.Empty;
 
         [Required]
+        public string Logo { get; set; } = string.Empty;
+
+        [Required]
+        public string BackgroundImage { get; set; } = string.Empty;
+
+        [Required]
         public int RestaurantCategoryId { get; set; }
 
         [ForeignKey(nameof(RestaurantCategoryId))]

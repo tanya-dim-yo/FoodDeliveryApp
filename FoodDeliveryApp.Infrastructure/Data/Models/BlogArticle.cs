@@ -33,6 +33,9 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public string Content { get; set; } = string.Empty;
 
         [Required]
+        public string Image { get; set; } = string.Empty;
+
+        [Required]
         public int BlogCategoryId { get; set; }
 
         [ForeignKey(nameof(BlogCategoryId))]

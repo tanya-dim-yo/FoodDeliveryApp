@@ -28,6 +28,9 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public bool IsVeggie { get; set; }
 
         [Required]
+        public string Image { get; set; } = string.Empty;
+
+        [Required]
         public int ItemCategoryId { get; set; }
 
         [ForeignKey(nameof(ItemCategoryId))]
@@ -37,7 +40,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int SpicyCategoryId { get; set; }
 
         [ForeignKey(nameof(SpicyCategoryId))]
-        public virtual SpicyCategory SpicyCategory { get; set; } = null!;
+        public virtual ItemSpicyCategory SpicyCategory { get; set; } = null!;
 
         public virtual IEnumerable<ItemReview> Reviews { get; set; } = new List<ItemReview>();
 

@@ -18,6 +18,9 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         [Required]
         public decimal Price { get; set; }
 
+        [Required]
+        public string Image { get; set; } = string.Empty;
+
         public virtual IEnumerable<ItemAddOn> ItemsAddOns { get; set; } = new List<ItemAddOn>();
     }
 }
