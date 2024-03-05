@@ -40,5 +40,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public virtual SpicyCategory SpicyCategory { get; set; } = null!;
 
         public virtual IEnumerable<ItemReview> Reviews { get; set; } = new List<ItemReview>();
+
+        public virtual IEnumerable<ItemAddOn> ItemsAddOns { get; set; } = new List<ItemAddOn>();
     }
 }
