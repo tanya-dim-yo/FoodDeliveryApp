@@ -21,4 +21,9 @@
     <ProjectReference Include="..\FoodDeliveryApp.Infrastructure\FoodDeliveryApp.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ModelBinders\" />
+    <Folder Include="Attributes\" />
+  </ItemGroup>
+
 </Project>

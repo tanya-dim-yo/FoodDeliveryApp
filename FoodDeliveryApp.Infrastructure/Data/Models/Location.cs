@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
-    public class UserLocation
+    public class Location
     {
         [Key]
         public int Id { get; set; }
@@ -20,11 +20,5 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
 
         [Required]
         public DateTime Timestamp { get; set; }
-
-        [Required]
-        public int UserId { get; set; }
-
-        [ForeignKey(nameof(UserId))]
-        public virtual IdentityUser User { get; set; } = null!;
     }
 }
