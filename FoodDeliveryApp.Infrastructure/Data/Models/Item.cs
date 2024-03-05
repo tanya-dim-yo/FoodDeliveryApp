@@ -38,5 +38,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
 
         [ForeignKey(nameof(SpicyCategoryId))]
         public virtual SpicyCategory SpicyCategory { get; set; } = null!;
+
+        public virtual IEnumerable<ItemReview> Reviews { get; set; } = new List<ItemReview>();
     }
 }

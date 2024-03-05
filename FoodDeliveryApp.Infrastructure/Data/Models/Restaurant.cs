@@ -33,6 +33,9 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public decimal ServiceFee { get; set; }
 
         [Required]
+        public string DeliveryTime { get; set; } = string.Empty;
+
+        [Required]
         public int RestaurantCategoryId { get; set; }
 
         [ForeignKey(nameof(RestaurantCategoryId))]
