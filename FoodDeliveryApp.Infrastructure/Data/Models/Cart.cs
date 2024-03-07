@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.CartValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {

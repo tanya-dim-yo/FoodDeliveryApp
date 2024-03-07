@@ -31,6 +31,11 @@ namespace FoodDeliveryApp.Infrastructure.Constants
             public const int BlogCommentMaxLength = 1000;
         }
 
+        public static class CouponValidationConstants
+        {
+            public const int CodeMaxLength = 10;
+        }
+
         public static class ItemCategoryValidationConstants
         {
             public const int ItemCategoryNameMaxLength = 50;
