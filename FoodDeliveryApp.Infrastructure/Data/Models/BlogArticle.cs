@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.BlogArticleValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
@@ -15,6 +11,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(BlogArticleTitleMaxLength)]
         public string Title { get; set; } = string.Empty;
 
         [Required]
@@ -30,9 +27,11 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int Likes { get; set; }
 
         [Required]
+        [MaxLength(BlogArticleContentMaxLength)]
         public string Content { get; set; } = string.Empty;
 
         [Required]
+        [MaxLength(BlogArticleImageMaxLength)]
         public string Image { get; set; } = string.Empty;
 
         [Required]

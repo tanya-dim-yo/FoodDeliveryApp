@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.BlogCommentValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
@@ -21,6 +22,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public virtual IdentityUser User { get; set; } = null!;
 
         [Required]
+        [MaxLength(BlogCommentMaxLength)]
         public string Comment { get; set; } = string.Empty;
     }
 }
