@@ -59,6 +59,11 @@ namespace FoodDeliveryApp.Infrastructure.Constants
             public const int ItemSpicyCategoryTitleMaxLength = 20;
         }
 
+        public static class LocationValidationConstants
+        {
+            public const int LocationAddressMaxLength = 100;
+        }
+
         public static class RestaurantCategoryValidationConstants
         {
             public const int RestaurantCategoryNameMaxLength = 50;

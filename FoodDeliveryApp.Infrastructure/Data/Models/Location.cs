@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.LocationValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
@@ -16,6 +17,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public double Longitude { get; set; }
 
         [Required]
+        [MaxLength(LocationAddressMaxLength)]
         public string Address { get; set; } = string.Empty;
 
         [Required]
