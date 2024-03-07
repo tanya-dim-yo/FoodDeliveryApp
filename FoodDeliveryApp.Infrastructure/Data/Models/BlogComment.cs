@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.BlogCommentValidationConstants;
+using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.UserIdValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
@@ -16,6 +12,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(UserIdMaxLength)]
         public string UserId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(UserId))]
