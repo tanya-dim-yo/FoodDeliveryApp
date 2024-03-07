@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.RestaurantValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
@@ -9,12 +10,15 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(RestaurantTitleMaxLength)]
         public string Title { get; set; } = string.Empty;
 
         [Required]
+        [MaxLength(RestaurantAddressMaxLength)]
         public string Address { get; set; } = string.Empty;
 
         [Required]
+        [MaxLength(RestaurantCityMaxLength)]
         public string City { get; set; } = string.Empty;
 
         [Required]
@@ -33,12 +37,15 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public decimal ServiceFee { get; set; }
 
         [Required]
+        [MaxLength(RestaurantDeliveryTimeMaxLength)]
         public string DeliveryTime { get; set; } = string.Empty;
 
         [Required]
+        [MaxLength(RestaurantLogoMaxLength)]
         public string Logo { get; set; } = string.Empty;
 
         [Required]
+        [MaxLength(RestaurantBackgroundImageMaxLength)]
         public string BackgroundImage { get; set; } = string.Empty;
 
         [Required]
@@ -47,8 +54,10 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         [ForeignKey(nameof(RestaurantCategoryId))]
         public virtual RestaurantCategory RestaurantCategory { get; set; } = null!;
 
+        [Required]
         public double AverageRating { get; private set; }
 
+        [Required]
         public int TotalReviews { get; private set; }
 
         public virtual IEnumerable<Item> Items { get; set; } = new List<Item>();

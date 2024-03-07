@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoodDeliveryApp.Infrastructure.Constants
+﻿namespace FoodDeliveryApp.Infrastructure.Constants
 {
     public static class ValidationConstants
     {
@@ -64,9 +58,19 @@ namespace FoodDeliveryApp.Infrastructure.Constants
             public const int LocationAddressMaxLength = 100;
         }
 
+        public static class RestaurantValidationConstants
+        {
+            public const int RestaurantTitleMaxLength = 50;
+            public const int RestaurantAddressMaxLength = 100;
+            public const int RestaurantCityMaxLength = 20;
+            public const int RestaurantDeliveryTimeMaxLength = 20;
+            public const int RestaurantLogoMaxLength = 200;
+            public const int RestaurantBackgroundImageMaxLength = 200;
+        }
+
         public static class RestaurantCategoryValidationConstants
         {
-            public const int RestaurantCategoryNameMaxLength = 50;
+            public const int RestaurantCategoryTitleMaxLength = 50;
         }
     }
 }
