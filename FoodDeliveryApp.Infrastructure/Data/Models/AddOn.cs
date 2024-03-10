@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.AddOnValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
@@ -13,6 +14,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public string Title { get; set; } = string.Empty;
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
         [Required]

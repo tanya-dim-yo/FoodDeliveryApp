@@ -14,15 +14,19 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public DateTime OrderDate { get; set; } = DateTime.Now;
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal SubTotal { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal ServiceFee { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Tax { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal OrderTotal { get; set; }
 
         [Required]
