@@ -13,6 +13,21 @@ namespace FoodDeliveryApp.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<ItemAddOn>()
+                .HasKey(ia => new { ia.ItemId, ia.AddOnId });
+
+            builder.Entity<ItemAddOn>()
+                .HasOne(ia => ia.AddOn)
+                .WithMany()
+                .HasForeignKey(ia => ia.AddOnId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ItemAddOn>()
+                .HasOne(ia => ia.Item)
+                .WithMany()
+                .HasForeignKey(ia => ia.ItemId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<AddOn>()
                 .Property(a => a.Price)
                 .HasColumnType("decimal(18, 2)");
