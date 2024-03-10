@@ -25,9 +25,9 @@
             public const int BlogArticleCategoryTitleMaxLength = 50;
         }
 
-        public static class BlogCommentValidationConstants
+        public static class BlogArticleCommentValidationConstants
         {
-            public const int BlogCommentMaxLength = 1000;
+            public const int BlogArticleCommentMaxLength = 1000;
         }
 
         public static class CouponValidationConstants

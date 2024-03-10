@@ -45,8 +45,6 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         [ForeignKey(nameof(BlogArticleCategoryId))]
         public virtual BlogArticleCategory BlogArticleCategory { get; set; } = null!;
 
-        public string[] Tags { get; set; } = Array.Empty<string>();
-
-        public virtual IEnumerable<BlogComment> BlogComments { get; set; } = new List<BlogComment>();
+        public virtual IEnumerable<BlogArticleComment> BlogArticleComments { get; set; } = new List<BlogArticleComment>();
     }
 }

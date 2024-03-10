@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.BlogCommentValidationConstants;
+using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.BlogArticleCommentValidationConstants;
 using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.UserIdValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
-    public class BlogComment
+    public class BlogArticleComment
     {
         [Key]
         public int Id { get; set; }
@@ -19,7 +19,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public virtual IdentityUser User { get; set; } = null!;
 
         [Required]
-        [MaxLength(BlogCommentMaxLength)]
+        [MaxLength(BlogArticleCommentMaxLength)]
         public string Comment { get; set; } = string.Empty;
     }
 }
