@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.BlogArticleValidationConstants;
 using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.UserIdValidationConstants;
-;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
@@ -38,10 +37,10 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public string Image { get; set; } = string.Empty;
 
         [Required]
-        public int BlogCategoryId { get; set; }
+        public int BlogArticleCategoryId { get; set; }
 
-        [ForeignKey(nameof(BlogCategoryId))]
-        public virtual BlogCategory BlogCategory { get; set; } = null!;
+        [ForeignKey(nameof(BlogArticleCategoryId))]
+        public virtual BlogArticleCategory BlogArticleCategory { get; set; } = null!;
 
         public string[] Tags { get; set; } = Array.Empty<string>();
 

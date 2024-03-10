@@ -20,9 +20,9 @@
             public const int BlogArticleImageMaxLength = 200;
         }
 
-        public static class BlogCategoryValidationConstants
+        public static class BlogArticleCategoryValidationConstants
         {
-            public const int BlogCategoryTitleMaxLength = 50;
+            public const int BlogArticleCategoryTitleMaxLength = 50;
         }
 
         public static class BlogCommentValidationConstants

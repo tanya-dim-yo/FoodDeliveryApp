@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.BlogCategoryValidationConstants;
+using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.BlogArticleCategoryValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
-    public class BlogCategory
+    public class BlogArticleCategory
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(BlogCategoryTitleMaxLength)]
+        [MaxLength(BlogArticleCategoryTitleMaxLength)]
         public string Title { get; set; } = string.Empty;
 
         public virtual IEnumerable<BlogArticle> BlogArticles { get; set; } = null!;
