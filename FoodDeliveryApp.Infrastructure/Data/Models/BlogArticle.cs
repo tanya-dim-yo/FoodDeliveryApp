@@ -26,6 +26,9 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public DateTime PublicationDate { get; set; }
 
         [Required]
+        public int ReadingTime { get; set; }
+
+        [Required]
         public int Likes { get; set; }
 
         [Required]
