@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.UserIdValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
@@ -42,7 +41,6 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public DateTime TimeOfDelivery { get; set; }
 
         [Required]
-        [MaxLength(UserIdMaxLength)]
         public string UserId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(UserId))]

@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.BlogArticleCommentValidationConstants;
-using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.UserIdValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
@@ -12,7 +11,6 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(UserIdMaxLength)]
         public string UserId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(UserId))]

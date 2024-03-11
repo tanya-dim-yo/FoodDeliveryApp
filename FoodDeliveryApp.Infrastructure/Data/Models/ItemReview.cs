@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.ItemReviewValidationConstants;
-using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.UserIdValidationConstants;
 
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
@@ -11,7 +10,6 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(UserIdMaxLength)]
         public string UserID { get; set; } = string.Empty;
 
         [Required]

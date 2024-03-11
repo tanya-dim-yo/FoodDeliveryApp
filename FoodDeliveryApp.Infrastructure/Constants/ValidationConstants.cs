@@ -2,11 +2,6 @@
 {
     public static class ValidationConstants
     {
-        public static class UserIdValidationConstants
-        {
-            public const int UserIdMaxLength = 36;
-        }
-
         public static class AddOnValidationConstants
         {
             public const int AddOnTitleMaxLength = 50;

@@ -17,16 +17,9 @@ namespace FoodDeliveryApp.Infrastructure.Data
                 .HasKey(ia => new { ia.ItemId, ia.AddOnId });
 
             builder.Entity<ItemAddOn>()
-                .HasOne(ia => ia.AddOn)
-                .WithMany()
-                .HasForeignKey(ia => ia.AddOnId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<ItemAddOn>()
-                .HasOne(ia => ia.Item)
-                .WithMany()
-                .HasForeignKey(ia => ia.ItemId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(i => i.Item)
+                .WithMany(i => i.ItemsAddOns)
+                .OnDelete(DeleteBehavior.NoAction);
 
             base.OnModelCreating(builder);
         }
