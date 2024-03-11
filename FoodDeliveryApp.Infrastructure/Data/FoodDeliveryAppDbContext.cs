@@ -5,9 +5,9 @@ using System.Reflection.Emit;
 
 namespace FoodDeliveryApp.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class FoodDeliveryAppDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public FoodDeliveryAppDbContext(DbContextOptions<FoodDeliveryAppDbContext> options)
             : base(options)
         {
         }
