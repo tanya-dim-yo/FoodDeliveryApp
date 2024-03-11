@@ -369,7 +369,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                         column: x => x.CartId,
                         principalTable: "Carts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Orders_Coupons_CouponId",
                         column: x => x.CouponId,
@@ -471,7 +471,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Price = table.Column<decimal>(type: "decimal(18,2", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     ItemId = table.Column<int>(type: "int", nullable: false),
                     CartId = table.Column<int>(type: "int", nullable: false)

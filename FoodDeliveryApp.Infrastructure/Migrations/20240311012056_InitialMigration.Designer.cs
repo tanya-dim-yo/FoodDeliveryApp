@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodDeliveryApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240311005520_InitialMigration")]
+    [Migration("20240311012056_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -182,7 +182,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -879,7 +879,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                     b.HasOne("FoodDeliveryApp.Infrastructure.Data.Models.Cart", "Cart")
                         .WithMany()
                         .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FoodDeliveryApp.Infrastructure.Data.Models.Coupon", "Coupon")

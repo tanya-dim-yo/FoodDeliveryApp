@@ -180,7 +180,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -877,7 +877,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                     b.HasOne("FoodDeliveryApp.Infrastructure.Data.Models.Cart", "Cart")
                         .WithMany()
                         .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FoodDeliveryApp.Infrastructure.Data.Models.Coupon", "Coupon")
