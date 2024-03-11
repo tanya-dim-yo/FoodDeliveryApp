@@ -1,7 +1,7 @@
-﻿using FoodDeliveryApp.Infrastructure.Data.Models;
+﻿using FoodDeliveryApp.Infrastructure.Data.Configuration;
+using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace FoodDeliveryApp.Infrastructure.Data
 {
@@ -14,19 +14,8 @@ namespace FoodDeliveryApp.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<ItemAddOn>()
-                .HasKey(ia => new { ia.ItemId, ia.AddOnId });
-
-            builder.Entity<ItemAddOn>()
-                .HasOne(i => i.Item)
-                .WithMany(i => i.ItemsAddOns)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder.Entity<Order>()
-                .HasOne(o => o.Cart)
-                .WithMany()
-                .HasForeignKey(o => o.CartId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.ApplyConfiguration(new ItemAddOnConfiguration());
+            builder.ApplyConfiguration(new OrderConfiguration());
 
             base.OnModelCreating(builder);
         }
