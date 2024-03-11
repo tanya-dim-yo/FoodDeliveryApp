@@ -34,7 +34,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public double Longitude { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(18,2")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal ServiceFee { get; set; }
 
         [Required]

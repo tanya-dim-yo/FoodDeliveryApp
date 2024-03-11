@@ -1,6 +1,7 @@
 ﻿using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace FoodDeliveryApp.Infrastructure.Data
 {
@@ -20,6 +21,12 @@ namespace FoodDeliveryApp.Infrastructure.Data
                 .HasOne(i => i.Item)
                 .WithMany(i => i.ItemsAddOns)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Order>()
+                .HasOne(o => o.Cart)
+                .WithMany()
+                .HasForeignKey(o => o.CartId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
         }
