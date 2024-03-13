@@ -42,10 +42,6 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public string DeliveryTime { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(RestaurantLogoMaxLength)]
-        public string Logo { get; set; } = string.Empty;
-
-        [Required]
         [MaxLength(RestaurantBackgroundImageMaxLength)]
         public string BackgroundImage { get; set; } = string.Empty;
 
