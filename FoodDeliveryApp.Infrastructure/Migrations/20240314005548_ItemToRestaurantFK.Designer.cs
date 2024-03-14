@@ -4,6 +4,7 @@ using FoodDeliveryApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodDeliveryApp.Infrastructure.Migrations
 {
     [DbContext(typeof(FoodDeliveryAppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240314005548_ItemToRestaurantFK")]
+    partial class ItemToRestaurantFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,98 +276,6 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                     b.HasIndex("SpicyCategoryId");
 
                     b.ToTable("Items");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AverageRating = 0.0,
-                            Description = "4\" питка, криспи чикън кюфте, майонеза, домати, айсберг",
-                            Image = "../../../FoodDeliveryApp/wwwroot/images/Amerikanska/BurgerKing/BurgerCrispyChicken.jpg",
-                            IsFavourite = false,
-                            IsVeggie = false,
-                            ItemCategoryId = 1,
-                            Price = 9.95m,
-                            RestaurantId = 1,
-                            SpicyCategoryId = 1,
-                            Title = "Бургер Crispy Chicken (183г)",
-                            TotalReviews = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AverageRating = 0.0,
-                            Description = "4 1/2\" питка, тендър крисп, майонеза, домати, айсберг",
-                            Image = "../../../FoodDeliveryApp/wwwroot/images/Amerikanska/BurgerKing/BurgerTenderCrisp.jpg",
-                            IsFavourite = false,
-                            IsVeggie = false,
-                            ItemCategoryId = 1,
-                            Price = 12.65m,
-                            RestaurantId = 1,
-                            SpicyCategoryId = 1,
-                            Title = "Бургер Tender Crisp (283г)",
-                            TotalReviews = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AverageRating = 0.0,
-                            Description = "пресни домати, босилек и сирене Моцарела",
-                            Image = "../../../FoodDeliveryApp/wwwroot/images/Mestna_hrana/Tarator/Salata_Kapreze.jpg",
-                            IsFavourite = false,
-                            IsVeggie = false,
-                            ItemCategoryId = 2,
-                            Price = 6.76m,
-                            RestaurantId = 2,
-                            SpicyCategoryId = 1,
-                            Title = "Салата Капрезе (300г)",
-                            TotalReviews = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AverageRating = 0.0,
-                            Description = "Традиционна българска мусака",
-                            Image = "../../../FoodDeliveryApp/wwwroot/images/Mestna_hrana/Tarator/Musaka.jpg",
-                            IsFavourite = false,
-                            IsVeggie = false,
-                            ItemCategoryId = 3,
-                            Price = 11.20m,
-                            RestaurantId = 2,
-                            SpicyCategoryId = 1,
-                            Title = "Мусака (350г)",
-                            TotalReviews = 0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AverageRating = 0.0,
-                            Description = "Капучино с топка сладолед Mока",
-                            Image = "../../../FoodDeliveryApp/wwwroot/images/Zakuska/Mikel_Coffee/Cappuccino_Mocha.jpg",
-                            IsFavourite = false,
-                            IsVeggie = false,
-                            ItemCategoryId = 4,
-                            Price = 6.90m,
-                            RestaurantId = 3,
-                            SpicyCategoryId = 1,
-                            Title = "Капучино Мока",
-                            TotalReviews = 0
-                        },
-                        new
-                        {
-                            Id = 6,
-                            AverageRating = 0.0,
-                            Description = "Класическа бисквитена торта",
-                            Image = "../../../FoodDeliveryApp/wwwroot/images/Zakuska/Mikel_Coffee/Biscuit_Cake.jpg",
-                            IsFavourite = false,
-                            IsVeggie = false,
-                            ItemCategoryId = 5,
-                            Price = 7.40m,
-                            RestaurantId = 3,
-                            SpicyCategoryId = 1,
-                            Title = "Бисквитена торта - Biscuit cake",
-                            TotalReviews = 0
-                        });
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.ItemAddOn", b =>
