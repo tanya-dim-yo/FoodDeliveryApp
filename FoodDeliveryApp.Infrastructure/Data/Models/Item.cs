@@ -44,6 +44,12 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public virtual ItemCategory ItemCategory { get; set; } = null!;
 
         [Required]
+        public int RestaurantId { get; set; }
+
+        [ForeignKey(nameof(RestaurantId))]
+        public virtual Restaurant Restaurant { get; set; } = null!;
+
+        [Required]
         public int SpicyCategoryId { get; set; }
 
         [ForeignKey(nameof(SpicyCategoryId))]
