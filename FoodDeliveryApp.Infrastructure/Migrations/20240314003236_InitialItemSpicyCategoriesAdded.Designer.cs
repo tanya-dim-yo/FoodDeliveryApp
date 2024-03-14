@@ -4,6 +4,7 @@ using FoodDeliveryApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodDeliveryApp.Infrastructure.Migrations
 {
     [DbContext(typeof(FoodDeliveryAppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240314003236_InitialItemSpicyCategoriesAdded")]
+    partial class InitialItemSpicyCategoriesAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -307,33 +309,6 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ItemCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Title = "Пилешки бургери"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Title = "Салати"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Title = "Основни"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Title = "Горещи напитки"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Title = "Десерти"
-                        });
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.ItemReview", b =>

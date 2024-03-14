@@ -19,6 +19,7 @@ namespace FoodDeliveryApp.Infrastructure.Data
             builder.ApplyConfiguration(new RestaurantCategoryConfiguration());
             builder.ApplyConfiguration(new RestaurantConfiguration());
             builder.ApplyConfiguration(new ItemSpicyCategoryConfiguration());
+            builder.ApplyConfiguration(new ItemCategoryConfiguration());
 
             base.OnModelCreating(builder);
         }
