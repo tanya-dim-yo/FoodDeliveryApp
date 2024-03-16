@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using FoodDeliveryApp.Models.Restaurant;
 
 namespace FoodDeliveryApp.Controllers
 {
@@ -8,5 +9,10 @@ namespace FoodDeliveryApp.Controllers
         {
             return View();
         }
-    }
+
+		public IActionResult GetCategory()
+		{
+			return View();
+		}
+	}
 }
