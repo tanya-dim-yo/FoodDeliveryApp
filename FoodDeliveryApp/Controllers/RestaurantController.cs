@@ -4,7 +4,7 @@ namespace FoodDeliveryApp.Controllers
 {
     public class RestaurantController : Controller
     {
-        public IActionResult Index()
+        public IActionResult All()
         {
             return View();
         }
