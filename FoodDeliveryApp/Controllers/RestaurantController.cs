@@ -10,6 +10,21 @@ namespace FoodDeliveryApp.Controllers
             return View();
         }
 
+		public IActionResult Nearest()
+		{
+			return View();
+		}
+
+		public IActionResult HighestRating()
+		{
+			return View();
+		}
+
+		public IActionResult ServiceFee()
+		{
+			return View();
+		}
+
 		public IActionResult GetCategory()
 		{
 			return View();
