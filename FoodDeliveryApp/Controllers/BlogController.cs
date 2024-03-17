@@ -4,7 +4,7 @@ namespace FoodDeliveryApp.Controllers
 {
     public class BlogController : Controller
     {
-        public IActionResult Index()
+        public IActionResult All()
         {
             return View();
         }
