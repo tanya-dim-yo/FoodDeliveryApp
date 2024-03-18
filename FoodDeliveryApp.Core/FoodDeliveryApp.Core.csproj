@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Contracts\Item\" />
+    <Folder Include="Contracts\Blog\" />
+    <Folder Include="Contracts\Restaurant\" />
     <Folder Include="Models\ItemReview\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
