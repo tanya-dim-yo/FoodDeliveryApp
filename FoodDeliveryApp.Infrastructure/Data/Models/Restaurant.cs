@@ -52,10 +52,10 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public virtual RestaurantCategory RestaurantCategory { get; set; } = null!;
 
         [Required]
-        public double AverageRating { get; private set; }
+        public double AverageRating { get; set; }
 
         [Required]
-        public int TotalReviews { get; private set; }
+        public int TotalReviews { get; set; }
 
         public virtual IEnumerable<Item> Items { get; set; } = new List<Item>();
     }

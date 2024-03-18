@@ -22,10 +22,10 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public decimal Price { get; set; }
 
         [Required]
-        public double AverageRating { get; private set; }
+        public double AverageRating { get; set; }
 
         [Required]
-        public int TotalReviews { get; private set; }
+        public int TotalReviews { get; set; }
 
         [Required]
         public bool IsFavourite { get; set; }
