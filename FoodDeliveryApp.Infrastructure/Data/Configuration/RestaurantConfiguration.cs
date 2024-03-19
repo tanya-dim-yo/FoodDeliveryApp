@@ -20,7 +20,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
                 Longitude = 23.353460,
                 ServiceFee = 3.99m,
                 DeliveryTime = "30-40 мин.",
-                BackgroundImage = "../../../FoodDeliveryApp/wwwroot/images/Amerikanska/BurgerKing/BurgerKingBackground.jfif",
+                BackgroundImage = "~/images/Amerikanska/BurgerKing/BurgerKingBackground.jfif",
                 RestaurantCategoryId = 2,
             },
 
@@ -36,7 +36,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
                 Longitude = 23.316980,
                 ServiceFee = 4.99m,
                 DeliveryTime = "50-60 мин.",
-                BackgroundImage = "../../../FoodDeliveryApp/wwwroot/images/Mestna_hrana/Tarator/TaratorBackground.jpg",
+                BackgroundImage = "~/images/Mestna_hrana/Tarator/TaratorBackground.jpg",
                 RestaurantCategoryId = 13,
             },
 
@@ -52,8 +52,8 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
                 Longitude = 23.315410,
                 ServiceFee = 1.99m,
                 DeliveryTime = "40-50 мин.",
-                BackgroundImage = "../../../FoodDeliveryApp/wwwroot/images/Zakuska/Mikel_Coffee/MikelCoffeeBackground.jpg",
-                RestaurantCategoryId = 7,
+                BackgroundImage = "~/images/Zakuska/Mikel_Coffee/MikelCoffeeBackground.jpg",
+				RestaurantCategoryId = 7,
             },
         };
 
