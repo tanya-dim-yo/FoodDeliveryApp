@@ -21,11 +21,13 @@ namespace FoodDeliveryApp.Controllers
 			return View(model);
 		}
 
+		[HttpGet]
 		public IActionResult Nearest()
 		{
 			return View();
 		}
 
+		[HttpGet]
 		public async Task<IActionResult> HighestRating()
 		{
 			IEnumerable<RestaurantViewModel> model = await restaurantService.HighestRatingAsync();
@@ -33,6 +35,7 @@ namespace FoodDeliveryApp.Controllers
 			return View(nameof(All), model);
 		}
 
+		[HttpGet]
 		public async Task<IActionResult> ServiceFee()
 		{
 			IEnumerable<RestaurantViewModel> model = await restaurantService.ServiceFeeAsync();
@@ -40,11 +43,15 @@ namespace FoodDeliveryApp.Controllers
 			return View(nameof(All), model);
 		}
 
-		public IActionResult GetCategory()
+		[HttpGet]
+		public async Task<IActionResult> GetCategory()
 		{
-			return View();
+			IEnumerable<RestaurantViewModel> model = await restaurantService.GetByCategoryAsync();
+
+			return View(nameof(All), model);
 		}
 
+		[HttpGet]
 		public IActionResult GetRestaurant(int id)
 		{
 			return View();

@@ -47,6 +47,25 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 		}
 
+		public async Task<IEnumerable<RestaurantViewModel>> GetByCategoryAsync(string categoryName)
+		{
+			return await repository
+				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+				.Where(p => p.RestaurantCategory.Title == categoryName)
+				.Select(p => new RestaurantViewModel()
+				{
+					Id = p.Id,
+					Title = p.Title,
+					ServiceFee = p.ServiceFee,
+					DeliveryTime = p.DeliveryTime,
+					BackgroundImage = p.BackgroundImage,
+					AverageRating = p.AverageRating,
+					TotalReviews = p.TotalReviews,
+					RestaurantCategory = p.RestaurantCategory.Title
+				})
+				.ToListAsync();
+		}
+
 		public Task<RestaurantDetailViewModel?> GetByIdAsync(int id)
 		{
 			throw new NotImplementedException();
