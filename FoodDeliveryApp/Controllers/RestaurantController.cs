@@ -1,14 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using FoodDeliveryApp.Models.Restaurant;
+﻿using FoodDeliveryApp.Core.Contracts.Restaurant;
+using FoodDeliveryApp.Core.Models.Restaurant;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FoodDeliveryApp.Controllers
 {
-    public class RestaurantController : Controller
+	public class RestaurantController : Controller
     {
-        public IActionResult All()
+		private readonly IRestaurantService restaurantService;
+
+		public RestaurantController(IRestaurantService _restaurantService)
+		{
+			restaurantService = _restaurantService;
+		}
+
+		[HttpGet]
+        public async Task<IActionResult> All()
         {
-            return View();
-        }
+			IEnumerable<RestaurantViewModel> model = await restaurantService.GetAllAsync();
+
+			return View(model);
+		}
 
 		public IActionResult Nearest()
 		{
