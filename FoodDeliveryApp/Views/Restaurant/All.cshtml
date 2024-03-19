@@ -1,4 +1,7 @@
-﻿@{
+﻿@using FoodDeliveryApp.Core.Models.Restaurant
+@model IEnumerable<RestaurantViewModel>
+
+@{
 	Layout = "~/Views/Shared/_LayoutFoodTime.cshtml";
 }
 <div class="page-content bg-white">
@@ -49,8 +52,8 @@
 								</div>
 								<div class="tagcloud">
 									<a href="@Url.Action("ProductDetail","FoodTime")">Близо до мен</a>
-									<a href="@Url.Action("ProductDetail","FoodTime")">С най-висок рейтинг</a>
-									<a href="@Url.Action("ProductDetail","FoodTime")">Такса за доставка</a>
+									<a href="@Url.Action("HighestRating","Restaurant")">С най-висок рейтинг</a>
+									<a href="@Url.Action("ServiceFee","Restaurant")">Такса за доставка</a>
 								</div>
 							</div>
 							<div class="widget widget_tag_cloud ">
@@ -93,24 +96,26 @@
 						<h5 class="title mb-md-3 mb-lg-4 m-b20 d-none d-lg-block">Ресторанти : доставка в гр. София</h5>
 					</div>
 					<ul id="masonry" class="row">
-						<li class="card-container col-xl-4 col-md-6 m-b30">
-							<div class="dz-img-box style-7">
-								<div class="dz-media">
-									<img src="~/foodtime/images/gallery/grid4/pic1.jpg" alt="/">
-									<div class="dz-meta">
-										<ul>
-											<li class="seller">Top Seller</li>
-											<li class="rating"><i class="fa-solid fa-star"></i> 4.5</li>
-										</ul>
+						@foreach (var restaurant in Model)
+						{
+							<li class="card-container col-xl-4 col-md-6 m-b30">
+								<div class="dz-img-box style-7">
+									<div class="dz-media">
+										<img src="@Url.Content(restaurant.BackgroundImage)" alt="@restaurant.Title">
+										<div class="dz-meta">
+											<ul>
+												<li class="seller">@restaurant.RestaurantCategory</li>
+												<li class="rating"><i class="fa-solid fa-star"></i> @restaurant.AverageRatingPercent</li>
+											</ul>
+										</div>
+									</div>
+									<div class="dz-content">
+										<h5 class="title"><a href="@Url.Action("ProductDetail","FoodTime")">@restaurant.Title</a></h5>
+											<span>@restaurant.ServiceFee лв. · @restaurant.DeliveryTime</span>
 									</div>
 								</div>
-								<div class="dz-content">
-									<h5 class="title"><a href="@Url.Action("ProductDetail","FoodTime")">Burger</a></h5>
-									<p>It is a long established fact that a reader will be distracted.</p>
-									<span class="price">$4.56</span>
-								</div>
-							</div>
-						</li>
+							</li>
+						}
 					</ul>
 				</div>
 			</div>

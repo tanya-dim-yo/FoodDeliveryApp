@@ -26,14 +26,18 @@ namespace FoodDeliveryApp.Controllers
 			return View();
 		}
 
-		public IActionResult HighestRating()
+		public async Task<IActionResult> HighestRating()
 		{
-			return View();
+			IEnumerable<RestaurantViewModel> model = await restaurantService.HighestRatingAsync();
+
+			return View(nameof(All), model);
 		}
 
-		public IActionResult ServiceFee()
+		public async Task<IActionResult> ServiceFee()
 		{
-			return View();
+			IEnumerable<RestaurantViewModel> model = await restaurantService.HighestRatingAsync();
+
+			return View(nameof(All), model);
 		}
 
 		public IActionResult GetCategory()

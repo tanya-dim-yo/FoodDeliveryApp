@@ -4,6 +4,7 @@ using FoodDeliveryApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodDeliveryApp.Infrastructure.Migrations
 {
     [DbContext(typeof(FoodDeliveryAppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240319011850_ImagesPathChanged")]
+    partial class ImagesPathChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -680,7 +682,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                             Id = 1,
                             Address = "bul. \"Sitnyakovo\", 48, 1505, Oborishte, Sofia, Bulgaria",
                             AverageRating = 0.0,
-                            BackgroundImage = "~/images/Amerikanska/BurgerKing/BurgerKingBackground.jfif",
+                            BackgroundImage = "/FoodDeliveryApp/wwwroot/images/Amerikanska/BurgerKing/BurgerKingBackground.jfif",
                             City = "Sofia",
                             ClosingHour = new DateTime(1900, 1, 1, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             DeliveryTime = "30-40 мин.",
@@ -697,7 +699,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                             Id = 2,
                             Address = "\"Hristo Botev\" Blvd 117, 1303 Sofia Center, Sofia, Bulgaria",
                             AverageRating = 0.0,
-                            BackgroundImage = "~/images/Mestna_hrana/Tarator/TaratorBackground.jpg",
+                            BackgroundImage = "/FoodDeliveryApp/wwwroot/images/Mestna_hrana/Tarator/TaratorBackground.jpg",
                             City = "Sofia",
                             ClosingHour = new DateTime(1900, 1, 1, 18, 0, 0, 0, DateTimeKind.Unspecified),
                             DeliveryTime = "50-60 мин.",
@@ -714,7 +716,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                             Id = 3,
                             Address = "bulevard \"Cherni vrah\" 100, 1407 Krastova vada, Sofia, Bulgaria",
                             AverageRating = 0.0,
-                            BackgroundImage = "~/images/Zakuska/Mikel_Coffee/MikelCoffeeBackground.jpg",
+                            BackgroundImage = "/FoodDeliveryApp/wwwroot/images/Zakuska/Mikel_Coffee/MikelCoffeeBackground.jpg",
                             City = "Sofia",
                             ClosingHour = new DateTime(1900, 1, 1, 22, 0, 0, 0, DateTimeKind.Unspecified),
                             DeliveryTime = "40-50 мин.",

@@ -47,6 +47,25 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			throw new NotImplementedException();
 		}
 
+		public async Task<IEnumerable<RestaurantViewModel>> HighestRatingAsync()
+		{
+			return await repository
+				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+				.OrderByDescending(p => p.AverageRating)
+				.Select(p => new RestaurantViewModel()
+				{
+					Id = p.Id,
+					Title = p.Title,
+					ServiceFee = p.ServiceFee,
+					DeliveryTime = p.DeliveryTime,
+					BackgroundImage = p.BackgroundImage,
+					AverageRating = p.AverageRating,
+					TotalReviews = p.TotalReviews,
+					RestaurantCategory = p.RestaurantCategory.Title
+				})
+				.ToListAsync();
+		}
+
 		public async Task RateRestaurant(int restaurantId, double newRating)
 		{
 			var restaurant = await repository.All<Infrastructure.Data.Models.Restaurant>()
@@ -60,6 +79,25 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			restaurant.UpdateRating(newRating);
 
 			await repository.SaveChangesAsync();
+		}
+
+		public async Task<IEnumerable<RestaurantViewModel>> ServiceFeeAsync()
+		{
+			return await repository
+				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+				.OrderBy(p => p.ServiceFee)
+				.Select(p => new RestaurantViewModel()
+				{
+					Id = p.Id,
+					Title = p.Title,
+					ServiceFee = p.ServiceFee,
+					DeliveryTime = p.DeliveryTime,
+					BackgroundImage = p.BackgroundImage,
+					AverageRating = p.AverageRating,
+					TotalReviews = p.TotalReviews,
+					RestaurantCategory = p.RestaurantCategory.Title
+				})
+				.ToListAsync();
 		}
 	}
 }
