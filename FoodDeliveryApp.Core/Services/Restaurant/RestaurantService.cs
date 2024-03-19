@@ -47,11 +47,11 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 		}
 
-		public async Task<IEnumerable<RestaurantViewModel>> GetByCategoryAsync(string categoryName)
+		public async Task<IEnumerable<RestaurantViewModel>> GetByCategoryAsync(int categoryId)
 		{
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
-				.Where(p => p.RestaurantCategory.Title == categoryName)
+				.Where(p => p.RestaurantCategoryId == categoryId)
 				.Select(p => new RestaurantViewModel()
 				{
 					Id = p.Id,
