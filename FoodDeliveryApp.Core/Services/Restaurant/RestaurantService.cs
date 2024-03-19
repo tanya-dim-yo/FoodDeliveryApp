@@ -2,17 +2,22 @@
 using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace FoodDeliveryApp.Core.Services.Restaurant
 {
 	public class RestaurantService : IRestaurantService
 	{
 		private readonly IRepository repository;
+		private readonly ILogger logger;
 
-        public RestaurantService(IRepository _repository)
+		public RestaurantService(
+			IRepository _repository,
+			ILogger<RestaurantService> _logger)
         {
             repository = _repository;
-        }
+			logger = _logger;
+		}
 
         public Task AddAsync(RestaurantDetailViewModel model)
 		{
