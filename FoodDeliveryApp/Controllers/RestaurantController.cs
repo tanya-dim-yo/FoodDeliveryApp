@@ -35,7 +35,7 @@ namespace FoodDeliveryApp.Controllers
 
 		public async Task<IActionResult> ServiceFee()
 		{
-			IEnumerable<RestaurantViewModel> model = await restaurantService.HighestRatingAsync();
+			IEnumerable<RestaurantViewModel> model = await restaurantService.ServiceFeeAsync();
 
 			return View(nameof(All), model);
 		}
