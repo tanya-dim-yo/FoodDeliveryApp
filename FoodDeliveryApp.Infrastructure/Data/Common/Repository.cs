@@ -26,5 +26,10 @@ namespace FoodDeliveryApp.Infrastructure.Data.Common
 			return DbSet<T>()
 				.AsNoTracking();
 		}
+
+		public async Task SaveChangesAsync()
+		{
+			await context.SaveChangesAsync();
+		}
 	}
 }
