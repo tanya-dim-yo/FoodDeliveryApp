@@ -10,7 +10,10 @@
     <Folder Include="Contracts\Item\" />
     <Folder Include="Contracts\Blog\" />
     <Folder Include="Models\ItemReview\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FoodDeliveryApp.Infrastructure\FoodDeliveryApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

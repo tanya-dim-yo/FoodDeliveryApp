@@ -29,5 +29,15 @@ namespace FoodDeliveryApp.Controllers
 		{
 			return View();
 		}
+
+		public IActionResult GetRestaurant(int id)
+		{
+			return View();
+		}
+
+		public IActionResult RateRestaurant(int id, double newRating)
+		{
+			return View();
+		}
 	}
 }
