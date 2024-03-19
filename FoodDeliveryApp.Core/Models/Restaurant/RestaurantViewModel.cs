@@ -12,10 +12,12 @@
 
 		public string BackgroundImage { get; set; } = string.Empty;
 
-		public double AverageRating { get; private set; }
+		public double AverageRating { get; set; }
 
-		public int TotalReviews { get; private set; }
+		public int TotalReviews { get; set; }
 
 		public string RestaurantCategory { get; set; } = string.Empty;
+
+		public double AverageRatingPercent => (AverageRating / 5) * 100;
 	}
 }

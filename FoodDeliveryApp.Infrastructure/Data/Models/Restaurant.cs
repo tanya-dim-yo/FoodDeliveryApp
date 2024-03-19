@@ -58,5 +58,11 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int TotalReviews { get; set; }
 
         public virtual IEnumerable<Item> Items { get; set; } = new List<Item>();
-    }
+
+		public void UpdateRating(double newRating)
+		{
+			AverageRating = (AverageRating * TotalReviews + newRating) / (TotalReviews + 1);
+			TotalReviews++;
+		}
+	}
 }
