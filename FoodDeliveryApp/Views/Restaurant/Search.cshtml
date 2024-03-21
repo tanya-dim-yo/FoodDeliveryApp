@@ -1,0 +1,311 @@
+﻿@using FoodDeliveryApp.Core.Models.Restaurant
+@model IEnumerable<RestaurantViewModel>
+
+@{
+	Layout = "~/Views/Shared/_LayoutFoodTime.cshtml";
+}
+<div class="page-content bg-white">
+	<!-- Banner  -->
+	<div class="dz-bnr-inr style-1 text-center bg-parallax" style="background-image:url('../foodtime/images/banner/bnr3.jpg'); background-size:cover; background-position:center;">
+		<div class="container">
+			<div class="dz-bnr-inr-entry">
+				<h1>Търсене</h1>
+				<!-- Breadcrumb Row -->
+				<nav aria-label="breadcrumb" class="breadcrumb-row">
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Начало</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Търсене</li>
+					</ul>
+				</nav>
+				<!-- Breadcrumb Row End -->
+			</div>
+		</div>
+	</div>
+	<!-- Banner End -->
+	<!-- Our Menu-->
+	<section class="content-inner">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-10 col-lg-9 col-md-12">
+					<div class="site-filters style-1 clearfix">
+						<ul class="filters" data-bs-toggle="buttons">
+							<li data-filter=".All" class="btn active"><a href="javascript:void(0);"><span><i class="flaticon-fast-food"></i></span>ALL</a></li>
+							<li data-filter=".drink" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-cocktail"></i></span>COLD DRINK</a></li>
+							<li data-filter=".pizza" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-pizza-slice"></i></span>PIZZA</a></li>
+							<li data-filter=".salad" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-salad"></i></span>SALAD</a></li>
+							<li data-filter=".sweet" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-cupcake"></i></span>SWEETS</a></li>
+							<li data-filter=".spicy" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-chili-pepper"></i></span>SPICY</a></li>
+							<li data-filter=".burger" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-hamburger-1"></i></span>BURGER</a></li>
+						</ul>
+						<div>
+							<p>@Model.Count() обекти, съответстващи на търсенето на '@ViewBag.SearchedKeyword'</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-2 col-lg-3 col-md-12 text-lg-end mb-lg-0 m-b30 d-flex d-lg-block align-items-center justify-content-between">
+					<a data-bs-toggle="offcanvas" href="#offcanvasFilter" role="button" aria-controls="offcanvasFilter" class="btn btn-primary filter-btn btn-hover-2">
+						Filter <span><i class="icon-filter m-l5"></i></span>
+					</a>
+				</div>
+				<div class="offcanvas offcanvas-end filter-category-sidebar" tabindex="-1" id="offcanvasFilter">
+					<button type="button" class="btn-close style-1" data-bs-dismiss="offcanvas" aria-label="Close"><i class="la la-close"></i></button>
+					<div class="offcanvas-body">
+						<div class="widget">
+							<div class="widget-title">
+								<h4 class="title">Refine By Categories</h4>
+							</div>
+							<div class="category-check-list">
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-01">
+									<label class="form-check-label" for="productCheckBox-01">
+										Pizza
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-02">
+									<label class="form-check-label" for="productCheckBox-02">
+										Hamburger
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-03">
+									<label class="form-check-label" for="productCheckBox-03">
+										Cold Drink
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-04">
+									<label class="form-check-label" for="productCheckBox-04">
+										Sandwich
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-05">
+									<label class="form-check-label" for="productCheckBox-05">
+										Muffin
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-06">
+									<label class="form-check-label" for="productCheckBox-06">
+										Burrito
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-07">
+									<label class="form-check-label" for="productCheckBox-07">
+										Taco
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-08">
+									<label class="form-check-label" for="productCheckBox-08">
+										Hot Dog
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-09">
+									<label class="form-check-label" for="productCheckBox-09">
+										Noodles
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-10">
+									<label class="form-check-label" for="productCheckBox-10">
+										Macrony
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-11">
+									<label class="form-check-label" for="productCheckBox-11">
+										Cheese Pasta
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-12">
+									<label class="form-check-label" for="productCheckBox-12">
+										Fish Fry
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-13">
+									<label class="form-check-label" for="productCheckBox-13">
+										Cold Coffee
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-14">
+									<label class="form-check-label" for="productCheckBox-14">
+										Manchurian
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-15">
+									<label class="form-check-label" for="productCheckBox-15">
+										Dosa
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-16">
+									<label class="form-check-label" for="productCheckBox-16">
+										Momos
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-17">
+									<label class="form-check-label" for="productCheckBox-17">
+										Soup
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-18">
+									<label class="form-check-label" for="productCheckBox-18">
+										Chicken Burger
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-19">
+									<label class="form-check-label" for="productCheckBox-19">
+										Beverages
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="productCheckBox-20">
+									<label class="form-check-label" for="productCheckBox-20">
+										Lemon Lime Soda
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="widget">
+							<div class="widget-title">
+								<h4 class="title">Near Me</h4>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="productCheckBox-21">
+								<label class="form-check-label" for="productCheckBox-21">
+									Ortus Restaurant
+								</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="productCheckBox-22">
+								<label class="form-check-label" for="productCheckBox-22">
+									Amar Punjabi Restaurant
+								</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="productCheckBox-23">
+								<label class="form-check-label" for="productCheckBox-23">
+									Other
+								</label>
+							</div>
+						</div>
+						<div class="widget rating-filter">
+							<div class="widget-title">
+								<h4 class="title">Rating</h4>
+							</div>
+							<ul>
+								<li><span>5 Star</span></li>
+								<li><i class="icon-star-on"></i></li>
+								<li><i class="icon-star-on"></i></li>
+								<li><i class="icon-star-on"></i></li>
+								<li><i class="icon-star-on"></i></li>
+								<li><i class="icon-star-on"></i></li>
+							</ul>
+							<ul>
+								<li><span>4 Star</span></li>
+								<li><i class="icon-star-on"></i></li>
+								<li><i class="icon-star-on"></i></li>
+								<li><i class="icon-star-on"></i></li>
+								<li><i class="icon-star-on"></i></li>
+							</ul>
+							<ul>
+								<li><span>3 Star</span></li>
+								<li><i class="icon-star-on"></i></li>
+								<li><i class="icon-star-on"></i></li>
+								<li><i class="icon-star-on"></i></li>
+							</ul>
+							<ul>
+								<li><span>2 Star</span></li>
+								<li><i class="icon-star-on"></i></li>
+								<li><i class="icon-star-on"></i></li>
+							</ul>
+							<ul>
+								<li><span>1 Star</span></li>
+								<li><i class="icon-star-on"></i></li>
+							</ul>
+						</div>
+						<div class="widget">
+							<div class="widget-title">
+								<h4 class="title">Price Range</h4>
+							</div>
+							<div class="range-slider style-1">
+								<div id="slider-tooltips"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<ul id="masonry" class="row">
+				@foreach (var restaurant in Model)
+				{
+					<li class="card-container col-lg-4 col-md-6 m-b30 All drink pizza burger">
+						<div class="dz-img-box style-7">
+							<div class="dz-media">
+								<img src="@Url.Content(restaurant.BackgroundImage)" alt="/">
+								<div class="dz-meta">
+									<ul>
+										<li class="seller">Top Seller</li>
+										<li class="rating"><i class="fa-solid fa-star"></i> @restaurant.AverageRatingPercent</li>
+									</ul>
+								</div>
+							</div>
+							<div class="dz-content">
+								<h5 class="title"><a href="@Url.Action("ProductDetail","FoodTime")">@restaurant.Title</a></h5>
+									<span>@restaurant.ServiceFee лв. · @restaurant.DeliveryTime</span>
+							</div>
+						</div>
+					</li>
+				}
+			</ul>
+		</div>
+	</section>
+	<!-- Our Menu-->
+
+</div>
+
+@section foodtime_style
+	{
+	<!-- Stylesheet -->
+	<link href="~/foodtime/vendor/magnific-popup/magnific-popup.min.css" rel="stylesheet">
+	<link href="~/foodtime/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+	<link href="~/foodtime/vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="~/foodtime/vendor/nouislider/nouislider.min.css">
+}
+@section foodtime_script
+	{
+	<!-- JAVASCRIPT FILES ========================================= -->
+	<script src="~/foodtime/js/jquery.min.js"></script><!-- JQUERY.MIN JS -->
+	<script src="~/foodtime/vendor/bootstrap/js/bootstrap.bundle.min.js"></script><!-- BOOTSTRAP.MIN JS -->
+	<script src="~/foodtime/vendor/bootstrap-select/js/bootstrap-select.min.js"></script><!-- BOOTSTRAP SELEECT -->
+	<script src="~/foodtime/vendor/bootstrap-touchspin/bootstrap-touchspin.js"></script><!-- BOOTSTRAP TOUCHSPIN -->
+	<script src="~/foodtime/vendor/magnific-popup/magnific-popup.js"></script><!-- MAGNIFIC POPUP JS -->
+	<script src="~/foodtime/vendor/masonry/masonry-4.2.2.js"></script><!-- MASONRY -->
+	<script src="~/foodtime/vendor/masonry/isotope.pkgd.min.js"></script><!-- ISOTOPE -->
+	<script src="~/foodtime/vendor/imagesloaded/imagesloaded.js"></script><!-- IMAGESLOADED -->
+	<script src="~/foodtime/vendor/counter/waypoints-min.js"></script><!-- WAYPOINTS JS -->
+	<script src="~/foodtime/vendor/wow/wow.js"></script><!-- WOW JS -->
+	<script src="~/foodtime/vendor/counter/counterup.min.js"></script><!-- COUNTERUP JS -->
+	<script src="~/foodtime/vendor/swiper/swiper-bundle.min.js"></script><!-- OWL-CAROUSEL -->
+	<script src="~/foodtime/vendor/bootstrap-touchspin/bootstrap-touchspin.js"></script><!-- TOUCHSPIN -->
+	<script src="~/foodtime/vendor/nouislider/nouislider.min.js"></script><!-- NOUSLIDER MIN JS-->
+	<script src="~/foodtime/vendor/wnumb/wNumb.js"></script><!-- WNUMB -->
+	<script src="~/foodtime/vendor/particles/particles.js"></script>
+	<script src="~/foodtime/vendor/particles/particles-app.js"></script>
+	<script src="~/foodtime/js/dz.carousel.min.js"></script><!-- OWL-CAROUSEL -->
+	<script src="~/foodtime/js/dz.ajax.js"></script><!-- AJAX -->
+	<script src="~/foodtime/js/custom.min.js"></script><!-- CUSTOM JS -->
+	
+	<script src="~/foodtime/vendor/rangeslider/rangeslider.js"></script><!-- RANGESLIDER -->
+	
+}

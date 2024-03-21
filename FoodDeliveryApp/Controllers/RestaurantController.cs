@@ -56,7 +56,9 @@ namespace FoodDeliveryApp.Controllers
         {
             IEnumerable<RestaurantViewModel> model = await restaurantService.SearchAsync(keyword);
 
-			return PartialView("SearchResults", model);
+			ViewBag.SearchedKeyword = keyword;
+
+			return View(model);
 		}
 
         [HttpGet]
