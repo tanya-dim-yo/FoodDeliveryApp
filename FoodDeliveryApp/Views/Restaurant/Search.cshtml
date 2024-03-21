@@ -14,6 +14,7 @@
 				<nav aria-label="breadcrumb" class="breadcrumb-row">
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Начало</a></li>
+						<li class="breadcrumb-item"><a href="@Url.Action("All","Restaurant")">Ресторанти</a></li>
 						<li class="breadcrumb-item active" aria-current="page">Търсене</li>
 					</ul>
 				</nav>
@@ -27,20 +28,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-10 col-lg-9 col-md-12">
-					<div class="site-filters style-1 clearfix">
-						<ul class="filters" data-bs-toggle="buttons">
-							<li data-filter=".All" class="btn active"><a href="javascript:void(0);"><span><i class="flaticon-fast-food"></i></span>ALL</a></li>
-							<li data-filter=".drink" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-cocktail"></i></span>COLD DRINK</a></li>
-							<li data-filter=".pizza" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-pizza-slice"></i></span>PIZZA</a></li>
-							<li data-filter=".salad" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-salad"></i></span>SALAD</a></li>
-							<li data-filter=".sweet" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-cupcake"></i></span>SWEETS</a></li>
-							<li data-filter=".spicy" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-chili-pepper"></i></span>SPICY</a></li>
-							<li data-filter=".burger" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-hamburger-1"></i></span>BURGER</a></li>
-						</ul>
-						<div>
-							<p>@Model.Count() обекти, съответстващи на търсенето на '@ViewBag.SearchedKeyword'</p>
-						</div>
-					</div>
+					<p>@Model.Count() обекти, съответстващи на търсенето на '@ViewBag.SearchedKeyword'</p>
 				</div>
 				<div class="col-xl-2 col-lg-3 col-md-12 text-lg-end mb-lg-0 m-b30 d-flex d-lg-block align-items-center justify-content-between">
 					<a data-bs-toggle="offcanvas" href="#offcanvasFilter" role="button" aria-controls="offcanvasFilter" class="btn btn-primary filter-btn btn-hover-2">
