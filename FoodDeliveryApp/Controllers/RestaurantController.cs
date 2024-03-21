@@ -51,7 +51,15 @@ namespace FoodDeliveryApp.Controllers
 			return View(nameof(All), model);
 		}
 
-		[HttpGet]
+        [HttpGet]
+        public async Task<IActionResult> Search(string keyword)
+        {
+            IEnumerable<RestaurantViewModel> model = await restaurantService.SearchAsync(keyword);
+
+			return PartialView("SearchResults", model);
+		}
+
+        [HttpGet]
 		public IActionResult GetRestaurant(int id)
 		{
 			return View();

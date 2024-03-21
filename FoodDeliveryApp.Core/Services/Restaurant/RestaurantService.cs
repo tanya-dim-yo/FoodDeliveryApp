@@ -105,7 +105,28 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			await repository.SaveChangesAsync();
 		}
 
-		public async Task<IEnumerable<RestaurantViewModel>> ServiceFeeAsync()
+        public async Task<IEnumerable<RestaurantViewModel>> SearchAsync(string keyword)
+        {
+            return await repository
+                .AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+                .Where(p => p.Title.Contains(keyword)
+					|| p.Items.Any(i => i.Title.Contains(keyword)
+					|| i.Description.Contains(keyword)))
+                .Select(p => new RestaurantViewModel()
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    ServiceFee = p.ServiceFee,
+                    DeliveryTime = p.DeliveryTime,
+                    BackgroundImage = p.BackgroundImage,
+                    AverageRating = p.AverageRating,
+                    TotalReviews = p.TotalReviews,
+                    RestaurantCategory = p.RestaurantCategory.Title
+                })
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<RestaurantViewModel>> ServiceFeeAsync()
 		{
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()

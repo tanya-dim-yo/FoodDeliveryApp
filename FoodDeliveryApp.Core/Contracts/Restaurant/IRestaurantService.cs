@@ -8,7 +8,8 @@ namespace FoodDeliveryApp.Core.Contracts.Restaurant
 		Task EditAsync(RestaurantDetailViewModel model);
 		Task<IEnumerable<RestaurantViewModel>> GetAllAsync();
 		Task<IEnumerable<RestaurantViewModel>> GetByCategoryAsync(int categoryId);
-		Task<IEnumerable<RestaurantViewModel>> HighestRatingAsync();
+        Task<IEnumerable<RestaurantViewModel>> SearchAsync(string keyword);
+        Task<IEnumerable<RestaurantViewModel>> HighestRatingAsync();
 		Task<IEnumerable<RestaurantViewModel>> ServiceFeeAsync();
 		Task<RestaurantDetailViewModel?> GetByIdAsync(int id);
 		Task RateRestaurant(int restaurantId, double newRating);
