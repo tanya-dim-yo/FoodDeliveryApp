@@ -16,7 +16,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
                 Price = 9.95m,
                 IsFavourite = false,
                 IsVeggie = false,
-                Image = "../../../FoodDeliveryApp/wwwroot/images/Amerikanska/BurgerKing/BurgerCrispyChicken.jpg",
+                Image = "~/images/Amerikanska/BurgerKing/BurgerCrispyChicken.jpg",
                 ItemCategoryId = 1,
                 RestaurantId = 1,
                 SpicyCategoryId = 1
@@ -30,7 +30,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
                 Price = 12.65m,
                 IsFavourite = false,
                 IsVeggie = false,
-                Image = "../../../FoodDeliveryApp/wwwroot/images/Amerikanska/BurgerKing/BurgerTenderCrisp.jpg",
+                Image = "~/FoodDeliveryApp/wwwroot/images/Amerikanska/BurgerKing/BurgerTenderCrisp.jpg",
                 ItemCategoryId = 1,
                 RestaurantId = 1,
                 SpicyCategoryId = 1
@@ -44,7 +44,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
                 Price = 6.76m,
                 IsFavourite = false,
                 IsVeggie = false,
-                Image = "../../../FoodDeliveryApp/wwwroot/images/Mestna_hrana/Tarator/Salata_Kapreze.jpg",
+                Image = "~/FoodDeliveryApp/wwwroot/images/Mestna_hrana/Tarator/Salata_Kapreze.jpg",
                 ItemCategoryId = 2,
                 RestaurantId = 2,
                 SpicyCategoryId = 1
@@ -58,7 +58,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
                 Price = 11.20m,
                 IsFavourite = false,
                 IsVeggie = false,
-                Image = "../../../FoodDeliveryApp/wwwroot/images/Mestna_hrana/Tarator/Musaka.jpg",
+                Image = "~/FoodDeliveryApp/wwwroot/images/Mestna_hrana/Tarator/Musaka.jpg",
                 ItemCategoryId = 3,
                 RestaurantId = 2,
                 SpicyCategoryId = 1
@@ -72,7 +72,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
                 Price = 6.90m,
                 IsFavourite = false,
                 IsVeggie = false,
-                Image = "../../../FoodDeliveryApp/wwwroot/images/Zakuska/Mikel_Coffee/Cappuccino_Mocha.jpg",
+                Image = "~/FoodDeliveryApp/wwwroot/images/Zakuska/Mikel_Coffee/Cappuccino_Mocha.jpg",
                 ItemCategoryId = 4,
                 RestaurantId = 3,
                 SpicyCategoryId = 1
@@ -86,7 +86,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
                 Price = 7.40m,
                 IsFavourite = false,
                 IsVeggie = false,
-                Image = "../../../FoodDeliveryApp/wwwroot/images/Zakuska/Mikel_Coffee/Biscuit_Cake.jpg",
+                Image = "~/FoodDeliveryApp/wwwroot/images/Zakuska/Mikel_Coffee/Biscuit_Cake.jpg",
                 ItemCategoryId = 5,
                 RestaurantId = 3,
                 SpicyCategoryId = 1
