@@ -6,7 +6,7 @@
 
 				<!-- Website Logo -->
 				<div class="logo-header mostion">
-					<a href="@Url.Action("Index","FoodTime")" class="logo-dark"><img src="~/foodtime/images/logo.png" alt="/"></a>
+					<a href="@Url.Action("Index","Home")" class="logo-dark"><img src="~/foodtime/images/logo.png" alt="/"></a>
 				</div>
 
 				<div>
@@ -21,11 +21,11 @@
 				<!-- EXTRA NAV -->
 				<div class="extra-nav">
 					<div class="extra-cell">
-						<form method="post">
+						<form>
 							<div class="input-group">
-								<input required="required" type="text" class="form-control" placeholder="Search">
+								<input name="keyword" required="required" type="text" class="form-control" placeholder="Търсене в ресторанти...">
 								<div class="input-group-addon">
-									<button name="submit" value="submit" type="submit" class="btn btn-primary btn-hover-2">
+									<button name="submit" asp-controller="Restaurant" asp-action="Search" asp-route-id="keyword" value="submit" type="submit" class="btn btn-primary btn-hover-2">
 										<span><i class="fa-solid fa-magnifying-glass"></i></span>
 									</button>
 								</div>
