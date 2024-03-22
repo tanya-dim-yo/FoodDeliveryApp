@@ -1,4 +1,5 @@
 ﻿using FoodDeliveryApp.Core.Contracts.Restaurant;
+using FoodDeliveryApp.Core.Models.Item;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using Microsoft.AspNetCore.Mvc;
 
@@ -62,9 +63,24 @@ namespace FoodDeliveryApp.Controllers
 		}
 
         [HttpGet]
-		public IActionResult Menu(int id)
+		public async Task<IActionResult> Menu(int restaurantId)
 		{
-			return View();
+			RestaurantViewModel? restaurant = await restaurantService.GetByIdAsync(restaurantId);
+
+			if (restaurant == null)
+			{
+				return NotFound();
+			}
+
+			IEnumerable<ItemViewModel> items = await restaurantService.MenuAsync(restaurantId);
+
+			var model = new RestaurantDetailViewModel
+			{
+				Restaurant = restaurant,
+				Items = items
+			};
+
+			return View(model);
 		}
 
 		public IActionResult RateRestaurant(int id, double newRating)

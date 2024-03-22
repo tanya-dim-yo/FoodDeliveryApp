@@ -1,4 +1,5 @@
 ﻿using FoodDeliveryApp.Core.Contracts.Restaurant;
+using FoodDeliveryApp.Core.Models.Item;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
@@ -66,11 +67,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 		}
 
-		public Task<RestaurantDetailViewModel?> GetByIdAsync(int id)
-		{
-			throw new NotImplementedException();
-		}
-
 		public async Task<IEnumerable<RestaurantViewModel>> HighestRatingAsync()
 		{
 			return await repository
@@ -86,6 +82,25 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					AverageRating = p.AverageRating,
 					TotalReviews = p.TotalReviews,
 					RestaurantCategory = p.RestaurantCategory.Title
+				})
+				.ToListAsync();
+		}
+
+		public async Task<IEnumerable<ItemViewModel>> MenuAsync(int restaurantId)
+		{
+			return await repository
+				.AllReadOnly<Infrastructure.Data.Models.Item>()
+				.Where(i => i.RestaurantId == restaurantId)
+				.Select(i => new ItemViewModel()
+				{
+					Id = i.Id,
+					Title = i.Title,
+					Description = i.Description,
+					Price = i.Price,
+					Image = i.Image,
+					ItemCategory = i.ItemCategory.Title,
+					AverageRating = i.AverageRating,
+					TotalReviews = i.TotalReviews
 				})
 				.ToListAsync();
 		}
@@ -143,6 +158,25 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					RestaurantCategory = p.RestaurantCategory.Title
 				})
 				.ToListAsync();
+		}
+
+		public async Task<RestaurantViewModel?> GetByIdAsync(int id)
+		{
+			return await repository
+				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+				.Where(p => p.Id == id)
+				.Select(p => new RestaurantViewModel()
+				{
+					Id = p.Id,
+					Title = p.Title,
+					ServiceFee = p.ServiceFee,
+					DeliveryTime = p.DeliveryTime,
+					BackgroundImage = p.BackgroundImage,
+					AverageRating = p.AverageRating,
+					TotalReviews = p.TotalReviews,
+					RestaurantCategory = p.RestaurantCategory.Title
+				})
+				.FirstOrDefaultAsync();
 		}
 	}
 }

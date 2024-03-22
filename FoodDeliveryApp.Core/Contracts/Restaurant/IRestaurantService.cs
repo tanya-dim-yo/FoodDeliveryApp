@@ -1,4 +1,5 @@
-﻿using FoodDeliveryApp.Core.Models.Restaurant;
+﻿using FoodDeliveryApp.Core.Models.Item;
+using FoodDeliveryApp.Core.Models.Restaurant;
 
 namespace FoodDeliveryApp.Core.Contracts.Restaurant
 {
@@ -11,7 +12,8 @@ namespace FoodDeliveryApp.Core.Contracts.Restaurant
         Task<IEnumerable<RestaurantViewModel>> SearchAsync(string keyword);
         Task<IEnumerable<RestaurantViewModel>> HighestRatingAsync();
 		Task<IEnumerable<RestaurantViewModel>> ServiceFeeAsync();
-		Task<RestaurantDetailViewModel?> GetByIdAsync(int id);
+		Task<IEnumerable<ItemViewModel>> MenuAsync(int restaurantId);
+		Task<RestaurantViewModel?> GetByIdAsync(int id);
 		Task RateRestaurant(int restaurantId, double newRating);
 	}
 }
