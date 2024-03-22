@@ -1,5 +1,5 @@
 ﻿@using FoodDeliveryApp.Core.Models.Restaurant
-@model IEnumerable<RestaurantViewModel>
+@model RestaurantDetailViewModel
 
 @{
 	Layout = "~/Views/Shared/_LayoutFoodTime.cshtml";
@@ -9,13 +9,13 @@
 	<div class="dz-bnr-inr style-1 text-center bg-parallax" style="background-image:url('../foodtime/images/banner/bnr3.jpg'); background-size:cover; background-position:center;">
 		<div class="container">
 			<div class="dz-bnr-inr-entry">
-				<h1>Търсене</h1>
+				<h1>@Model.Restaurant.Title</h1>
 				<!-- Breadcrumb Row -->
 				<nav aria-label="breadcrumb" class="breadcrumb-row">
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Начало</a></li>
 						<li class="breadcrumb-item"><a href="@Url.Action("All","Restaurant")">Ресторанти</a></li>
-						<li class="breadcrumb-item active" aria-current="page">Търсене</li>
+						<li class="breadcrumb-item active" aria-current="page">@Model.Restaurant.Title</li>
 					</ul>
 				</nav>
 				<!-- Breadcrumb Row End -->
@@ -28,9 +28,20 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-10 col-lg-9 col-md-12">
-					<p>@Model.Count() обекти, съответстващи на търсенето на '@ViewBag.SearchedKeyword'</p>
+					<div class="site-filters style-1 clearfix">
+						<ul class="filters" data-bs-toggle="buttons">
+							<li data-filter=".All" class="btn active"><a href="javascript:void(0);"><span><i class="flaticon-fast-food"></i></span>ALL</a></li>
+							<li data-filter=".drink" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-cocktail"></i></span>COLD DRINK</a></li>
+							<li data-filter=".pizza" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-pizza-slice"></i></span>PIZZA</a></li>
+							<li data-filter=".salad" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-salad"></i></span>SALAD</a></li>
+							<li data-filter=".sweet" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-cupcake"></i></span>SWEETS</a></li>
+							<li data-filter=".spicy" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-chili-pepper"></i></span>SPICY</a></li>
+							<li data-filter=".burger" class="btn"><a href="javascript:void(0);"><span><i class="flaticon-hamburger-1"></i></span>BURGER</a></li>
+						</ul>
+					</div>
 				</div>
 				<div class="col-xl-2 col-lg-3 col-md-12 text-lg-end mb-lg-0 m-b30 d-flex d-lg-block align-items-center justify-content-between">
+					<strong class="filter-item-show d-lg-none">@Model.Items.Count() продукти</strong>
 					<a data-bs-toggle="offcanvas" href="#offcanvasFilter" role="button" aria-controls="offcanvasFilter" class="btn btn-primary filter-btn btn-hover-2">
 						Filter <span><i class="icon-filter m-l5"></i></span>
 					</a>
@@ -235,22 +246,23 @@
 				</div>
 			</div>
 			<ul id="masonry" class="row">
-				@foreach (var restaurant in Model)
+				@foreach (var item in Model.Items)
 				{
 					<li class="card-container col-lg-4 col-md-6 m-b30 All drink pizza burger">
 						<div class="dz-img-box style-7">
 							<div class="dz-media">
-								<img src="@Url.Content(restaurant.BackgroundImage)" alt="/">
+								<img src="@Url.Content(item.Image)" alt="/">
 								<div class="dz-meta">
 									<ul>
-										<li class="seller">@restaurant.RestaurantCategory</li>
-										<li class="rating"><i class="fa-solid fa-star"></i> @restaurant.AverageRatingPercent</li>
+										<li class="seller">@item.ItemCategory</li>
+											<li class="rating"><i class="fa-solid fa-star"></i>@item.AverageRatingPercent</li>
 									</ul>
 								</div>
 							</div>
 							<div class="dz-content">
-									<h5 class="title"><a href="@Url.Action("Menu","Restaurant", new { restaurantId = restaurant.Id })">@restaurant.Title</a></h5>
-									<span>@restaurant.ServiceFee лв. · @restaurant.DeliveryTime</span>
+								<h5 class="title"><a href="@Url.Action("ProductDetail","FoodTime")">@item.Title</a></h5>
+								<p>@item.Description</p>
+								<span class="price">@item.Price лв.</span>
 							</div>
 						</div>
 					</li>

@@ -110,7 +110,7 @@
 										</div>
 									</div>
 									<div class="dz-content">
-										<h5 class="title"><a href="@Url.Action("ProductDetail","FoodTime")">@restaurant.Title</a></h5>
+											<h5 class="title"><a href="@Url.Action("Menu","Restaurant", new { restaurantId = restaurant.Id })">@restaurant.Title</a></h5>
 											<span>@restaurant.ServiceFee лв. · @restaurant.DeliveryTime</span>
 									</div>
 								</div>
