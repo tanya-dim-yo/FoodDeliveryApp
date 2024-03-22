@@ -44,7 +44,7 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetCategory(int categoryId)
+		public async Task<IActionResult> ByCategory(int categoryId)
 		{
 			IEnumerable<RestaurantViewModel> model = await restaurantService.GetByCategoryAsync(categoryId);
 
@@ -62,7 +62,7 @@ namespace FoodDeliveryApp.Controllers
 		}
 
         [HttpGet]
-		public IActionResult GetRestaurant(int id)
+		public IActionResult Menu(int id)
 		{
 			return View();
 		}
