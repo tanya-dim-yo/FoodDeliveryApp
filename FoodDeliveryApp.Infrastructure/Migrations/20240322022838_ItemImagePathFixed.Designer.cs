@@ -4,6 +4,7 @@ using FoodDeliveryApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodDeliveryApp.Infrastructure.Migrations
 {
     [DbContext(typeof(FoodDeliveryAppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240322022838_ItemImagePathFixed")]
+    partial class ItemImagePathFixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -341,7 +343,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                             Id = 5,
                             AverageRating = 0.0,
                             Description = "Капучино с топка сладолед Mока",
-                            Image = "~/images/Zakuska/Mikel_Coffee/Cappuccino_Mocha.png",
+                            Image = "~/images/Zakuska/Mikel_Coffee/Cappuccino_Mocha.jpg",
                             IsFavourite = false,
                             IsVeggie = false,
                             ItemCategoryId = 4,
@@ -356,7 +358,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                             Id = 6,
                             AverageRating = 0.0,
                             Description = "Класическа бисквитена торта",
-                            Image = "~/images/Zakuska/Mikel_Coffee/Biscuit_Cake.png",
+                            Image = "~/images/Zakuska/Mikel_Coffee/Biscuit_Cake.jpg",
                             IsFavourite = false,
                             IsVeggie = false,
                             ItemCategoryId = 5,
