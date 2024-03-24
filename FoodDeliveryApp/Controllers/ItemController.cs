@@ -2,7 +2,7 @@
 
 namespace FoodDeliveryApp.Controllers
 {
-    public class ItemController : Controller
+    public class ItemController : BaseController
     {
         public IActionResult Index()
         {

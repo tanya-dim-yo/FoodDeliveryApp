@@ -1,11 +1,12 @@
 ﻿using FoodDeliveryApp.Core.Contracts.Restaurant;
 using FoodDeliveryApp.Core.Models.Item;
 using FoodDeliveryApp.Core.Models.Restaurant;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodDeliveryApp.Controllers
 {
-	public class RestaurantController : Controller
+	public class RestaurantController : BaseController
     {
 		private readonly IRestaurantService restaurantService;
 
@@ -14,6 +15,7 @@ namespace FoodDeliveryApp.Controllers
 			restaurantService = _restaurantService;
 		}
 
+		[AllowAnonymous]
 		[HttpGet]
         public async Task<IActionResult> All()
         {
@@ -22,12 +24,14 @@ namespace FoodDeliveryApp.Controllers
 			return View(model);
 		}
 
+		[AllowAnonymous]
 		[HttpGet]
 		public IActionResult Nearest()
 		{
 			return View();
 		}
 
+		[AllowAnonymous]
 		[HttpGet]
 		public async Task<IActionResult> HighestRating()
 		{
@@ -36,6 +40,7 @@ namespace FoodDeliveryApp.Controllers
 			return View(nameof(All), model);
 		}
 
+		[AllowAnonymous]
 		[HttpGet]
 		public async Task<IActionResult> ServiceFee()
 		{
@@ -44,6 +49,7 @@ namespace FoodDeliveryApp.Controllers
 			return View(nameof(All), model);
 		}
 
+		[AllowAnonymous]
 		[HttpGet]
 		public async Task<IActionResult> ByCategory(int categoryId)
 		{
@@ -52,6 +58,7 @@ namespace FoodDeliveryApp.Controllers
 			return View(nameof(All), model);
 		}
 
+		[AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Search(string keyword)
         {
@@ -62,6 +69,7 @@ namespace FoodDeliveryApp.Controllers
 			return View(model);
 		}
 
+		[AllowAnonymous]
         [HttpGet]
 		public async Task<IActionResult> Menu(int restaurantId)
 		{
