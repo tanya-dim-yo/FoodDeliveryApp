@@ -27,9 +27,14 @@ namespace FoodDeliveryApp.Infrastructure.Data.Common
 				.AsNoTracking();
 		}
 
-		public async Task SaveChangesAsync()
+		public async Task AddAsync<T>(T entity) where T : class
 		{
-			await context.SaveChangesAsync();
+			await DbSet<T>().AddAsync(entity);
+		}
+
+		public async Task<int> SaveChangesAsync()
+		{
+			return await context.SaveChangesAsync();
 		}
 	}
 }
