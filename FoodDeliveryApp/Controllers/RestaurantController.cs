@@ -19,7 +19,7 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
         public async Task<IActionResult> All()
         {
-			IEnumerable<RestaurantViewModel> model = await restaurantService.GetAllAsync();
+			IEnumerable<RestaurantViewModel> model = await restaurantService.GetAllRestaurantsAsync();
 
 			return View(model);
 		}
@@ -35,7 +35,7 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> HighestRating()
 		{
-			IEnumerable<RestaurantViewModel> model = await restaurantService.HighestRatingAsync();
+			IEnumerable<RestaurantViewModel> model = await restaurantService.HighestRatingRestaurantsAsync();
 
 			return View(nameof(All), model);
 		}
@@ -44,7 +44,7 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> ServiceFee()
 		{
-			IEnumerable<RestaurantViewModel> model = await restaurantService.ServiceFeeAsync();
+			IEnumerable<RestaurantViewModel> model = await restaurantService.RestaurantsByServiceFeeAsync();
 
 			return View(nameof(All), model);
 		}
@@ -53,7 +53,7 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> ByCategory(int categoryId)
 		{
-			IEnumerable<RestaurantViewModel> model = await restaurantService.GetByCategoryAsync(categoryId);
+			IEnumerable<RestaurantViewModel> model = await restaurantService.GetRestaurantsByCategoryAsync(categoryId);
 
 			return View(nameof(All), model);
 		}
@@ -62,7 +62,7 @@ namespace FoodDeliveryApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Search(string keyword)
         {
-            IEnumerable<RestaurantViewModel> model = await restaurantService.SearchAsync(keyword);
+            IEnumerable<RestaurantViewModel> model = await restaurantService.SearchRestaurantsAsync(keyword);
 
 			ViewBag.SearchedKeyword = keyword;
 
@@ -73,14 +73,14 @@ namespace FoodDeliveryApp.Controllers
         [HttpGet]
 		public async Task<IActionResult> Menu(int restaurantId)
 		{
-			RestaurantViewModel? restaurant = await restaurantService.GetByIdAsync(restaurantId);
+			RestaurantViewModel? restaurant = await restaurantService.GetRestaurantByIdAsync(restaurantId);
 
 			if (restaurant == null)
 			{
 				return NotFound();
 			}
 
-			IEnumerable<ItemViewModel> items = await restaurantService.MenuAsync(restaurantId);
+			IEnumerable<ItemViewModel> items = await restaurantService.MenuRestaurantAsync(restaurantId);
 
 			var model = new RestaurantDetailViewModel
 			{

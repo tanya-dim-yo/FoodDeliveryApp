@@ -35,6 +35,28 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			throw new NotImplementedException();
 		}
 
+
+		public async Task<IEnumerable<RestaurantCategoryServiceModel>> AllRestaurantCategoriesAsync()
+		{
+			return await repository
+				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
+				.Select(c => new RestaurantCategoryServiceModel()
+				{
+					Id = c.Id,
+					Title = c.Title,
+				})
+				.ToListAsync();
+		}
+
+		public async Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync()
+		{
+			return await repository
+				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
+				.Select(c => c.Title)
+				.Distinct()
+				.ToListAsync();
+		}
+
 		public async Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync()
 		{
 			return await repository
@@ -91,7 +113,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 		}
 
-		public async Task<IEnumerable<ItemViewModel>> MenuAsync(int restaurantId)
+		public async Task<IEnumerable<ItemViewModel>> MenuRestaurantAsync(int restaurantId)
 		{
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Item>()
@@ -183,7 +205,5 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				})
 				.FirstOrDefaultAsync();
 		}
-
-
 	}
 }
