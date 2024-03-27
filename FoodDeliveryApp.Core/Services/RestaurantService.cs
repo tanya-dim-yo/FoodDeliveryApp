@@ -20,22 +20,22 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			logger = _logger;
 		}
 
-        public Task AddAsync(RestaurantDetailViewModel model)
+        public Task AddRestaurantAsync(RestaurantDetailViewModel model)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task EditAsync(RestaurantDetailViewModel model)
+		public Task EditRestaurantAsync(RestaurantDetailViewModel model)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task DeleteAsync(RestaurantDetailViewModel model)
+		public Task DeleteRestaurantAsync(RestaurantDetailViewModel model)
 		{
 			throw new NotImplementedException();
 		}
 
-		public async Task<IEnumerable<RestaurantViewModel>> GetAllAsync()
+		public async Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync()
 		{
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
@@ -53,7 +53,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 		}
 
-		public async Task<IEnumerable<RestaurantViewModel>> GetByCategoryAsync(int categoryId)
+		public async Task<IEnumerable<RestaurantViewModel>> GetRestaurantsByCategoryAsync(int categoryId)
 		{
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
@@ -72,7 +72,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 		}
 
-		public async Task<IEnumerable<RestaurantViewModel>> HighestRatingAsync()
+		public async Task<IEnumerable<RestaurantViewModel>> HighestRatingRestaurantsAsync()
 		{
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
@@ -125,7 +125,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			await repository.SaveChangesAsync();
 		}
 
-        public async Task<IEnumerable<RestaurantViewModel>> SearchAsync(string keyword)
+        public async Task<IEnumerable<RestaurantViewModel>> SearchRestaurantsAsync(string keyword)
         {
             return await repository
                 .AllReadOnly<Infrastructure.Data.Models.Restaurant>()
@@ -146,7 +146,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<RestaurantViewModel>> ServiceFeeAsync()
+        public async Task<IEnumerable<RestaurantViewModel>> RestaurantsByServiceFeeAsync()
 		{
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
@@ -165,7 +165,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 		}
 
-		public async Task<RestaurantViewModel?> GetByIdAsync(int id)
+		public async Task<RestaurantViewModel?> GetRestaurantByIdAsync(int id)
 		{
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()

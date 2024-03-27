@@ -5,16 +5,16 @@ namespace FoodDeliveryApp.Core.Contracts.Restaurant
 {
 	public interface IRestaurantService
 	{
-		Task AddAsync(RestaurantDetailViewModel model);
-		Task EditAsync(RestaurantDetailViewModel model);
-		Task DeleteAsync(RestaurantDetailViewModel model);
-		Task<IEnumerable<RestaurantViewModel>> GetAllAsync();
-		Task<IEnumerable<RestaurantViewModel>> GetByCategoryAsync(int categoryId);
-        Task<IEnumerable<RestaurantViewModel>> SearchAsync(string keyword);
-        Task<IEnumerable<RestaurantViewModel>> HighestRatingAsync();
-		Task<IEnumerable<RestaurantViewModel>> ServiceFeeAsync();
+		Task AddRestaurantAsync(RestaurantDetailViewModel model);
+		Task EditRestaurantAsync(RestaurantDetailViewModel model);
+		Task DeleteRestaurantAsync(RestaurantDetailViewModel model);
+		Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync();
+		Task<IEnumerable<RestaurantViewModel>> GetRestaurantsByCategoryAsync(int categoryId);
+        Task<IEnumerable<RestaurantViewModel>> SearchRestaurantsAsync(string keyword);
+        Task<IEnumerable<RestaurantViewModel>> HighestRatingRestaurantsAsync();
+		Task<IEnumerable<RestaurantViewModel>> RestaurantsByServiceFeeAsync();
 		Task<IEnumerable<ItemViewModel>> MenuAsync(int restaurantId);
-		Task<RestaurantViewModel?> GetByIdAsync(int id);
+		Task<RestaurantViewModel?> GetRestaurantByIdAsync(int id);
 		Task RateRestaurant(int restaurantId, double newRating);
 	}
 }
