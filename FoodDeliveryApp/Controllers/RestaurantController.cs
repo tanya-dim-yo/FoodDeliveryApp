@@ -69,7 +69,7 @@ namespace FoodDeliveryApp.Controllers
         {
 			var searchResults = await restaurantService.SearchRestaurantsAsync(keyword);
 
-			string sanitizedKeyword = searchResults.SanitizedKeyword;
+			ViewBag.SearchedKeyword = searchResults.SanitizedKeyword;
 			IEnumerable<RestaurantViewModel> results = searchResults.Results;
 
 			return View(results);

@@ -162,17 +162,28 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			await repository.SaveChangesAsync();
 		}
 
-		public async Task<(string SanitizedKeyword, IEnumerable<RestaurantViewModel> Results)>SearchRestaurantsAsync(string keyword)
+		public async Task<(string SanitizedKeyword, IEnumerable<RestaurantViewModel> Results)> SearchRestaurantsAsync(string keyword)
 		{
 			string sanitizedKeyword = Sanitize(keyword);
-			var keywordParameter = "%" + sanitizedKeyword.ToLower() + "%";
 
-			var results = await repository
-				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
-				.Where(p => EF.Functions.Like(p.Title.ToLower(), keywordParameter)
-					|| p.Items.Any(i => EF.Functions.Like(i.Title.ToLower(), keywordParameter)
-					|| EF.Functions.Like(i.Description.ToLower(), keywordParameter)))
-				.Select(p => new RestaurantViewModel()
+			// Split the sanitized keyword into individual words
+			var characters = sanitizedKeyword.ToLower().Select(c => c.ToString()).ToArray();
+
+			var query = repository.AllReadOnly<Infrastructure.Data.Models.Restaurant>();
+
+			foreach (var ch in characters)
+			{
+				var keywordParameter = "%" + ch + "%";
+
+				// Apply the search criteria for each keyword
+				query = query
+					.Where(p => EF.Functions.Like(p.Title.ToLower(), keywordParameter)
+						   || p.Items.Any(i => EF.Functions.Like(i.Title.ToLower(), keywordParameter)
+						   || EF.Functions.Like(i.Description.ToLower(), keywordParameter)));
+			}
+
+			var results = await query
+				.Select(p => new RestaurantViewModel
 				{
 					Id = p.Id,
 					Title = p.Title,
@@ -187,6 +198,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 			return (sanitizedKeyword, results);
 		}
+
 
 
 		public async Task<IEnumerable<RestaurantViewModel>> RestaurantsByServiceFeeAsync()
@@ -250,7 +262,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			const string AllowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
 			input = new string(input.Where(c => AllowedChars.Contains(c)).ToArray());
 
-			input = input.Replace("..", ""); // Remove ".." to prevent directory traversal
+			input = input.Replace("..", "");
 
 			return input;
 		}
