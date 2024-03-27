@@ -57,6 +57,20 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 		}
 
+		public async Task<bool> ExistsRestaurantAsync(int id)
+		{
+			return await repository
+				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+				.AnyAsync(p => p.Id == id);
+		}
+
+		public async Task<bool> ExistsRestaurantCategoryAsync(int categoryId)
+		{
+			return await repository
+				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
+				.AnyAsync(p => p.Id == categoryId);
+		}
+
 		public async Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync()
 		{
 			return await repository

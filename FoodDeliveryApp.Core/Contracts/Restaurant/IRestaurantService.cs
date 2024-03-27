@@ -8,6 +8,8 @@ namespace FoodDeliveryApp.Core.Contracts.Restaurant
 		Task AddRestaurantAsync(RestaurantDetailViewModel model);
 		Task EditRestaurantAsync(RestaurantDetailViewModel model);
 		Task DeleteRestaurantAsync(RestaurantDetailViewModel model);
+		Task<bool> ExistsRestaurantAsync(int id);
+		Task<bool> ExistsRestaurantCategoryAsync(int categoryId);
 		Task<IEnumerable<RestaurantCategoryServiceModel>> AllRestaurantCategoriesAsync();
 		Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync();
 		Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync();
