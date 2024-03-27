@@ -4,6 +4,7 @@ using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Text.RegularExpressions;
 
 namespace FoodDeliveryApp.Core.Services.Restaurant
 {
@@ -161,32 +162,34 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			await repository.SaveChangesAsync();
 		}
 
-        public async Task<IEnumerable<RestaurantViewModel>> SearchRestaurantsAsync(string keyword)
-        {
+		public async Task<(string SanitizedKeyword, IEnumerable<RestaurantViewModel> Results)>SearchRestaurantsAsync(string keyword)
+		{
 			string sanitizedKeyword = Sanitize(keyword);
+			var keywordParameter = "%" + sanitizedKeyword.ToLower() + "%";
 
-			var keywordParameter = "%" + sanitizedKeyword + "%";
-
-			return await repository
-                .AllReadOnly<Infrastructure.Data.Models.Restaurant>()
-                .Where(p => p.Title.Contains(keywordParameter)
-					|| p.Items.Any(i => i.Title.Contains(keywordParameter)
-					|| i.Description.Contains(keywordParameter)))
+			var results = await repository
+				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+				.Where(p => EF.Functions.Like(p.Title.ToLower(), keywordParameter)
+					|| p.Items.Any(i => EF.Functions.Like(i.Title.ToLower(), keywordParameter)
+					|| EF.Functions.Like(i.Description.ToLower(), keywordParameter)))
 				.Select(p => new RestaurantViewModel()
-                {
-                    Id = p.Id,
-                    Title = p.Title,
-                    ServiceFee = p.ServiceFee,
-                    DeliveryTime = p.DeliveryTime,
-                    BackgroundImage = p.BackgroundImage,
-                    AverageRating = p.AverageRating,
-                    TotalReviews = p.TotalReviews,
-                    RestaurantCategory = p.RestaurantCategory.Title
-                })
-                .ToListAsync();
-        }
+				{
+					Id = p.Id,
+					Title = p.Title,
+					ServiceFee = p.ServiceFee,
+					DeliveryTime = p.DeliveryTime,
+					BackgroundImage = p.BackgroundImage,
+					AverageRating = p.AverageRating,
+					TotalReviews = p.TotalReviews,
+					RestaurantCategory = p.RestaurantCategory.Title
+				})
+				.ToListAsync();
 
-        public async Task<IEnumerable<RestaurantViewModel>> RestaurantsByServiceFeeAsync()
+			return (sanitizedKeyword, results);
+		}
+
+
+		public async Task<IEnumerable<RestaurantViewModel>> RestaurantsByServiceFeeAsync()
 		{
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
@@ -232,6 +235,22 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			}
 
 			input = input.Trim();
+
+			input = System.Web.HttpUtility.HtmlEncode(input);
+
+			input = input.Replace("'", "").Replace(";", "");
+
+			const int MaxLength = 255;
+			input = input.Length > MaxLength ? input.Substring(0, MaxLength) : input;
+
+			input = input.ToLowerInvariant();
+
+			input = Regex.Replace(input, @"\s+", " ");
+
+			const string AllowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+			input = new string(input.Where(c => AllowedChars.Contains(c)).ToArray());
+
+			input = input.Replace("..", ""); // Remove ".." to prevent directory traversal
 
 			return input;
 		}

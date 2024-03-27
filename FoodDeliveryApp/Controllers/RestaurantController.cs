@@ -67,11 +67,12 @@ namespace FoodDeliveryApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Search(string keyword)
         {
-            IEnumerable<RestaurantViewModel> model = await restaurantService.SearchRestaurantsAsync(keyword);
+			var searchResults = await restaurantService.SearchRestaurantsAsync(keyword);
 
-			ViewBag.SearchedKeyword = keyword;
+			string sanitizedKeyword = searchResults.SanitizedKeyword;
+			IEnumerable<RestaurantViewModel> results = searchResults.Results;
 
-			return View(model);
+			return View(results);
 		}
 
 		[AllowAnonymous]
@@ -96,8 +97,10 @@ namespace FoodDeliveryApp.Controllers
 			return View(model);
 		}
 
-		public IActionResult RateRestaurant(int id, double newRating)
+		public async Task<IActionResult> RateRestaurant(int id, double newRating)
 		{
+			await restaurantService.RateRestaurant(id, newRating);
+
 			return RedirectToAction(nameof(All));
 		}
 	}

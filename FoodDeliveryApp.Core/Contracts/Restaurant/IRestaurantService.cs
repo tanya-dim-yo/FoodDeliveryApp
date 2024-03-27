@@ -11,10 +11,10 @@ namespace FoodDeliveryApp.Core.Contracts.Restaurant
 		Task<bool> ExistsRestaurantAsync(int id);
 		Task<bool> ExistsRestaurantCategoryAsync(int categoryId);
 		Task<IEnumerable<RestaurantCategoryServiceModel>> AllRestaurantCategoriesAsync();
+		Task<IEnumerable<RestaurantViewModel>> GetRestaurantsByCategoryAsync(int categoryId);
 		Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync();
 		Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync();
-		Task<IEnumerable<RestaurantViewModel>> GetRestaurantsByCategoryAsync(int categoryId);
-        Task<IEnumerable<RestaurantViewModel>> SearchRestaurantsAsync(string keyword);
+		Task<(string SanitizedKeyword, IEnumerable<RestaurantViewModel> Results)> SearchRestaurantsAsync(string keyword);
         Task<IEnumerable<RestaurantViewModel>> HighestRatingRestaurantsAsync();
 		Task<IEnumerable<RestaurantViewModel>> RestaurantsByServiceFeeAsync();
 		Task<IEnumerable<ItemViewModel>> MenuRestaurantAsync(int restaurantId);
