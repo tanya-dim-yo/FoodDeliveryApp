@@ -53,6 +53,11 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> ByCategory(int categoryId)
 		{
+			if (await restaurantService.ExistsRestaurantCategoryAsync(categoryId) == false)
+			{
+				return BadRequest();
+			}
+
 			IEnumerable<RestaurantViewModel> model = await restaurantService.GetRestaurantsByCategoryAsync(categoryId);
 
 			return View(nameof(All), model);
@@ -93,7 +98,7 @@ namespace FoodDeliveryApp.Controllers
 
 		public IActionResult RateRestaurant(int id, double newRating)
 		{
-			return View();
+			return RedirectToAction(nameof(All));
 		}
 	}
 }

@@ -163,12 +163,16 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
         public async Task<IEnumerable<RestaurantViewModel>> SearchRestaurantsAsync(string keyword)
         {
-            return await repository
+			string sanitizedKeyword = Sanitize(keyword);
+
+			var keywordParameter = "%" + sanitizedKeyword + "%";
+
+			return await repository
                 .AllReadOnly<Infrastructure.Data.Models.Restaurant>()
-                .Where(p => p.Title.Contains(keyword)
-					|| p.Items.Any(i => i.Title.Contains(keyword)
-					|| i.Description.Contains(keyword)))
-                .Select(p => new RestaurantViewModel()
+                .Where(p => p.Title.Contains(keywordParameter)
+					|| p.Items.Any(i => i.Title.Contains(keywordParameter)
+					|| i.Description.Contains(keywordParameter)))
+				.Select(p => new RestaurantViewModel()
                 {
                     Id = p.Id,
                     Title = p.Title,
@@ -218,6 +222,18 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					RestaurantCategory = p.RestaurantCategory.Title
 				})
 				.FirstOrDefaultAsync();
+		}
+
+		private string Sanitize(string input)
+		{
+			if (string.IsNullOrWhiteSpace(input))
+			{
+				return string.Empty;
+			}
+
+			input = input.Trim();
+
+			return input;
 		}
 	}
 }
