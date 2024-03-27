@@ -7,6 +7,7 @@ namespace FoodDeliveryApp.Core.Contracts.Restaurant
 	{
 		Task AddAsync(RestaurantDetailViewModel model);
 		Task EditAsync(RestaurantDetailViewModel model);
+		Task DeleteAsync(RestaurantDetailViewModel model);
 		Task<IEnumerable<RestaurantViewModel>> GetAllAsync();
 		Task<IEnumerable<RestaurantViewModel>> GetByCategoryAsync(int categoryId);
         Task<IEnumerable<RestaurantViewModel>> SearchAsync(string keyword);

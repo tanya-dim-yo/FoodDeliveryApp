@@ -30,6 +30,11 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			throw new NotImplementedException();
 		}
 
+		public Task DeleteAsync(RestaurantDetailViewModel model)
+		{
+			throw new NotImplementedException();
+		}
+
 		public async Task<IEnumerable<RestaurantViewModel>> GetAllAsync()
 		{
 			return await repository
@@ -178,5 +183,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				})
 				.FirstOrDefaultAsync();
 		}
+
+
 	}
 }
