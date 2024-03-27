@@ -20,7 +20,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
                 Longitude = 23.353460,
                 ServiceFee = 3.99m,
                 DeliveryTime = "30-40 мин.",
-                BackgroundImage = "~/images/Amerikanska/BurgerKing/BurgerKingBackground.jfif",
+                BackgroundImage = "~/images/Amerikanska/BurgerKing/BurgerKingBackground.jpg",
                 RestaurantCategoryId = 2,
             },
 
