@@ -58,13 +58,19 @@
             public const int LocationAddressMaxLength = 100;
         }
 
-        public static class RestaurantValidationConstants
+		public static class CityValidationConstants
+		{
+			public const int CityNameMaxLength = 20;
+			public const int CityNameMinLength = 3;
+		}
+
+		public static class RestaurantValidationConstants
         {
             public const int RestaurantTitleMaxLength = 50;
-            public const int RestaurantAddressMaxLength = 100;
-            public const int RestaurantCityMaxLength = 20;
+			public const int RestaurantTitleMinLength = 2;
+			public const int RestaurantAddressMaxLength = 100;
+			public const int RestaurantAddressMinLength = 10;
             public const int RestaurantDeliveryTimeMaxLength = 20;
-            public const int RestaurantLogoMaxLength = 200;
             public const int RestaurantBackgroundImageMaxLength = 200;
         }
 
