@@ -8,7 +8,9 @@
 
 		public decimal ServiceFee { get; set; }
 
-		public string DeliveryTime { get; set; } = string.Empty;
+		public int MinDeliveryTimeInMinutes { get; set; }
+
+		public int MaxDeliveryTimeInMinutes { get; set; }
 
 		public string BackgroundImage { get; set; } = string.Empty;
 
