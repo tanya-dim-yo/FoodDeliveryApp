@@ -12,7 +12,7 @@
 
 		public int MaxDeliveryTimeInMinutes { get; set; }
 
-		public string BackgroundImage { get; set; } = string.Empty;
+		public string ImageURL { get; set; } = string.Empty;
 
 		public double AverageRating { get; set; }
 
