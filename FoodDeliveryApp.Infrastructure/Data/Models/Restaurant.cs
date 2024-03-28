@@ -40,10 +40,12 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public decimal ServiceFee { get; set; }
 
         [Required]
-        [MaxLength(RestaurantDeliveryTimeMaxLength)]
-        public string DeliveryTime { get; set; } = string.Empty;
+        public int MinDeliveryTimeInMinutes { get; set; }
 
-        [Required]
+		[Required]
+		public int MaxDeliveryTimeInMinutes { get; set; }
+
+		[Required]
         [MaxLength(RestaurantBackgroundImageMaxLength)]
         public string BackgroundImage { get; set; } = string.Empty;
 
