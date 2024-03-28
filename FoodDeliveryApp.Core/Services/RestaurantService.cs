@@ -83,7 +83,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					ServiceFee = p.ServiceFee,
 					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					BackgroundImage = p.BackgroundImage,
+					ImageURL = p.ImageURL,
 					AverageRating = p.AverageRating,
 					TotalReviews = p.TotalReviews,
 					RestaurantCategory = p.RestaurantCategory.Title
@@ -103,7 +103,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					ServiceFee = p.ServiceFee,
 					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					BackgroundImage = p.BackgroundImage,
+					ImageURL = p.ImageURL,
 					AverageRating = p.AverageRating,
 					TotalReviews = p.TotalReviews,
 					RestaurantCategory = p.RestaurantCategory.Title
@@ -123,7 +123,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					ServiceFee = p.ServiceFee,
 					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					BackgroundImage = p.BackgroundImage,
+					ImageURL = p.ImageURL,
 					AverageRating = p.AverageRating,
 					TotalReviews = p.TotalReviews,
 					RestaurantCategory = p.RestaurantCategory.Title
@@ -193,7 +193,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					ServiceFee = p.ServiceFee,
 					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					BackgroundImage = p.BackgroundImage,
+					ImageURL = p.ImageURL,
 					AverageRating = p.AverageRating,
 					TotalReviews = p.TotalReviews,
 					RestaurantCategory = p.RestaurantCategory.Title
@@ -217,7 +217,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					ServiceFee = p.ServiceFee,
 					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					BackgroundImage = p.BackgroundImage,
+					ImageURL = p.ImageURL,
 					AverageRating = p.AverageRating,
 					TotalReviews = p.TotalReviews,
 					RestaurantCategory = p.RestaurantCategory.Title
@@ -237,7 +237,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					ServiceFee = p.ServiceFee,
 					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					BackgroundImage = p.BackgroundImage,
+					ImageURL = p.ImageURL,
 					AverageRating = p.AverageRating,
 					TotalReviews = p.TotalReviews,
 					RestaurantCategory = p.RestaurantCategory.Title
