@@ -21,8 +21,9 @@ namespace FoodDeliveryApp.Infrastructure.Data
             builder.ApplyConfiguration(new ItemSpicyCategoryConfiguration());
             builder.ApplyConfiguration(new ItemCategoryConfiguration());
             builder.ApplyConfiguration(new ItemConfiguration());
+			builder.ApplyConfiguration(new CityConfiguration());
 
-            base.OnModelCreating(builder);
+			base.OnModelCreating(builder);
         }
 
         public DbSet<AddOn> AddOns { get; set; }
