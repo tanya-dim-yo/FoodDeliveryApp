@@ -17,11 +17,13 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         [MaxLength(RestaurantAddressMaxLength)]
         public string Address { get; set; } = string.Empty;
 
-        [Required]
-        [MaxLength(RestaurantCityMaxLength)]
-        public string City { get; set; } = string.Empty;
+		[Required]
+		public int CityId { get; set; }
 
-        [Required]
+		[ForeignKey(nameof(CityId))]
+		public virtual City City { get; set; } = null!;
+
+		[Required]
         public DateTime OpeningHour { get; set; }
 
         [Required]
