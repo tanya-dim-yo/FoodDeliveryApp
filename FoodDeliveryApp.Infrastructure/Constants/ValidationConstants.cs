@@ -68,11 +68,15 @@
         {
             public const int RestaurantTitleMaxLength = 50;
 			public const int RestaurantTitleMinLength = 2;
+			public const string RestaurantServiceFeeMinValue = "0.00";
+			public const string RestaurantServiceFeeMaxValue = "20.00";
 			public const int RestaurantAddressMaxLength = 100;
 			public const int RestaurantAddressMinLength = 10;
-            public const int RestaurantDeliveryTimeMaxLength = 20;
-            public const int RestaurantBackgroundImageMaxLength = 200;
-        }
+            public const string RestaurantDeliveryTimeMaxValue = "120";
+			public const string RestaurantDeliveryTimeMinValue = "10";
+			public const int RestaurantImageURLMaxLength = 200;
+			public const int RestaurantImageURLMinLength = 10;
+		}
 
         public static class RestaurantCategoryValidationConstants
         {
