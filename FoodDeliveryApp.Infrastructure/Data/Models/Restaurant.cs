@@ -47,7 +47,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
 
 		[Required]
         [MaxLength(RestaurantBackgroundImageMaxLength)]
-        public string BackgroundImage { get; set; } = string.Empty;
+        public string ImageURL { get; set; } = string.Empty;
 
         [Required]
         public int RestaurantCategoryId { get; set; }

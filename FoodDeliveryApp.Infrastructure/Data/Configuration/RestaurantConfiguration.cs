@@ -21,7 +21,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
                 ServiceFee = 3.99m,
                 MinDeliveryTimeInMinutes = 30,
 				MaxDeliveryTimeInMinutes = 40,
-				BackgroundImage = "~/images/Amerikanska/BurgerKing/BurgerKingBackground.jpg",
+				ImageURL = "~/images/Amerikanska/BurgerKing/BurgerKingBackground.jpg",
                 RestaurantCategoryId = 2,
             },
 
@@ -38,7 +38,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
                 ServiceFee = 4.99m,
 				MinDeliveryTimeInMinutes = 50,
 				MaxDeliveryTimeInMinutes = 60,
-				BackgroundImage = "~/images/Mestna_hrana/Tarator/TaratorBackground.jpg",
+				ImageURL = "~/images/Mestna_hrana/Tarator/TaratorBackground.jpg",
                 RestaurantCategoryId = 13,
             },
 
@@ -55,7 +55,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
                 ServiceFee = 1.99m,
 				MinDeliveryTimeInMinutes = 40,
 				MaxDeliveryTimeInMinutes = 50,
-				BackgroundImage = "~/images/Zakuska/Mikel_Coffee/MikelCoffeeBackground.jpg",
+				ImageURL = "~/images/Zakuska/Mikel_Coffee/MikelCoffeeBackground.jpg",
 				RestaurantCategoryId = 7,
             },
         };
