@@ -31,7 +31,8 @@ namespace FoodDeliveryApp.Infrastructure.Data
         public DbSet<BlogArticleComment> BlogArticleComments { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
-        public DbSet<Coupon> Coupons { get; set; }
+		public DbSet<City> Cities { get; set; }
+		public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemAddOn> ItemsAddOns { get; set; }
         public DbSet<ItemCategory> ItemCategories { get; set; }
