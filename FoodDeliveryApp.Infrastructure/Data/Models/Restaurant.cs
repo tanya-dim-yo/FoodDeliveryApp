@@ -46,7 +46,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
 		public int MaxDeliveryTimeInMinutes { get; set; }
 
 		[Required]
-        [MaxLength(RestaurantBackgroundImageMaxLength)]
+        [MaxLength(RestaurantImageURLMaxLength)]
         public string ImageURL { get; set; } = string.Empty;
 
         [Required]
