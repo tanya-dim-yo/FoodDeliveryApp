@@ -2,6 +2,9 @@
 {
 	public static class MessageConstants
 	{
-		public const string RequiredFieldMessage = "The {0} field is required!";
+		public static class RestaurantMessageConstants
+		{
+			public const string RequiredFieldMessage = "The {0} field is required!";
+		}
 	}
 }

@@ -37,11 +37,11 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 		}
 
 
-		public async Task<IEnumerable<RestaurantCategoryServiceModel>> AllRestaurantCategoriesAsync()
+		public async Task<IEnumerable<RestaurantCategoryModel>> AllRestaurantCategoriesAsync()
 		{
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
-				.Select(c => new RestaurantCategoryServiceModel()
+				.Select(c => new RestaurantCategoryModel()
 				{
 					Id = c.Id,
 					Title = c.Title,
