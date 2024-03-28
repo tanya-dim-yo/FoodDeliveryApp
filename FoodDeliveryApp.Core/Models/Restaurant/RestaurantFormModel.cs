@@ -5,7 +5,7 @@ using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.Restau
 
 namespace FoodDeliveryApp.Core.Models.Restaurant
 {
-	public class RestaurantFormViewModel
+	public class RestaurantFormModel
 	{
 		[Required(ErrorMessage = RequiredFieldMessage)]
 		[StringLength(RestaurantTitleMaxLength,
