@@ -1,4 +1,4 @@
-﻿using FoodDeliveryApp.Core.Contracts.Restaurant;
+﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Item;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using Microsoft.AspNetCore.Authorization;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FoodDeliveryApp.Controllers
 {
-	public class RestaurantController : BaseController
+    public class RestaurantController : BaseController
     {
 		private readonly IRestaurantService restaurantService;
 
@@ -102,6 +102,17 @@ namespace FoodDeliveryApp.Controllers
 			await restaurantService.RateRestaurant(id, newRating);
 
 			return RedirectToAction(nameof(All));
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Add()
+		{
+			var model = new RestaurantFormModel()
+			{
+				Categories = await restaurantService.AllRestaurantCategoriesAsync()
+			};
+
+			return View(model);
 		}
 	}
 }
