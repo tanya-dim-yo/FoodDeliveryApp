@@ -9,7 +9,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(ItemCategoryNameMaxLength)]
+        [MaxLength(ItemCategoryTitleMaxLength)]
         public string Title { get; set; } = string.Empty;
 
         public virtual IEnumerable<Item> Items { get; set; } = new List<Item>();

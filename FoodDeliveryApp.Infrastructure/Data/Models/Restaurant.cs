@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.RestaurantValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
@@ -9,15 +10,20 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(RestaurantTitleMaxLength)]
         public string Title { get; set; } = string.Empty;
 
         [Required]
+        [MaxLength(RestaurantAddressMaxLength)]
         public string Address { get; set; } = string.Empty;
 
-        [Required]
-        public string City { get; set; } = string.Empty;
+		[Required]
+		public int CityId { get; set; }
 
-        [Required]
+		[ForeignKey(nameof(CityId))]
+		public virtual City City { get; set; } = null!;
+
+		[Required]
         public DateTime OpeningHour { get; set; }
 
         [Required]
@@ -30,10 +36,18 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public double Longitude { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal ServiceFee { get; set; }
 
         [Required]
-        public string DeliveryTime { get; set; } = string.Empty;
+        public int MinDeliveryTimeInMinutes { get; set; }
+
+		[Required]
+		public int MaxDeliveryTimeInMinutes { get; set; }
+
+		[Required]
+        [MaxLength(RestaurantImageURLMaxLength)]
+        public string ImageURL { get; set; } = string.Empty;
 
         [Required]
         public int RestaurantCategoryId { get; set; }
@@ -41,10 +55,18 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         [ForeignKey(nameof(RestaurantCategoryId))]
         public virtual RestaurantCategory RestaurantCategory { get; set; } = null!;
 
-        public double AverageRating { get; private set; }
+        [Required]
+        public double AverageRating { get; set; }
 
-        public int TotalReviews { get; private set; }
+        [Required]
+        public int TotalReviews { get; set; }
 
         public virtual IEnumerable<Item> Items { get; set; } = new List<Item>();
-    }
+
+		public void UpdateRating(double newRating)
+		{
+			AverageRating = (AverageRating * TotalReviews + newRating) / (TotalReviews + 1);
+			TotalReviews++;
+		}
+	}
 }

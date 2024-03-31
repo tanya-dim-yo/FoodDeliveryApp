@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.BlogArticleValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
@@ -15,6 +11,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(BlogArticleTitleMaxLength)]
         public string Title { get; set; } = string.Empty;
 
         [Required]
@@ -27,19 +24,25 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public DateTime PublicationDate { get; set; }
 
         [Required]
+        public int ReadingTime { get; set; }
+
+        [Required]
         public int Likes { get; set; }
 
         [Required]
+        [MaxLength(BlogArticleContentMaxLength)]
         public string Content { get; set; } = string.Empty;
 
         [Required]
-        public int BlogCategoryId { get; set; }
+        [MaxLength(BlogArticleImageMaxLength)]
+        public string Image { get; set; } = string.Empty;
 
-        [ForeignKey(nameof(BlogCategoryId))]
-        public virtual BlogCategory BlogCategory { get; set; } = null!;
+        [Required]
+        public int BlogArticleCategoryId { get; set; }
 
-        public string[] Tags { get; set; } = Array.Empty<string>();
+        [ForeignKey(nameof(BlogArticleCategoryId))]
+        public virtual BlogArticleCategory BlogArticleCategory { get; set; } = null!;
 
-        public virtual IEnumerable<BlogComment> BlogComments { get; set; } = new List<BlogComment>();
+        public virtual IEnumerable<BlogArticleComment> BlogArticleComments { get; set; } = new List<BlogArticleComment>();
     }
 }

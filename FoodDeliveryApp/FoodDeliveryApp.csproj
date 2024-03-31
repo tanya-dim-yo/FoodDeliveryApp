@@ -13,11 +13,19 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.24" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.24" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.24" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FoodDeliveryApp.Core\FoodDeliveryApp.Core.csproj" />
     <ProjectReference Include="..\FoodDeliveryApp.Infrastructure\FoodDeliveryApp.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ModelBinders\" />
+    <Folder Include="Attributes\" />
+    <Folder Include="wwwroot\images\Mestna_hrana\Tarator\" />
+    <Folder Include="wwwroot\images\Zakuska\Mikel_Coffee\" />
   </ItemGroup>
 
 </Project>

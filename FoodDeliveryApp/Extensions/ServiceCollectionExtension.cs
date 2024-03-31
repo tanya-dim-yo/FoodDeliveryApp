@@ -1,4 +1,7 @@
-﻿using FoodDeliveryApp.Infrastructure.Data;
+﻿using FoodDeliveryApp.Core.Contracts;
+using FoodDeliveryApp.Core.Services.Restaurant;
+using FoodDeliveryApp.Infrastructure.Data;
+using FoodDeliveryApp.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,14 +11,18 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<IRestaurantService, RestaurantService>();
+
             return services;
         }
 
         public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config)
         {
             var connectionString = config.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<FoodDeliveryAppDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            services.AddScoped<IRepository, Repository>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -28,7 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 options.SignIn.RequireConfirmedAccount = true;
             })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<FoodDeliveryAppDbContext>();
 
             return services;
         }

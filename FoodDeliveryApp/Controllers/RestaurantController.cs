@@ -1,0 +1,181 @@
+﻿using FoodDeliveryApp.Core.Contracts;
+using FoodDeliveryApp.Core.Models.Item;
+using FoodDeliveryApp.Core.Models.Restaurant;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
+using static FoodDeliveryApp.Core.Constants.MessageConstants.RestaurantMessageConstants;
+
+namespace FoodDeliveryApp.Controllers
+{
+    public class RestaurantController : BaseController
+    {
+		private readonly IRestaurantService restaurantService;
+
+		public RestaurantController(IRestaurantService _restaurantService)
+		{
+			restaurantService = _restaurantService;
+		}
+
+		[AllowAnonymous]
+		[HttpGet]
+        public async Task<IActionResult> All()
+        {
+			IEnumerable<RestaurantViewModel> model = await restaurantService.GetAllRestaurantsAsync();
+
+			return View(model);
+		}
+
+		[AllowAnonymous]
+		[HttpGet]
+		public IActionResult Nearest()
+		{
+			return View();
+		}
+
+		[AllowAnonymous]
+		[HttpGet]
+		public async Task<IActionResult> HighestRating()
+		{
+			IEnumerable<RestaurantViewModel> model = await restaurantService.HighestRatingRestaurantsAsync();
+
+			return View(nameof(All), model);
+		}
+
+		[AllowAnonymous]
+		[HttpGet]
+		public async Task<IActionResult> ServiceFee()
+		{
+			IEnumerable<RestaurantViewModel> model = await restaurantService.RestaurantsByServiceFeeAsync();
+
+			return View(nameof(All), model);
+		}
+
+		[AllowAnonymous]
+		[HttpGet]
+		public async Task<IActionResult> ByCategory(int categoryId)
+		{
+			if (await restaurantService.ExistsRestaurantCategoryAsync(categoryId) == false)
+			{
+				return BadRequest();
+			}
+
+			IEnumerable<RestaurantViewModel> model = await restaurantService.GetRestaurantsByCategoryAsync(categoryId);
+
+			return View(nameof(All), model);
+		}
+
+		[AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Search(string keyword)
+        {
+			var searchResults = await restaurantService.SearchRestaurantsAsync(keyword);
+
+			ViewBag.SearchedKeyword = searchResults.SanitizedKeyword;
+			IEnumerable<RestaurantViewModel> results = searchResults.Results;
+
+			return View(results);
+		}
+
+		[AllowAnonymous]
+        [HttpGet]
+		public async Task<IActionResult> Menu(int restaurantId)
+		{
+			RestaurantViewModel? restaurant = await restaurantService.GetRestaurantByIdAsync(restaurantId);
+
+			if (restaurant == null)
+			{
+				return NotFound();
+			}
+
+			IEnumerable<ItemViewModel> items = await restaurantService.MenuRestaurantAsync(restaurantId);
+
+			var model = new RestaurantDetailViewModel
+			{
+				Restaurant = restaurant,
+				Items = items
+			};
+
+			return View(model);
+		}
+
+		public async Task<IActionResult> RateRestaurant(int id, double newRating)
+		{
+			await restaurantService.RateRestaurant(id, newRating);
+
+			return RedirectToAction(nameof(All));
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Add()
+		{
+			var model = new RestaurantFormModel()
+			{
+				Categories = await restaurantService.AllRestaurantCategoriesAsync()
+			};
+
+			return View(model);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Add(RestaurantFormModel model)
+		{
+			if (await restaurantService.ExistsCityAsync(model.CityId) == false)
+			{
+				ModelState.AddModelError(nameof(model.CityId), InvalidCityMessage);
+			}
+
+			if (await restaurantService.ExistsRestaurantCategoryAsync(model.RestaurantCategoryId) == false)
+			{
+				ModelState.AddModelError(nameof(model.RestaurantCategoryId), InvalidRestaurantCategoryMessage);
+			}
+
+			DateTime openHour = DateTime.MinValue;
+			DateTime closeHour = DateTime.MinValue;
+
+			if (!DateTime.TryParseExact(
+				model.OpeningHour,
+				"HH:mm",
+				CultureInfo.InvariantCulture,
+				DateTimeStyles.None,
+				out openHour))
+			{
+				ModelState.AddModelError(nameof(model.OpeningHour), InvalidTimeMessage);
+			}
+
+			if (!DateTime.TryParseExact(
+				model.ClosingHour,
+				"HH:mm",
+				CultureInfo.InvariantCulture,
+				DateTimeStyles.None,
+				out closeHour))
+			{
+				ModelState.AddModelError(nameof(model.ClosingHour), InvalidTimeMessage);
+			}
+
+			if (model.OpeningHour == model.ClosingHour)
+			{
+				ModelState.AddModelError(nameof(model.OpeningHour), InvalidSameTimeMessage);
+			}
+
+			if (openHour > closeHour)
+			{
+				ModelState.AddModelError(nameof(model.OpeningHour), OpenHourBiggerMessage);
+			}
+
+			model.OpenHourDateTime = openHour;
+			model.CloseHourDateTime = closeHour;
+
+			if (ModelState.IsValid == false)
+			{
+				model.Categories = await restaurantService.AllRestaurantCategoriesAsync();
+
+				return View(model);
+			}
+
+			await restaurantService.AddRestaurantAsync(model, openHour, closeHour);
+
+			return RedirectToAction(nameof(All));
+		}
+	}
+}
