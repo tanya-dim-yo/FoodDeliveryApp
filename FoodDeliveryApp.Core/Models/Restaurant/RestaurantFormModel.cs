@@ -32,12 +32,12 @@ namespace FoodDeliveryApp.Core.Models.Restaurant
 
 
 		[Required(ErrorMessage = RequiredFieldMessage)]
-		[Display(Name = "Начален час")]
+		[Display(Name = "Час на отваряне")]
 		public string OpeningHour { get; set; } = string.Empty;
 
 
 		[Required(ErrorMessage = RequiredFieldMessage)]
-		[Display(Name = "Краен час")]
+		[Display(Name = "Час на затваряне")]
 		public string ClosingHour { get; set; } = string.Empty;
 
 
