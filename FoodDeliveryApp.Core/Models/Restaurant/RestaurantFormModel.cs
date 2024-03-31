@@ -35,10 +35,14 @@ namespace FoodDeliveryApp.Core.Models.Restaurant
 		[Display(Name = "Час на отваряне")]
 		public string OpeningHour { get; set; } = string.Empty;
 
+		public DateTime OpenHourDateTime { get; set; }
+
 
 		[Required(ErrorMessage = RequiredFieldMessage)]
 		[Display(Name = "Час на затваряне")]
 		public string ClosingHour { get; set; } = string.Empty;
+
+		public DateTime CloseHourDateTime { get; set; }
 
 
 		[Required(ErrorMessage = RequiredFieldMessage)]
