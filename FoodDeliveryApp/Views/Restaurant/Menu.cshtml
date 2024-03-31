@@ -246,26 +246,33 @@
 				</div>
 			</div>
 			<ul id="masonry" class="row">
-				@foreach (var item in Model.Items)
+				if (Model.Items.Count() == 0)
+                {
+                    <p>Няма намерени продукти.</p>
+                }
+				else
 				{
-					<li class="card-container col-lg-4 col-md-6 m-b30 All drink pizza burger">
-						<div class="dz-img-box style-7">
-							<div class="dz-media">
-								<img src="@Url.Content(item.Image)" alt="/">
-								<div class="dz-meta">
-									<ul>
-										<li class="seller">@item.ItemCategory</li>
-											<li class="rating"><i class="fa-solid fa-star"></i>@item.AverageRatingPercent</li>
-									</ul>
+					@foreach (var item in Model.Items)
+					{
+						<li class="card-container col-lg-4 col-md-6 m-b30 All drink pizza burger">
+							<div class="dz-img-box style-7">
+								<div class="dz-media">
+									<img src="@Url.Content(item.Image)" alt="/">
+									<div class="dz-meta">
+										<ul>
+											<li class="seller">@item.ItemCategory</li>
+												<li class="rating"><i class="fa-solid fa-star"></i>@item.AverageRatingPercent</li>
+										</ul>
+									</div>
+								</div>
+								<div class="dz-content">
+									<h5 class="title"><a href="@Url.Action("ProductDetail","FoodTime")">@item.Title</a></h5>
+									<p>@item.Description</p>
+									<span class="price">@item.Price лв.</span>
 								</div>
 							</div>
-							<div class="dz-content">
-								<h5 class="title"><a href="@Url.Action("ProductDetail","FoodTime")">@item.Title</a></h5>
-								<p>@item.Description</p>
-								<span class="price">@item.Price лв.</span>
-							</div>
-						</div>
-					</li>
+						</li>
+					}
 				}
 			</ul>
 		</div>
