@@ -1,14 +1,15 @@
-﻿using FoodDeliveryApp.Core.Contracts.Restaurant;
+﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Item;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace FoodDeliveryApp.Core.Services.Restaurant
 {
-	public class RestaurantService : IRestaurantService
+    public class RestaurantService : IRestaurantService
 	{
 		private readonly IRepository repository;
 		private readonly ILogger logger;
@@ -21,9 +22,28 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			logger = _logger;
 		}
 
-        public Task AddRestaurantAsync(RestaurantDetailViewModel model)
+		public async Task<int> AddRestaurantAsync(RestaurantFormModel model, DateTime openHour, DateTime closeHour)
 		{
-			throw new NotImplementedException();
+			var restaurant = new Infrastructure.Data.Models.Restaurant()
+			{
+				Title = model.Title,
+				Address = model.Address,
+				CityId = model.CityId,
+				OpeningHour = openHour,
+				ClosingHour = closeHour,
+				Latitude = model.Latitude,
+				Longitude = model.Longitude,
+				ServiceFee = model.ServiceFee,
+				MinDeliveryTimeInMinutes = model.MinDeliveryTimeInMinutes,
+				MaxDeliveryTimeInMinutes = model.MaxDeliveryTimeInMinutes,
+				ImageURL = model.ImageURL,
+				RestaurantCategoryId = model.RestaurantCategoryId
+			};
+
+			await repository.AddAsync(restaurant);
+			await repository.SaveChangesAsync();
+
+			return restaurant.Id;
 		}
 
 		public Task EditRestaurantAsync(RestaurantDetailViewModel model)
@@ -271,6 +291,13 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			input = input.Replace("..", "");
 
 			return input;
+		}
+
+		public async Task<bool> ExistsCityAsync(int cityId)
+		{
+			return await repository
+				.AllReadOnly<Infrastructure.Data.Models.City>()
+				.AnyAsync(p => p.Id == cityId);
 		}
 	}
 }
