@@ -1,0 +1,218 @@
+﻿@using FoodDeliveryApp.Core.Models.Restaurant
+@model RestaurantFormModel
+
+@{
+	Layout = "~/Views/Shared/_LayoutFoodTime.cshtml";
+}
+<div class="page-content bg-white">
+	<!-- Banner  -->
+	<div class="dz-bnr-inr style-1 text-center bg-parallax" style="background-image:url('../foodtime/images/banner/bn2_1.jpg'); background-size:cover; background-position:center;">
+		<div class="container">
+			<div class="dz-bnr-inr-entry">
+				<h1>Ресторанти</h1>
+				<!-- Breadcrumb Row -->
+				<nav aria-label="breadcrumb" class="breadcrumb-row">
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Начало</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Ресторанти</li>
+					</ul>
+				</nav>
+				<!-- Breadcrumb Row End -->
+			</div>
+		</div>
+	</div>
+	<!-- Banner End -->
+	<!-- Search Section -->
+	<section class="content-inner-1">
+		<div class="container">
+			<div class="row search-wraper text-center">
+				<div class="col-lg-8 m-auto">
+					<form>
+						<div class="input-group">
+							<input name="keyword" required="required" type="text" class="form-control" placeholder="Търсене в ресторанти...">
+							<div class="input-group-addon">
+								<button name="submit" asp-controller="Restaurant" asp-action="Search" asp-route-id="keyword" value="submit" type="submit" class="btn btn-primary btn-hover-2">
+									<span>Търсене</span><i class="icon-search"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-3">
+					<aside class="side-bar left sticky-top">
+						<div class="shop-filter">
+							<div class="widget widget_tag_cloud ">
+								<div class="d-flex justify-content-between">
+									<div class="widget-title">
+										<h4 class="title">Сортиране по:</h4>
+									</div>
+									<a href="javascript:void(0);" class="panel-close-btn"><i class="fa-solid fa-xmark"></i></a>
+								</div>
+								<div class="tagcloud">
+									<a href="@Url.Action("ProductDetail","FoodTime")">Близо до мен</a>
+									<a href="@Url.Action("HighestRating","Restaurant")">С най-висок рейтинг</a>
+									<a href="@Url.Action("ServiceFee","Restaurant")">Такса за доставка</a>
+								</div>
+							</div>
+							<div class="widget widget_tag_cloud ">
+								<div class="d-flex justify-content-between">
+									<div class="widget-title">
+										<h4 class="title">Филтър</h4>
+									</div>
+									<a href="javascript:void(0);" class="panel-close-btn"><i class="fa-solid fa-xmark"></i></a>
+								</div>
+								<div class="tagcloud">
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 1 })">Азиатска</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 2 })">Американска</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 3 })">Арабска</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 4 })">Вегетарианска</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 5 })">Гръцка</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 6 })">Десерти</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 7 })">Закуска</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 8 })">Здравословна</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 9 })">Индийска</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 10 })">Италианска</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 11 })">Международна</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 12 })">Мексиканска</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 13 })">Местна храна</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 14 })">Морски дарове</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 15 })">Напитки</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 16 })">Паста</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 17 })">Печива и сладкиши</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 18 })">Сандвич</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 19 })">Средиземноморска</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 20 })">Суши</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 21 })">Турска</a></div>
+									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 22 })">Чай и кафе</a></div>
+								</div>
+							</div>
+						</div>
+					</aside>
+				</div>
+				<div class="col-lg-9">
+					<div class="d-flex justify-content-between align-items-center">
+						<h5 class="title mb-md-3 mb-lg-4 m-b20 d-none d-lg-block">Добавяне на ресторант</h5>
+					</div>
+					<div class="row">
+	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+		<form asp-action="Add" method="post">
+			<div class="mb-3">
+				<label asp-for="@Model.Title" class="form-label-add-edit">Title</label>
+				<input asp-for="@Model.Title" class="form-control" aria-required="true" />
+				<span asp-validation-for="@Model.Title" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.Address" class="form-label-add-edit">Address</label>
+				<input asp-for="@Model.Address" class="form-control" aria-required="true" />
+				<span asp-validation-for="@Model.Address" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.CityId" class="form-label-add-edit">City</label>
+				<select asp-for="@Model.CityId" class="form-control" aria-required="true">
+					<option disabled selected value="">Select City...</option>
+										@foreach (var city in Model.Cities)
+										{
+								<option value="@city.Id">@city.Name</option>
+										}
+				</select>
+				<span asp-validation-for="@Model.RestaurantCategoryId" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.OpeningHour" class="form-label-add-edit">OpenHour</label>
+				<input asp-for="@Model.OpeningHour" class="form-control" aria-required="true" placeholder="HH:mm" )" />
+				<span asp-validation-for="@Model.OpeningHour" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.ClosingHour" class="form-label-add-edit">CloseHour</label>
+				<input asp-for="@Model.ClosingHour" class="form-control" aria-required="true" placeholder="HH:mm" )" />
+				<span asp-validation-for="@Model.ClosingHour" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.Latitude" class="form-label-add-edit">Latitude</label>
+				<input asp-for="@Model.Latitude" class="form-control" placeholder="Latitude" />
+				<span asp-validation-for="@Model.Latitude" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.Longitude" class="form-label-add-edit">Longitude</label>
+				<input asp-for="@Model.Longitude" class="form-control" placeholder="Longitude" />
+				<span asp-validation-for="@Model.Longitude" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.ServiceFee" class="form-label-add-edit">Service Fee</label>
+				<input asp-for="@Model.ServiceFee" class="form-control" placeholder="Longitude" />
+				<span asp-validation-for="@Model.ServiceFee" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.MinDeliveryTimeInMinutes" class="form-label-add-edit">Min Delivery Time</label>
+				<input asp-for="@Model.MinDeliveryTimeInMinutes" class="form-control" placeholder="Min Delivery Time" />
+				<span asp-validation-for="@Model.MinDeliveryTimeInMinutes" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.MaxDeliveryTimeInMinutes" class="form-label-add-edit">Max Delivery Time</label>
+				<input asp-for="@Model.MaxDeliveryTimeInMinutes" class="form-control" placeholder="Max Delivery Time" />
+				<span asp-validation-for="@Model.MaxDeliveryTimeInMinutes" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.ImageURL" class="form-label-add-edit">Image URL</label>
+				<input asp-for="@Model.ImageURL" class="form-control" placeholder="Image URL" />
+				<span asp-validation-for="@Model.ImageURL" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.RestaurantCategoryId" class="form-label-add-edit">Category</label>
+				<select asp-for="@Model.RestaurantCategoryId" class="form-control" aria-required="true">
+					<option disabled selected value="">Select Category...</option>
+										@foreach (var category in Model.Categories)
+										{
+							<option value="@category.Id">@category.Title</option>
+										}
+				</select>
+				<span asp-validation-for="@Model.RestaurantCategoryId" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Добави" />
+			</div>
+		</form>
+	</div>
+</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Search Section -->
+
+</div>
+<partial name="FoodTime/_MenuDetailModal" />
+@section foodtime_style
+	{
+	<!-- Stylesheet -->
+	<link href="~/foodtime/vendor/magnific-popup/magnific-popup.min.css" rel="stylesheet">
+	<link href="~/foodtime/vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="~/foodtime/vendor/nouislider/nouislider.min.css">
+}
+@section foodtime_script
+	{
+	<!-- JAVASCRIPT FILES ========================================= -->
+	<script src="~/foodtime/js/jquery.min.js"></script><!-- JQUERY.MIN JS -->
+	<script src="~/foodtime/vendor/bootstrap/js/bootstrap.bundle.min.js"></script><!-- BOOTSTRAP.MIN JS -->
+	<script src="~/foodtime/vendor/bootstrap-select/js/bootstrap-select.min.js"></script><!-- BOOTSTRAP SELEECT -->
+	<script src="~/foodtime/vendor/bootstrap-touchspin/bootstrap-touchspin.js"></script><!-- BOOTSTRAP TOUCHSPIN -->
+	<script src="~/foodtime/vendor/magnific-popup/magnific-popup.js"></script><!-- MAGNIFIC POPUP JS -->
+	<script src="~/foodtime/vendor/masonry/masonry-4.2.2.js"></script><!-- MASONRY -->
+	<script src="~/foodtime/vendor/masonry/isotope.pkgd.min.js"></script><!-- ISOTOPE -->
+	<script src="~/foodtime/vendor/imagesloaded/imagesloaded.js"></script><!-- IMAGESLOADED -->
+	<script src="~/foodtime/vendor/counter/waypoints-min.js"></script><!-- WAYPOINTS JS -->
+	<script src="~/foodtime/vendor/wow/wow.js"></script><!-- WOW JS -->
+	<script src="~/foodtime/vendor/bootstrap-touchspin/bootstrap-touchspin.js"></script><!-- TOUCHSPIN -->
+	<script src="~/foodtime/vendor/nouislider/nouislider.min.js"></script><!-- NOUSLIDER MIN JS-->
+	<script src="~/foodtime/vendor/wnumb/wNumb.js"></script><!-- WNUMB -->
+	<script src="~/foodtime/vendor/particles/particles.js"></script>
+	<script src="~/foodtime/vendor/particles/particles-app.js"></script>
+	<script src="~/foodtime/js/dz.ajax.js"></script><!-- AJAX -->
+	<script src="~/foodtime/js/custom.min.js"></script><!-- CUSTOM JS -->
+	
+	<script src="~/foodtime/vendor/rangeslider/rangeslider.js"></script><!-- RANGESLIDER -->
+	
+}
