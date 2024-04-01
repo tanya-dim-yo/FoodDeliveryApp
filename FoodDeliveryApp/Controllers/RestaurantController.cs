@@ -1,16 +1,14 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Item;
 using FoodDeliveryApp.Core.Models.Restaurant;
-using FoodDeliveryApp.Core.Services.Restaurant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Globalization;
 using static FoodDeliveryApp.Core.Constants.MessageConstants.RestaurantMessageConstants;
 
 namespace FoodDeliveryApp.Controllers
 {
-    public class RestaurantController : BaseController
+	public class RestaurantController : BaseController
     {
 		private readonly IRestaurantService restaurantService;
 
@@ -57,7 +55,7 @@ namespace FoodDeliveryApp.Controllers
 				CategoryIds = categories.Select(c => c.Id)
 			};
 
-			ViewData["ListTitle"] = "С най-висок рейтинг";
+			ViewData["ListTitle"] = "Сортиране по най-висок рейтинг";
 			return View(nameof(All), modelWrapper);
 		}
 
@@ -76,7 +74,7 @@ namespace FoodDeliveryApp.Controllers
 				CategoryIds = categories.Select(c => c.Id)
 			};
 
-			ViewData["ListTitle"] = "Такса за доставка";
+			ViewData["ListTitle"] = "Сортиране по такса за доставка";
 			return View(nameof(All), modelWrapper);
 		}
 
