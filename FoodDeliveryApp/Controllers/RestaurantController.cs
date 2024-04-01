@@ -84,7 +84,7 @@ namespace FoodDeliveryApp.Controllers
 		{
 			if (await restaurantService.ExistsRestaurantCategoryAsync(categoryId) == false)
 			{
-				return BadRequest();
+				return RedirectToAction("Error", "Home", new { errorMessage = "Категорията не съществува." });
 			}
 
 			var (restaurants, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
@@ -92,7 +92,7 @@ namespace FoodDeliveryApp.Controllers
 
 			if (categoryName == null)
 			{
-				return BadRequest("Category not found.");
+				return RedirectToAction("Error", "Home", new { errorMessage = "Категорията не съществува." });
 			}
 
 			var model = new RestaurantViewModelWrapper
@@ -135,7 +135,7 @@ namespace FoodDeliveryApp.Controllers
 
 			if (restaurant == null)
 			{
-				return NotFound();
+				return RedirectToAction("Error", new { errorMessage = "Restaurant not found." });
 			}
 
 			IEnumerable<ItemViewModel> items = await restaurantService.MenuRestaurantAsync(restaurantId);
