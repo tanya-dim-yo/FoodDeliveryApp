@@ -1,8 +1,10 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Item;
 using FoodDeliveryApp.Core.Models.Restaurant;
+using FoodDeliveryApp.Core.Services.Restaurant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Globalization;
 using static FoodDeliveryApp.Core.Constants.MessageConstants.RestaurantMessageConstants;
 
@@ -19,11 +21,18 @@ namespace FoodDeliveryApp.Controllers
 
 		[AllowAnonymous]
 		[HttpGet]
-        public async Task<IActionResult> All()
-        {
-			IEnumerable<RestaurantViewModel> model = await restaurantService.GetAllRestaurantsAsync();
+		public async Task<IActionResult> All()
+		{
+			var (model, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
-			return View(model);
+			var modelWrapper = new RestaurantViewModelWrapper
+			{
+				RestaurantViewModels = model,
+				CategoryNames = categories.Select(c => c.Title),
+				CategoryIds = categories.Select(c => c.Id)
+			};
+
+			return View(modelWrapper);
 		}
 
 		[AllowAnonymous]
@@ -60,8 +69,22 @@ namespace FoodDeliveryApp.Controllers
 				return BadRequest();
 			}
 
-			IEnumerable<RestaurantViewModel> model = await restaurantService.GetRestaurantsByCategoryAsync(categoryId);
+			var (restaurants, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+			var categoryName = categories.FirstOrDefault(c => c.Id == categoryId).Title;
 
+			if (categoryName == null)
+			{
+				return BadRequest("Category not found.");
+			}
+
+			var model = new RestaurantViewModelWrapper
+			{
+				CategoryNames = categories.Select(c => c.Title),
+				CategoryIds = categories.Select(c => c.Id),
+				RestaurantViewModels = restaurants.Where(r => r.RestaurantCategory == categoryName).ToList(),
+			};
+
+			ViewData["CategoryName"] = categoryName;
 			return View(nameof(All), model);
 		}
 
@@ -109,9 +132,12 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
+			var (restaurants, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+			var categoryViewModels = categories.Select(c => new RestaurantCategoryModel { Id = c.Id, Title = c.Title });
+
 			var model = new RestaurantFormModel()
 			{
-				Categories = await restaurantService.AllRestaurantCategoriesAsync()
+				Categories = categoryViewModels
 			};
 
 			return View(model);
@@ -168,14 +194,24 @@ namespace FoodDeliveryApp.Controllers
 
 			if (ModelState.IsValid == false)
 			{
-				model.Categories = await restaurantService.AllRestaurantCategoriesAsync();
-
+				var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+				model.Categories = categories.Select(c => new RestaurantCategoryModel { Id = c.Id, Title = c.Title });
 				return View(model);
 			}
 
 			await restaurantService.AddRestaurantAsync(model, openHour, closeHour);
 
 			return RedirectToAction(nameof(All));
+		}
+
+		public async Task<IActionResult> RestaurantCategories()
+		{
+			var model = new RestaurantViewModelWrapper
+			{
+				CategoryNames = await restaurantService.AllRestaurantCategoriesNamesAsync()
+			};
+
+			return View(model);
 		}
 	}
 }
