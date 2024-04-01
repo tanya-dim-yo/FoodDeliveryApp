@@ -48,7 +48,16 @@ namespace FoodDeliveryApp.Controllers
 		{
 			IEnumerable<RestaurantViewModel> model = await restaurantService.HighestRatingRestaurantsAsync();
 
-			return View(nameof(All), model);
+			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+
+			var modelWrapper = new RestaurantViewModelWrapper
+			{
+				RestaurantViewModels = model,
+				CategoryNames = categories.Select(c => c.Title),
+				CategoryIds = categories.Select(c => c.Id)
+			};
+
+			return View(nameof(All), modelWrapper);
 		}
 
 		[AllowAnonymous]
