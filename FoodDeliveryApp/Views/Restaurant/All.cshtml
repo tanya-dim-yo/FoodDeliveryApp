@@ -96,13 +96,14 @@
 						<h5 class="title mb-md-3 mb-lg-4 m-b20 d-none d-lg-block">Ресторанти : доставка в гр. София</h5>
 					</div>
 					<ul id="masonry" class="row">
-						if (Model.Count() == 0)
+						@if (Model.Count() == 0)
                         {
                             <p>Няма намерени ресторанти.</p>
                         }
-						else{
-						@foreach (var restaurant in Model)
+						else
 						{
+							@foreach (var restaurant in Model)
+							{
 								<li class="card-container col-xl-4 col-md-6 m-b30">
 									<div class="dz-img-box style-7">
 										<div class="dz-media">
@@ -120,7 +121,7 @@
 										</div>
 									</div>
 								</li>
-						}
+							}
 						}
 					</ul>
 				</div>
