@@ -21,7 +21,8 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
+	app.UseStatusCodePagesWithReExecute("/Home/Error/{0}");
+	app.UseHsts();
 }
 
 app.UseHttpsRedirection();
