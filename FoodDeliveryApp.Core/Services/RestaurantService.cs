@@ -190,7 +190,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 		{
 			string sanitizedKeyword = Sanitize(keyword);
 
-			// Split the sanitized keyword into individual words
 			var characters = sanitizedKeyword.ToLower().Select(c => c.ToString()).ToArray();
 
 			var query = _repository.AllReadOnly<Infrastructure.Data.Models.Restaurant>();
@@ -199,7 +198,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			{
 				var keywordParameter = "%" + ch + "%";
 
-				// Apply the search criteria for each keyword
 				query = query
 					.Where(p => EF.Functions.Like(p.Title.ToLower(), keywordParameter)
 						   || p.Items.Any(i => EF.Functions.Like(i.Title.ToLower(), keywordParameter)
