@@ -1,11 +1,11 @@
-﻿using FoodDeliveryApp.Core.Constants;
-using FoodDeliveryApp.Core.Contracts;
+﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Item;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using static FoodDeliveryApp.Core.Constants.MessageConstants.RestaurantMessageConstants;
+using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.RestaurantErrorMessagesConstants;
 
 namespace FoodDeliveryApp.Controllers
 {
@@ -85,7 +85,7 @@ namespace FoodDeliveryApp.Controllers
 		{
 			if (await restaurantService.ExistsRestaurantCategoryAsync(categoryId) == false)
 			{
-				return RedirectToAction("Error", "Home", new { errorMessage = "Категорията не съществува." });
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidCategoryErrorMessage });
 			}
 
 			var (restaurants, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
@@ -93,7 +93,7 @@ namespace FoodDeliveryApp.Controllers
 
 			if (categoryName == null)
 			{
-				return RedirectToAction("Error", "Home", new { errorMessage = "Категорията не съществува." });
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidCategoryErrorMessage });
 			}
 
 			var model = new RestaurantViewModelWrapper
@@ -136,7 +136,7 @@ namespace FoodDeliveryApp.Controllers
 
 			if (restaurant == null)
 			{
-				return RedirectToAction("Error", "Home", new { errorMessage = "Ресторантът не съществува." });
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
 			}
 
 			IEnumerable<ItemViewModel> items = await restaurantService.MenuRestaurantAsync(restaurantId);
