@@ -1,4 +1,5 @@
-﻿using FoodDeliveryApp.Core.Contracts;
+﻿using FoodDeliveryApp.Core.Constants;
+using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Item;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using Microsoft.AspNetCore.Authorization;
@@ -55,7 +56,7 @@ namespace FoodDeliveryApp.Controllers
 				CategoryIds = categories.Select(c => c.Id)
 			};
 
-			ViewData["ListTitle"] = "Сортиране по най-висок рейтинг";
+			ViewData["ListTitle"] = RestaurantsSortedByHighestRatingMessage;
 			return View(nameof(All), modelWrapper);
 		}
 
@@ -74,7 +75,7 @@ namespace FoodDeliveryApp.Controllers
 				CategoryIds = categories.Select(c => c.Id)
 			};
 
-			ViewData["ListTitle"] = "Сортиране по такса за доставка";
+			ViewData["ListTitle"] = RestaurantsSortedByServiceFeeMessage;
 			return View(nameof(All), modelWrapper);
 		}
 
@@ -102,7 +103,7 @@ namespace FoodDeliveryApp.Controllers
 				RestaurantViewModels = restaurants.Where(r => r.RestaurantCategory == categoryName).ToList(),
 			};
 
-			ViewData["ListTitle"] = $"Категория: {categoryName}";
+			ViewData["ListTitle"] = string.Format(RestaurantCategoryMessage, categoryName);
 			return View(nameof(All), model);
 		}
 
@@ -135,7 +136,7 @@ namespace FoodDeliveryApp.Controllers
 
 			if (restaurant == null)
 			{
-				return RedirectToAction("Error", new { errorMessage = "Restaurant not found." });
+				return RedirectToAction("Error", "Home", new { errorMessage = "Ресторантът не съществува." });
 			}
 
 			IEnumerable<ItemViewModel> items = await restaurantService.MenuRestaurantAsync(restaurantId);
