@@ -57,6 +57,7 @@ namespace FoodDeliveryApp.Controllers
 				CategoryIds = categories.Select(c => c.Id)
 			};
 
+			ViewData["ListTitle"] = "С най-висок рейтинг";
 			return View(nameof(All), modelWrapper);
 		}
 
@@ -66,7 +67,17 @@ namespace FoodDeliveryApp.Controllers
 		{
 			IEnumerable<RestaurantViewModel> model = await restaurantService.RestaurantsByServiceFeeAsync();
 
-			return View(nameof(All), model);
+			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+
+			var modelWrapper = new RestaurantViewModelWrapper
+			{
+				RestaurantViewModels = model,
+				CategoryNames = categories.Select(c => c.Title),
+				CategoryIds = categories.Select(c => c.Id)
+			};
+
+			ViewData["ListTitle"] = "Такса за доставка";
+			return View(nameof(All), modelWrapper);
 		}
 
 		[AllowAnonymous]
@@ -93,7 +104,7 @@ namespace FoodDeliveryApp.Controllers
 				RestaurantViewModels = restaurants.Where(r => r.RestaurantCategory == categoryName).ToList(),
 			};
 
-			ViewData["CategoryName"] = categoryName;
+			ViewData["ListTitle"] = $"Категория: {categoryName}";
 			return View(nameof(All), model);
 		}
 
@@ -102,11 +113,20 @@ namespace FoodDeliveryApp.Controllers
         public async Task<IActionResult> Search(string keyword)
         {
 			var searchResults = await restaurantService.SearchRestaurantsAsync(keyword);
-
-			ViewBag.SearchedKeyword = searchResults.SanitizedKeyword;
 			IEnumerable<RestaurantViewModel> results = searchResults.Results;
 
-			return View(results);
+			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+
+			var modelWrapper = new RestaurantViewModelWrapper
+			{
+				RestaurantViewModels = results,
+				CategoryNames = categories.Select(c => c.Title),
+				CategoryIds = categories.Select(c => c.Id)
+			};
+
+			ViewData["ListTitle"] = searchResults.SanitizedKeyword;
+
+			return View(nameof(All), modelWrapper);
 		}
 
 		[AllowAnonymous]
