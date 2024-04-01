@@ -13,6 +13,9 @@
 			public const string InvalidTimeMessage = "Невалиден час!";
 			public const string InvalidSameTimeMessage = "Часът на отваряне и затваряне трябва да бъдат различни!";
 			public const string OpenHourBiggerMessage = "Часът на отваряне трябва да бъде по-малък от часът на затваряне!";
+			public const string RestaurantsSortedByHighestRatingMessage = "Сортиране по най-висок рейтинг";
+			public const string RestaurantsSortedByServiceFeeMessage = "Сортиране по такса за доставка";
+			public const string RestaurantCategoryMessage = "Категория: {0}";
 		}
 	}
 }
