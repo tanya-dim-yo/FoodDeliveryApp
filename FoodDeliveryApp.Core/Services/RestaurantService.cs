@@ -2,6 +2,7 @@
 using FoodDeliveryApp.Core.Models.Item;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
@@ -289,6 +290,29 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			return await _repository
 				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
 				.AnyAsync(p => p.Id == categoryId);
+		}
+
+		public async Task EditAsync(int restaurantId, RestaurantFormModel model)
+		{
+			var restaurant = await _repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
+
+			if (restaurant != null)
+			{
+				restaurant.Title = model.Title;
+				restaurant.Address = model.Address;
+				restaurant.CityId = model.CityId;
+				restaurant.OpeningHour = model.OpenHourDateTime;
+				restaurant.ClosingHour = model.CloseHourDateTime;
+				restaurant.Latitude = model.Latitude;
+				restaurant.Longitude = model.Longitude;
+				restaurant.ServiceFee = model.ServiceFee;
+				restaurant.MinDeliveryTimeInMinutes = model.MinDeliveryTimeInMinutes;
+				restaurant.MaxDeliveryTimeInMinutes = model.MaxDeliveryTimeInMinutes;
+				restaurant.ImageURL = model.ImageURL;
+				restaurant.RestaurantCategoryId = model.RestaurantCategoryId;
+
+				await _repository.SaveChangesAsync();
+			}
 		}
 	}
 }
