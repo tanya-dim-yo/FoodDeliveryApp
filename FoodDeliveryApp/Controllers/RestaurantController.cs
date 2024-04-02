@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using static FoodDeliveryApp.Core.Constants.MessageConstants.RestaurantMessageConstants;
+using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.RestaurantErrorMessagesConstants;
 
 namespace FoodDeliveryApp.Controllers
 {
-    public class RestaurantController : BaseController
+	public class RestaurantController : BaseController
     {
 		private readonly IRestaurantService restaurantService;
 
@@ -19,11 +20,18 @@ namespace FoodDeliveryApp.Controllers
 
 		[AllowAnonymous]
 		[HttpGet]
-        public async Task<IActionResult> All()
-        {
-			IEnumerable<RestaurantViewModel> model = await restaurantService.GetAllRestaurantsAsync();
+		public async Task<IActionResult> All()
+		{
+			var (model, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
-			return View(model);
+			var modelWrapper = new RestaurantViewModelWrapper
+			{
+				RestaurantViewModels = model,
+				CategoryNames = categories.Select(c => c.Title),
+				CategoryIds = categories.Select(c => c.Id)
+			};
+
+			return View(modelWrapper);
 		}
 
 		[AllowAnonymous]
@@ -39,7 +47,17 @@ namespace FoodDeliveryApp.Controllers
 		{
 			IEnumerable<RestaurantViewModel> model = await restaurantService.HighestRatingRestaurantsAsync();
 
-			return View(nameof(All), model);
+			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+
+			var modelWrapper = new RestaurantViewModelWrapper
+			{
+				RestaurantViewModels = model,
+				CategoryNames = categories.Select(c => c.Title),
+				CategoryIds = categories.Select(c => c.Id)
+			};
+
+			ViewData["ListTitle"] = RestaurantsSortedByHighestRatingMessage;
+			return View(nameof(All), modelWrapper);
 		}
 
 		[AllowAnonymous]
@@ -48,7 +66,17 @@ namespace FoodDeliveryApp.Controllers
 		{
 			IEnumerable<RestaurantViewModel> model = await restaurantService.RestaurantsByServiceFeeAsync();
 
-			return View(nameof(All), model);
+			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+
+			var modelWrapper = new RestaurantViewModelWrapper
+			{
+				RestaurantViewModels = model,
+				CategoryNames = categories.Select(c => c.Title),
+				CategoryIds = categories.Select(c => c.Id)
+			};
+
+			ViewData["ListTitle"] = RestaurantsSortedByServiceFeeMessage;
+			return View(nameof(All), modelWrapper);
 		}
 
 		[AllowAnonymous]
@@ -57,11 +85,25 @@ namespace FoodDeliveryApp.Controllers
 		{
 			if (await restaurantService.ExistsRestaurantCategoryAsync(categoryId) == false)
 			{
-				return BadRequest();
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidCategoryErrorMessage });
 			}
 
-			IEnumerable<RestaurantViewModel> model = await restaurantService.GetRestaurantsByCategoryAsync(categoryId);
+			var (restaurants, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+			var categoryName = categories.FirstOrDefault(c => c.Id == categoryId).Title;
 
+			if (categoryName == null)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidCategoryErrorMessage });
+			}
+
+			var model = new RestaurantViewModelWrapper
+			{
+				CategoryNames = categories.Select(c => c.Title),
+				CategoryIds = categories.Select(c => c.Id),
+				RestaurantViewModels = restaurants.Where(r => r.RestaurantCategory == categoryName).ToList(),
+			};
+
+			ViewData["ListTitle"] = string.Format(RestaurantCategoryMessage, categoryName);
 			return View(nameof(All), model);
 		}
 
@@ -70,11 +112,20 @@ namespace FoodDeliveryApp.Controllers
         public async Task<IActionResult> Search(string keyword)
         {
 			var searchResults = await restaurantService.SearchRestaurantsAsync(keyword);
-
-			ViewBag.SearchedKeyword = searchResults.SanitizedKeyword;
 			IEnumerable<RestaurantViewModel> results = searchResults.Results;
 
-			return View(results);
+			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+
+			var modelWrapper = new RestaurantViewModelWrapper
+			{
+				RestaurantViewModels = results,
+				CategoryNames = categories.Select(c => c.Title),
+				CategoryIds = categories.Select(c => c.Id)
+			};
+
+			ViewData["ListTitle"] = searchResults.SanitizedKeyword;
+
+			return View(nameof(All), modelWrapper);
 		}
 
 		[AllowAnonymous]
@@ -85,7 +136,7 @@ namespace FoodDeliveryApp.Controllers
 
 			if (restaurant == null)
 			{
-				return NotFound();
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
 			}
 
 			IEnumerable<ItemViewModel> items = await restaurantService.MenuRestaurantAsync(restaurantId);
@@ -109,9 +160,12 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
+			var (restaurants, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+			var categoryViewModels = categories.Select(c => new RestaurantCategoryModel { Id = c.Id, Title = c.Title });
+
 			var model = new RestaurantFormModel()
 			{
-				Categories = await restaurantService.AllRestaurantCategoriesAsync()
+				Categories = categoryViewModels
 			};
 
 			return View(model);
@@ -168,14 +222,24 @@ namespace FoodDeliveryApp.Controllers
 
 			if (ModelState.IsValid == false)
 			{
-				model.Categories = await restaurantService.AllRestaurantCategoriesAsync();
-
+				var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+				model.Categories = categories.Select(c => new RestaurantCategoryModel { Id = c.Id, Title = c.Title });
 				return View(model);
 			}
 
 			await restaurantService.AddRestaurantAsync(model, openHour, closeHour);
 
 			return RedirectToAction(nameof(All));
+		}
+
+		public async Task<IActionResult> RestaurantCategories()
+		{
+			var model = new RestaurantViewModelWrapper
+			{
+				CategoryNames = await restaurantService.AllRestaurantCategoriesNamesAsync()
+			};
+
+			return View(model);
 		}
 	}
 }

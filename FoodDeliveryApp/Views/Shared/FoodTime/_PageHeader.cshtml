@@ -1,4 +1,6 @@
-﻿<!-- Header -->
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+<!-- Header -->
 <header class="site-header mo-left header header-transparent style-1">
 	<!-- Main Header -->
 	<div class="sticky-header main-bar-wraper navbar-expand-lg">
@@ -22,9 +24,28 @@
 					<div class="extra-cell">
 						<ul>
 							<li>
-								<a class="btn btn-white btn-square btn-shadow" data-bs-toggle="offcanvas" href="#offcanvasLogin" role="button" aria-controls="offcanvasLogin">
-									<i class="flaticon-user"></i>
-								</a>
+								<ul class="navbar-nav">
+									@if (SignInManager.IsSignedIn(User))
+									{
+		<li class="nav-item">
+			<a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+		</li>
+		<li class="nav-item">
+			<form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+				<button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+			</form>
+		</li>
+									}
+									else
+									{
+		<li class="nav-item">
+				<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+		</li>
+		<li class="nav-item">
+				<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+		</li>
+									}
+</ul>
 							</li>
 							<li>
 								<button type="button" class="btn btn-white btn-square btn-shadow cart-btn">

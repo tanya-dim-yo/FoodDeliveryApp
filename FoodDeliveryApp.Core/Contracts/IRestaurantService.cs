@@ -6,20 +6,19 @@ namespace FoodDeliveryApp.Core.Contracts
     public interface IRestaurantService
     {
 		Task<int> AddRestaurantAsync(RestaurantFormModel model, DateTime openHour, DateTime closeHour);
-        Task EditRestaurantAsync(RestaurantDetailViewModel model);
-        Task DeleteRestaurantAsync(RestaurantDetailViewModel model);
-        Task<bool> ExistsRestaurantAsync(int id);
-        Task<bool> ExistsRestaurantCategoryAsync(int categoryId);
+		Task EditAsync(int restaurantId, RestaurantFormModel model);
+		Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories)> GetAllRestaurantsAndCategoriesAsync();
+		Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync();
+		Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync();
+		Task<IEnumerable<RestaurantViewModel>> GetRestaurantsByCategoryAsync(int categoryId);
+		Task<RestaurantViewModel?> GetRestaurantByIdAsync(int id);
+		Task<IEnumerable<RestaurantViewModel>> HighestRatingRestaurantsAsync();
+		Task<IEnumerable<RestaurantViewModel>> RestaurantsByServiceFeeAsync();
+		Task<IEnumerable<ItemViewModel>> MenuRestaurantAsync(int restaurantId);
+		Task RateRestaurant(int restaurantId, double newRating);
+		Task<(string SanitizedKeyword, IEnumerable<RestaurantViewModel> Results)> SearchRestaurantsAsync(string keyword);
+		Task<bool> ExistsRestaurantAsync(int id);
+		Task<bool> ExistsRestaurantCategoryAsync(int categoryId);
 		Task<bool> ExistsCityAsync(int cityId);
-		Task<IEnumerable<RestaurantCategoryModel>> AllRestaurantCategoriesAsync();
-        Task<IEnumerable<RestaurantViewModel>> GetRestaurantsByCategoryAsync(int categoryId);
-        Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync();
-        Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync();
-        Task<(string SanitizedKeyword, IEnumerable<RestaurantViewModel> Results)> SearchRestaurantsAsync(string keyword);
-        Task<IEnumerable<RestaurantViewModel>> HighestRatingRestaurantsAsync();
-        Task<IEnumerable<RestaurantViewModel>> RestaurantsByServiceFeeAsync();
-        Task<IEnumerable<ItemViewModel>> MenuRestaurantAsync(int restaurantId);
-        Task<RestaurantViewModel?> GetRestaurantByIdAsync(int id);
-        Task RateRestaurant(int restaurantId, double newRating);
-    }
+	}
 }

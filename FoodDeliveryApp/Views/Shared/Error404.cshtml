@@ -2,22 +2,14 @@
 @{
 	Layout = "~/Views/Shared/_LayoutFoodTimeEmptyWithHeader.cshtml";
 }
-
-<h1>Error</h1>
-
-<p>Error Message: @Model.ErrorMessage</p>
-
-<p>Request ID: @Model.RequestId</p>
-
 <div class="page-content bg-white">
 	<div class="content-inner overflow-hidden pt-4 error-page" id="app-banner" style="background-image:url('../foodtime/images/background/bg1.jpg'); background-repeat:no-repeat;    background-size: cover;">
 		<div class="container">
 			<div class="inner-content text-center">
-				<h1 class="error-head">Грешка!</h1>
-				<h3 class="error-para">Съжаляваме! Страницата не може да бъде намерена.</h3>
+				<h1 class="error-head">404</h1>
+				<p>Съжаляваме. Страницата не може да бъде намерена.</p>
 				<p>Error Message: @Model.ErrorMessage</p>
-				<p>Request ID: @Model.RequestId</p>
-				<a href="@Url.Action("Index","FoodTime")" class="btn btn-md btn-primary btn-hover-1"><span>Back to Home</span></a>
+				<a href="@Url.Action("Index","Home")" class="btn btn-md btn-primary btn-hover-1"><span>Начало</span></a>
 			</div>
 		</div>
 	</div>

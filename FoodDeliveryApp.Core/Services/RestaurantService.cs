@@ -2,24 +2,24 @@
 using FoodDeliveryApp.Core.Models.Item;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace FoodDeliveryApp.Core.Services.Restaurant
 {
-    public class RestaurantService : IRestaurantService
+	public class RestaurantService : IRestaurantService
 	{
-		private readonly IRepository repository;
-		private readonly ILogger logger;
+		private readonly IRepository _repository;
+		private readonly ILogger<RestaurantService> _logger;
 
 		public RestaurantService(
-			IRepository _repository,
-			ILogger<RestaurantService> _logger)
-        {
-            repository = _repository;
-			logger = _logger;
+			IRepository repository,
+			ILogger<RestaurantService> logger)
+		{
+			_repository = repository;
+			_logger = logger;
 		}
 
 		public async Task<int> AddRestaurantAsync(RestaurantFormModel model, DateTime openHour, DateTime closeHour)
@@ -40,61 +40,43 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				RestaurantCategoryId = model.RestaurantCategoryId
 			};
 
-			await repository.AddAsync(restaurant);
-			await repository.SaveChangesAsync();
+			await _repository.AddAsync(restaurant);
+			await _repository.SaveChangesAsync();
 
 			return restaurant.Id;
 		}
 
-		public Task EditRestaurantAsync(RestaurantDetailViewModel model)
+		public async Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories)> GetAllRestaurantsAndCategoriesAsync()
 		{
-			throw new NotImplementedException();
+			var restaurants = await GetAllRestaurantsAsync();
+			var categories = await AllRestaurantCategoriesAsync();
+
+			return (restaurants, categories);
 		}
 
-		public Task DeleteRestaurantAsync(RestaurantDetailViewModel model)
+		private async Task<IEnumerable<(int Id, string Title)>> AllRestaurantCategoriesAsync()
 		{
-			throw new NotImplementedException();
-		}
-
-
-		public async Task<IEnumerable<RestaurantCategoryModel>> AllRestaurantCategoriesAsync()
-		{
-			return await repository
+			var categories = await _repository
 				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
-				.Select(c => new RestaurantCategoryModel()
-				{
-					Id = c.Id,
-					Title = c.Title,
-				})
+				.Select(c => new { c.Id, c.Title })
 				.ToListAsync();
+
+			return categories.Select(c => (c.Id, c.Title));
 		}
 
 		public async Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync()
 		{
-			return await repository
+			return await _repository
 				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
+				.OrderBy(c => c.Title)
 				.Select(c => c.Title)
 				.Distinct()
 				.ToListAsync();
 		}
 
-		public async Task<bool> ExistsRestaurantAsync(int id)
-		{
-			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
-				.AnyAsync(p => p.Id == id);
-		}
-
-		public async Task<bool> ExistsRestaurantCategoryAsync(int categoryId)
-		{
-			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
-				.AnyAsync(p => p.Id == categoryId);
-		}
-
 		public async Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync()
 		{
-			return await repository
+			return await _repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.Select(p => new RestaurantViewModel()
 				{
@@ -113,7 +95,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task<IEnumerable<RestaurantViewModel>> GetRestaurantsByCategoryAsync(int categoryId)
 		{
-			return await repository
+			return await _repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.Where(p => p.RestaurantCategoryId == categoryId)
 				.Select(p => new RestaurantViewModel()
@@ -131,9 +113,29 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 		}
 
+		public async Task<RestaurantViewModel?> GetRestaurantByIdAsync(int id)
+		{
+			return await _repository
+				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+				.Where(p => p.Id == id)
+				.Select(p => new RestaurantViewModel()
+				{
+					Id = p.Id,
+					Title = p.Title,
+					ServiceFee = p.ServiceFee,
+					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
+					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
+					ImageURL = p.ImageURL,
+					AverageRating = p.AverageRating,
+					TotalReviews = p.TotalReviews,
+					RestaurantCategory = p.RestaurantCategory.Title
+				})
+				.FirstOrDefaultAsync();
+		}
+
 		public async Task<IEnumerable<RestaurantViewModel>> HighestRatingRestaurantsAsync()
 		{
-			return await repository
+			return await _repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.OrderByDescending(p => p.AverageRating)
 				.Select(p => new RestaurantViewModel()
@@ -153,7 +155,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task<IEnumerable<ItemViewModel>> MenuRestaurantAsync(int restaurantId)
 		{
-			return await repository
+			return await _repository
 				.AllReadOnly<Infrastructure.Data.Models.Item>()
 				.Where(i => i.RestaurantId == restaurantId)
 				.Select(i => new ItemViewModel()
@@ -172,7 +174,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task RateRestaurant(int restaurantId, double newRating)
 		{
-			var restaurant = await repository.All<Infrastructure.Data.Models.Restaurant>()
+			var restaurant = await _repository.All<Infrastructure.Data.Models.Restaurant>()
 				.FirstOrDefaultAsync(r => r.Id == restaurantId);
 
 			if (restaurant == null)
@@ -182,23 +184,21 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 			restaurant.UpdateRating(newRating);
 
-			await repository.SaveChangesAsync();
+			await _repository.SaveChangesAsync();
 		}
 
 		public async Task<(string SanitizedKeyword, IEnumerable<RestaurantViewModel> Results)> SearchRestaurantsAsync(string keyword)
 		{
 			string sanitizedKeyword = Sanitize(keyword);
 
-			// Split the sanitized keyword into individual words
 			var characters = sanitizedKeyword.ToLower().Select(c => c.ToString()).ToArray();
 
-			var query = repository.AllReadOnly<Infrastructure.Data.Models.Restaurant>();
+			var query = _repository.AllReadOnly<Infrastructure.Data.Models.Restaurant>();
 
 			foreach (var ch in characters)
 			{
 				var keywordParameter = "%" + ch + "%";
 
-				// Apply the search criteria for each keyword
 				query = query
 					.Where(p => EF.Functions.Like(p.Title.ToLower(), keywordParameter)
 						   || p.Items.Any(i => EF.Functions.Like(i.Title.ToLower(), keywordParameter)
@@ -223,11 +223,9 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			return (sanitizedKeyword, results);
 		}
 
-
-
 		public async Task<IEnumerable<RestaurantViewModel>> RestaurantsByServiceFeeAsync()
 		{
-			return await repository
+			return await _repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.OrderBy(p => p.ServiceFee)
 				.Select(p => new RestaurantViewModel()
@@ -243,26 +241,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					RestaurantCategory = p.RestaurantCategory.Title
 				})
 				.ToListAsync();
-		}
-
-		public async Task<RestaurantViewModel?> GetRestaurantByIdAsync(int id)
-		{
-			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
-				.Where(p => p.Id == id)
-				.Select(p => new RestaurantViewModel()
-				{
-					Id = p.Id,
-					Title = p.Title,
-					ServiceFee = p.ServiceFee,
-					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
-					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					ImageURL = p.ImageURL,
-					AverageRating = p.AverageRating,
-					TotalReviews = p.TotalReviews,
-					RestaurantCategory = p.RestaurantCategory.Title
-				})
-				.FirstOrDefaultAsync();
 		}
 
 		private string Sanitize(string input)
@@ -295,9 +273,46 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task<bool> ExistsCityAsync(int cityId)
 		{
-			return await repository
+			return await _repository
 				.AllReadOnly<Infrastructure.Data.Models.City>()
 				.AnyAsync(p => p.Id == cityId);
+		}
+
+		public async Task<bool> ExistsRestaurantAsync(int id)
+		{
+			return await _repository
+				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+				.AnyAsync(p => p.Id == id);
+		}
+
+		public async Task<bool> ExistsRestaurantCategoryAsync(int categoryId)
+		{
+			return await _repository
+				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
+				.AnyAsync(p => p.Id == categoryId);
+		}
+
+		public async Task EditAsync(int restaurantId, RestaurantFormModel model)
+		{
+			var restaurant = await _repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
+
+			if (restaurant != null)
+			{
+				restaurant.Title = model.Title;
+				restaurant.Address = model.Address;
+				restaurant.CityId = model.CityId;
+				restaurant.OpeningHour = model.OpenHourDateTime;
+				restaurant.ClosingHour = model.CloseHourDateTime;
+				restaurant.Latitude = model.Latitude;
+				restaurant.Longitude = model.Longitude;
+				restaurant.ServiceFee = model.ServiceFee;
+				restaurant.MinDeliveryTimeInMinutes = model.MinDeliveryTimeInMinutes;
+				restaurant.MaxDeliveryTimeInMinutes = model.MaxDeliveryTimeInMinutes;
+				restaurant.ImageURL = model.ImageURL;
+				restaurant.RestaurantCategoryId = model.RestaurantCategoryId;
+
+				await _repository.SaveChangesAsync();
+			}
 		}
 	}
 }

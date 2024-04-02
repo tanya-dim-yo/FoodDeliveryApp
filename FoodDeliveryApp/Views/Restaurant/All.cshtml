@@ -1,5 +1,6 @@
 ﻿@using FoodDeliveryApp.Core.Models.Restaurant
-@model IEnumerable<RestaurantViewModel>
+@using FoodDeliveryApp.Core.Services.Restaurant
+@model RestaurantViewModelWrapper
 
 @{
 	Layout = "~/Views/Shared/_LayoutFoodTime.cshtml";
@@ -64,28 +65,10 @@
 									<a href="javascript:void(0);" class="panel-close-btn"><i class="fa-solid fa-xmark"></i></a>
 								</div>
 								<div class="tagcloud">
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 1 })">Азиатска</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 2 })">Американска</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 3 })">Арабска</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 4 })">Вегетарианска</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 5 })">Гръцка</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 6 })">Десерти</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 7 })">Закуска</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 8 })">Здравословна</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 9 })">Индийска</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 10 })">Италианска</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 11 })">Международна</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 12 })">Мексиканска</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 13 })">Местна храна</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 14 })">Морски дарове</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 15 })">Напитки</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 16 })">Паста</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 17 })">Печива и сладкиши</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 18 })">Сандвич</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 19 })">Средиземноморска</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 20 })">Суши</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 21 })">Турска</a></div>
-									<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId = 22 })">Чай и кафе</a></div>
+									@foreach (var (categoryName, categoryId) in Model.CategoryNames.Zip(Model.CategoryIds, (name, id) => (name, id)))
+									{
+										<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId })">@categoryName</a></div>
+									}
 								</div>
 							</div>
 						</div>
@@ -93,28 +76,35 @@
 				</div>
 				<div class="col-lg-9">
 					<div class="d-flex justify-content-between align-items-center">
-						<h5 class="title mb-md-3 mb-lg-4 m-b20 d-none d-lg-block">Ресторанти : доставка в гр. София</h5>
+						<h5 class="title mb-md-3 mb-lg-4 m-b20 d-none d-lg-block">@ViewData["ListTitle"]</h5>
 					</div>
 					<ul id="masonry" class="row">
-						@foreach (var restaurant in Model)
+						@if (Model.RestaurantViewModels.Count() == 0)
+                        {
+                            <p>Няма намерени резултати.</p>
+                        }
+						else
 						{
-							<li class="card-container col-xl-4 col-md-6 m-b30">
-								<div class="dz-img-box style-7">
-									<div class="dz-media">
-										<img src="@Url.Content(restaurant.ImageURL)" alt="@restaurant.Title">
-										<div class="dz-meta">
-											<ul>
-												<li class="seller">@restaurant.RestaurantCategory</li>
-												<li class="rating"><i class="fa-solid fa-star"></i> @restaurant.AverageRatingPercent</li>
-											</ul>
+							@foreach (var restaurant in Model.RestaurantViewModels)
+							{
+								<li class="card-container col-xl-4 col-md-6 m-b30">
+									<div class="dz-img-box style-7">
+										<div class="dz-media">
+											<img src="@Url.Content(restaurant.ImageURL)" alt="@restaurant.Title">
+											<div class="dz-meta">
+												<ul>
+													<li class="seller">@restaurant.RestaurantCategory</li>
+													<li class="rating"><i class="fa-solid fa-star"></i> @restaurant.AverageRatingPercent</li>
+												</ul>
+											</div>
+										</div>
+										<div class="dz-content">
+												<h5 class="title"><a href="@Url.Action("Menu","Restaurant", new { restaurantId = restaurant.Id })">@restaurant.Title</a></h5>
+													<span>@restaurant.ServiceFee лв. · @restaurant.MinDeliveryTimeInMinutes - @restaurant.MaxDeliveryTimeInMinutes мин.</span>
 										</div>
 									</div>
-									<div class="dz-content">
-											<h5 class="title"><a href="@Url.Action("Menu","Restaurant", new { restaurantId = restaurant.Id })">@restaurant.Title</a></h5>
-												<span>@restaurant.ServiceFee лв. · @restaurant.MinDeliveryTimeInMinutes - @restaurant.MaxDeliveryTimeInMinutes мин.</span>
-									</div>
-								</div>
-							</li>
+								</li>
+							}
 						}
 					</ul>
 				</div>
