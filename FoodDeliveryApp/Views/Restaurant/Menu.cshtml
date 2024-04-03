@@ -41,7 +41,7 @@
 					</div>
 				</div>
 				<div class="col-xl-2 col-lg-3 col-md-12 text-lg-end mb-lg-0 m-b30 d-flex d-lg-block align-items-center justify-content-between">
-					<strong class="filter-item-show d-lg-none">@Model.Items.Count() продукти</strong>
+					<strong class="filter-item-show d-lg-none">@Model.Products.Count() продукти</strong>
 					<a data-bs-toggle="offcanvas" href="#offcanvasFilter" role="button" aria-controls="offcanvasFilter" class="btn btn-primary filter-btn btn-hover-2">
 						Filter <span><i class="icon-filter m-l5"></i></span>
 					</a>
@@ -246,29 +246,29 @@
 				</div>
 			</div>
 			<ul id="masonry" class="row">
-				@if (Model.Items.Count() == 0)
+				@if (Model.Products.Count() == 0)
                 {
                     <p>Няма намерени продукти.</p>
                 }
 				else
 				{
-					@foreach (var item in Model.Items)
+					@foreach (var product in Model.Products)
 					{
 						<li class="card-container col-lg-4 col-md-6 m-b30 All drink pizza burger">
 							<div class="dz-img-box style-7">
 								<div class="dz-media">
-									<img src="@Url.Content(item.Image)" alt="/">
+									<img src="@Url.Content(product.Image)" alt="/">
 									<div class="dz-meta">
 										<ul>
-											<li class="seller">@item.ItemCategory</li>
-												<li class="rating"><i class="fa-solid fa-star"></i>@item.AverageRatingPercent</li>
+											<li class="seller">@product.ItemCategory</li>
+												<li class="rating"><i class="fa-solid fa-star"></i>@product.AverageRatingPercent</li>
 										</ul>
 									</div>
 								</div>
 								<div class="dz-content">
-									<h5 class="title"><a href="@Url.Action("Details","Product")">@item.Title</a></h5>
-									<p>@item.Description</p>
-									<span class="price">@item.Price лв.</span>
+									<h5 class="title"><a href="@Url.Action("Details","Product")">@product.Title</a></h5>
+									<p>@product.Description</p>
+									<span class="price">@product.Price лв.</span>
 								</div>
 							</div>
 						</li>

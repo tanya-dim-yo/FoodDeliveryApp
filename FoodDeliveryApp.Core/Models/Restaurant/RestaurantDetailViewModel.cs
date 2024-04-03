@@ -6,6 +6,6 @@ namespace FoodDeliveryApp.Core.Models.Restaurant
 	{
 		public RestaurantViewModel Restaurant { get; set; } = new RestaurantViewModel();
 
-		public IEnumerable<ProductViewModel> Items { get; set; } = new List<ProductViewModel>();
+		public IEnumerable<ProductViewModel> Products { get; set; } = new List<ProductViewModel>();
 	}
 }
