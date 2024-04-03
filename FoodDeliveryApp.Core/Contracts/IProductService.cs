@@ -4,6 +4,6 @@ namespace FoodDeliveryApp.Core.Contracts
 {
 	public interface IProductService
 	{
-		Task<ProductViewModel?> GetProductByIdAsync(int productId);
+		Task<ProductDetailsViewModel?> GetProductByIdAsync(int productId);
 	}
 }

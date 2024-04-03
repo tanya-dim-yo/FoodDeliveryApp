@@ -20,12 +20,12 @@ namespace FoodDeliveryApp.Core.Services
 			logger = _logger;
 		}
 
-		public async Task<ProductViewModel?> GetProductByIdAsync(int productId)
+		public async Task<ProductDetailsViewModel?> GetProductByIdAsync(int productId)
 		{
 			return await repository
 				.AllReadOnly<Item>()
 				.Where(i => i.Id == productId)
-				.Select(p => new ProductViewModel()
+				.Select(p => new ProductDetailsViewModel()
 				{
 					Id = p.Id,
 					Title = p.Title,
@@ -33,8 +33,11 @@ namespace FoodDeliveryApp.Core.Services
 					Price = p.Price,
 					AverageRating = p.AverageRating,
 					TotalReviews = p.TotalReviews,
+					IsFavourite = p.IsFavourite,
+					IsVeggie = p.IsVeggie,
 					ImageURL = p.ImageURL,
-					ItemCategory = p.ItemCategory.Title
+					ItemCategory = p.ItemCategory.Title,
+					SpicyCategory = p.SpicyCategory.Title
 				})
 				.FirstOrDefaultAsync();
 		}
