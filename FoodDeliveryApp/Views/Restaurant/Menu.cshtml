@@ -1,5 +1,4 @@
-﻿@using FoodDeliveryApp.Core.Models.Restaurant
-@model RestaurantDetailViewModel
+﻿@model RestaurantDetailViewModel
 
 @{
 	Layout = "~/Views/Shared/_LayoutFoodTime.cshtml";
@@ -257,7 +256,7 @@
 						<li class="card-container col-lg-4 col-md-6 m-b30 All drink pizza burger">
 							<div class="dz-img-box style-7">
 								<div class="dz-media">
-									<img src="@Url.Content(product.Image)" alt="/">
+									<img src="@Url.Content(product.ImageURL)" alt="@product.Title">
 									<div class="dz-meta">
 										<ul>
 											<li class="seller">@product.ItemCategory</li>
@@ -266,7 +265,7 @@
 									</div>
 								</div>
 								<div class="dz-content">
-									<h5 class="title"><a href="@Url.Action("Details","Product")">@product.Title</a></h5>
+											<h5 class="title"><a href="@Url.Action("Details", "Product", new { id = product.Id })">@product.Title</a></h5>
 									<p>@product.Description</p>
 									<span class="price">@product.Price лв.</span>
 								</div>

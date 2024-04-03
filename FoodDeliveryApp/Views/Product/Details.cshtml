@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ProductViewModel
+
+@{
 	Layout = "~/Views/Shared/_LayoutFoodTime.cshtml";
 }
 <div class="page-content bg-white">
@@ -25,7 +27,7 @@
 			<div class="row product-detail">
 				<div class="col-lg-4 col-md-5">
 					<div class="detail-media m-b30">
-						<img src="~/foodtime/images/modal/pic1.jpg" alt="/">
+						<img src="@Url.Content(Model.ImageURL)" alt="@Model.Title">
 					</div>
 				</div>
 				<div class="col-lg-8 col-md-7">
@@ -38,22 +40,22 @@
 							Pure veg
 						</span>
 						<div class="dz-head">
-							<h2 class="title">Double Patty Veg Burger</h2>
+							<h2 class="title">@Model.Title</h2>
 							<div class="rating">
-								<i class="fa-solid fa-star"></i> <span><strong class="text-dark">4.5</strong> - 20 Reviews</span>
+								<i class="fa-solid fa-star"></i> <span><strong class="text-dark">@Model.AverageRatingPercent</strong> - 20 Reviews</span>
 							</div>
 						</div>
-						<p class="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+						<p class="text">@Model.Description</p>
 						<ul class="detail-list">
-							<li>Price <span class="text-primary m-t5">$20.00</span></li>
+							<li>Цена <span class="text-primary m-t5">@Model.Price лв.</span></li>
 							<li>
-								Quantity
+								Количество
 								<div class="btn-quantity style-1 m-t5">
 									<input id="demo_vertical2" type="text" value="1" name="demo_vertical2">
 								</div>
 							</li>
 						</ul>
-						<h6 class="title">Add On</h6>
+						<h6 class="title">Добавки</h6>
 						<ul class="add-product">
 							<li>
 								<div class="mini-modal">
@@ -110,8 +112,8 @@
 						</ul>
 						<div class="d-lg-flex justify-content-between">
 							<ul class="modal-btn-group">
-								<li><a href="@Url.Action("ShopCart","FoodTime")" class="btn btn-primary btn-hover-1"><span>Add To Cart <i class="flaticon-shopping-bag-1 m-l10"></i></span></a></li>
-								<li><a href="@Url.Action("ShopCheckout","FoodTime")" class="btn btn-outline-secondary btn-hover-1"><span>Buy Now <i class="flaticon-shopping-cart m-l10"></i></a></span></li>
+								<li><a href="@Url.Action("ShopCart","FoodTime")" class="btn btn-primary btn-hover-1"><span>Добави <i class="flaticon-shopping-bag-1 m-l10"></i></span></a></li>
+								<li><a href="@Url.Action("ShopCheckout","FoodTime")" class="btn btn-outline-secondary btn-hover-1"><span>Количка <i class="flaticon-shopping-cart m-l10"></i></a></span></li>
 							</ul>
 							<ul class="avatar-list avatar-list-stacked">
 								<li class="avatar"><img src="~/foodtime/images/testimonial/small/pic1.jpg" alt=""></li>
@@ -136,19 +138,19 @@
 						<li class="nav-item">
 							<button class="nav-link active" data-bs-toggle="tab" href="#web-design-1">
 								<i class="icon-globe"></i>
-								<span class="d-none d-md-inline-block m-l10">Description</span>
+								<span class="d-none d-md-inline-block m-l10">Описание</span>
 							</button>
 						</li>
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" href="#graphic-design-1">
 								<i class="icon-image"></i>
-								<span class="d-none d-md-inline-block m-l10">Additional Information</span>
+								<span class="d-none d-md-inline-block m-l10">Допълнителна информация</span>
 							</button>
 						</li>
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" href="#developement-1">
 								<i class="icon-settings"></i>
-								<span class="d-none d-md-inline-block m-l10">Product Review</span>
+								<span class="d-none d-md-inline-block m-l10">Отзиви</span>
 							</button>
 						</li>
 					</ul>
