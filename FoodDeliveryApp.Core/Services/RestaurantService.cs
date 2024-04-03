@@ -314,5 +314,44 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				await _repository.SaveChangesAsync();
 			}
 		}
+
+		public async Task<RestaurantFormModel?> GetRestaurantFormModelByIdAsync(int restaurantId)
+		{
+			var restaurant = await _repository.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+						   .Where(r => r.Id == restaurantId)
+						   .Select(r => new RestaurantFormModel()
+						   {
+							   Title = r.Title,
+							   Address = r.Address,
+							   CityId = r.CityId,
+							   OpeningHour = r.OpeningHour.ToString("HH:mm"),
+							   OpenHourDateTime = r.OpeningHour,
+							   ClosingHour = r.ClosingHour.ToString("HH:mm"),
+							   CloseHourDateTime = r.ClosingHour,
+							   Latitude = r.Latitude,
+							   Longitude = r.Longitude,
+							   ServiceFee = r.ServiceFee,
+							   MinDeliveryTimeInMinutes = r.MinDeliveryTimeInMinutes,
+							   MaxDeliveryTimeInMinutes = r.MaxDeliveryTimeInMinutes,
+							   ImageURL = r.ImageURL,
+							   RestaurantCategoryId = r.RestaurantCategoryId
+						   })
+						   .FirstOrDefaultAsync();
+
+			if (restaurant != null)
+			{
+				var categories = await AllRestaurantCategoriesAsync();
+
+				restaurant.Categories = categories
+					.Select(c => new RestaurantCategoryModel
+					{
+						Id = c.Id,
+						Title = c.Title
+					})
+					.ToList();
+			}
+
+			return restaurant;
+		}
 	}
 }

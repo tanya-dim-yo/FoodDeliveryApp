@@ -7,6 +7,7 @@ namespace FoodDeliveryApp.Core.Contracts
     {
 		Task<int> AddRestaurantAsync(RestaurantFormModel model, DateTime openHour, DateTime closeHour);
 		Task EditAsync(int restaurantId, RestaurantFormModel model);
+		Task<RestaurantFormModel?> GetRestaurantFormModelByIdAsync(int restaurantId);
 		Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories)> GetAllRestaurantsAndCategoriesAsync();
 		Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync();
 		Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync();
