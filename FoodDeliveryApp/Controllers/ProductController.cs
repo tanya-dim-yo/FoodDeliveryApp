@@ -1,10 +1,12 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
+using FoodDeliveryApp.Core.Models.Product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.ProductErrorMessagesConstants;
 
 namespace FoodDeliveryApp.Controllers
 {
-    public class ProductController : BaseController
+	public class ProductController : BaseController
     {
 		private readonly IProductService productService;
 
@@ -17,9 +19,14 @@ namespace FoodDeliveryApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int productId)
         {
-            var model = await productService.GetProductByIdAsync(productId);
+            ProductDetailsViewModel? model = await productService.GetProductByIdAsync(productId);
 
-            return View(model);
+			if (model == null)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductErrorMessage });
+			}
+
+			return View(model);
         }
     }
 }
