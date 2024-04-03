@@ -1,5 +1,5 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
-using FoodDeliveryApp.Core.Models.Item;
+using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -139,7 +139,7 @@ namespace FoodDeliveryApp.Controllers
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
 			}
 
-			IEnumerable<ItemViewModel> items = await restaurantService.MenuRestaurantAsync(restaurantId);
+			IEnumerable<ProductViewModel> items = await restaurantService.MenuRestaurantAsync(restaurantId);
 
 			var model = new RestaurantDetailViewModel
 			{

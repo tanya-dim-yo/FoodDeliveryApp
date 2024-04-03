@@ -1,6 +1,6 @@
-﻿namespace FoodDeliveryApp.Core.Models.Item
+﻿namespace FoodDeliveryApp.Core.Models.Product
 {
-	public class ItemViewModel
+	public class ProductViewModel
     {
 		public int Id { get; set; }
 

@@ -1,4 +1,4 @@
-﻿using FoodDeliveryApp.Core.Models.Item;
+﻿using FoodDeliveryApp.Core.Models.Product;
 
 namespace FoodDeliveryApp.Core.Models.Restaurant
 {
@@ -6,6 +6,6 @@ namespace FoodDeliveryApp.Core.Models.Restaurant
 	{
 		public RestaurantViewModel Restaurant { get; set; } = new RestaurantViewModel();
 
-		public IEnumerable<ItemViewModel> Items { get; set; } = new List<ItemViewModel>();
+		public IEnumerable<ProductViewModel> Items { get; set; } = new List<ProductViewModel>();
 	}
 }

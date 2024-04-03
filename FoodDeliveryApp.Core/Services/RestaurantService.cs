@@ -1,6 +1,6 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.City;
-using FoodDeliveryApp.Core.Models.Item;
+using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
@@ -165,12 +165,12 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 		}
 
-		public async Task<IEnumerable<ItemViewModel>> MenuRestaurantAsync(int restaurantId)
+		public async Task<IEnumerable<ProductViewModel>> MenuRestaurantAsync(int restaurantId)
 		{
 			return await _repository
 				.AllReadOnly<Infrastructure.Data.Models.Item>()
 				.Where(i => i.RestaurantId == restaurantId)
-				.Select(i => new ItemViewModel()
+				.Select(i => new ProductViewModel()
 				{
 					Id = i.Id,
 					Title = i.Title,
