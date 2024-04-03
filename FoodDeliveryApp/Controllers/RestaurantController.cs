@@ -10,7 +10,7 @@ using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.RestaurantErr
 namespace FoodDeliveryApp.Controllers
 {
 	public class RestaurantController : BaseController
-    {
+	{
 		private readonly IRestaurantService restaurantService;
 
 		public RestaurantController(IRestaurantService _restaurantService)
@@ -108,9 +108,9 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> Search(string keyword)
-        {
+		[HttpGet]
+		public async Task<IActionResult> Search(string keyword)
+		{
 			var searchResults = await restaurantService.SearchRestaurantsAsync(keyword);
 			IEnumerable<RestaurantViewModel> results = searchResults.Results;
 
@@ -129,7 +129,7 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[AllowAnonymous]
-        [HttpGet]
+		[HttpGet]
 		public async Task<IActionResult> Menu(int restaurantId)
 		{
 			RestaurantViewModel? restaurant = await restaurantService.GetRestaurantByIdAsync(restaurantId);
@@ -232,6 +232,7 @@ namespace FoodDeliveryApp.Controllers
 			return RedirectToAction(nameof(All));
 		}
 
+		[HttpGet]
 		public async Task<IActionResult> RestaurantCategories()
 		{
 			var model = new RestaurantViewModelWrapper
@@ -253,6 +254,33 @@ namespace FoodDeliveryApp.Controllers
 			var model = await restaurantService.GetRestaurantFormModelByIdAsync(restaurantId);
 
 			return View(model);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(int restaurantId, RestaurantFormModel model)
+		{
+			if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
+			}
+
+			if (await restaurantService.ExistsRestaurantCategoryAsync(model.RestaurantCategoryId) == false)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantCategoryMessage });
+			}
+
+			if (ModelState.IsValid == false)
+			{
+				var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+				model.Categories = categories.Select(c => new RestaurantCategoryModel { Id = c.Id, Title = c.Title });
+				model.Cities = await restaurantService.AllRestaurantCitiesAsync();
+
+				return View(model);
+			}
+
+			await restaurantService.EditAsync(restaurantId, model);
+
+			return RedirectToAction("Menu", new { restaurantId });
 		}
 	}
 }
