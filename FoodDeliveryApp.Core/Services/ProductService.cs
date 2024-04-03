@@ -36,6 +36,8 @@ namespace FoodDeliveryApp.Core.Services
 					IsFavourite = p.IsFavourite,
 					IsVeggie = p.IsVeggie,
 					ImageURL = p.ImageURL,
+					RestaurantId = p.RestaurantId,
+					Restaurant = p.Restaurant.Title,
 					ItemCategory = p.ItemCategory.Title,
 					SpicyCategory = p.SpicyCategory.Title
 				})
