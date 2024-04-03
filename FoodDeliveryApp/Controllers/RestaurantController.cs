@@ -144,7 +144,7 @@ namespace FoodDeliveryApp.Controllers
 			var model = new RestaurantDetailViewModel
 			{
 				Restaurant = restaurant,
-				Items = items
+				Products = items
 			};
 
 			return View(model);
