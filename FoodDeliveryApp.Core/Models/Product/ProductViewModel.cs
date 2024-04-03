@@ -14,7 +14,7 @@
 
 		public int TotalReviews { get; set; }
 
-		public string Image { get; set; } = string.Empty;
+		public string ImageURL { get; set; } = string.Empty;
 
 		public string ItemCategory { get; set; } = string.Empty;
 

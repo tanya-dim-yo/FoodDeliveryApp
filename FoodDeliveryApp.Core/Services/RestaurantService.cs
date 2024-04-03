@@ -176,7 +176,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					Title = i.Title,
 					Description = i.Description,
 					Price = i.Price,
-					Image = i.Image,
+					ImageURL = i.ImageURL,
 					ItemCategory = i.ItemCategory.Title,
 					AverageRating = i.AverageRating,
 					TotalReviews = i.TotalReviews
