@@ -241,5 +241,18 @@ namespace FoodDeliveryApp.Controllers
 
 			return View(model);
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> Edit(int restaurantId)
+		{
+			if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
+			}
+
+			var model = await restaurantService.GetRestaurantFormModelByIdAsync(restaurantId);
+
+			return View(model);
+		}
 	}
 }
