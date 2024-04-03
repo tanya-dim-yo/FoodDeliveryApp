@@ -367,5 +367,27 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 			return restaurant;
 		}
+
+		public async Task DeleteAsync(int restaurantId)
+		{
+			var restaurant = await _repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
+
+			if (restaurant == null)
+			{
+				throw new Exception("Restaurant not found.");
+			}
+
+			var itemsToBeRemoved = _repository.All<Infrastructure.Data.Models.Item>()
+			.Where(i => i.RestaurantId == restaurantId);
+
+			foreach (var item in itemsToBeRemoved)
+			{
+				await _repository.DeleteAsync<Infrastructure.Data.Models.Item>(item);
+			}
+
+			await _repository.DeleteAsync<Infrastructure.Data.Models.Restaurant>(restaurant);
+
+			await _repository.SaveChangesAsync();
+		}
 	}
 }
