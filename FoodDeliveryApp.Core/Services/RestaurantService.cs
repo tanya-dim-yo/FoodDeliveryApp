@@ -1,8 +1,8 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
+using FoodDeliveryApp.Core.Models.City;
 using FoodDeliveryApp.Core.Models.Item;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
@@ -62,6 +62,18 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 
 			return categories.Select(c => (c.Id, c.Title));
+		}
+
+		public async Task<IEnumerable<CityServiceModel>> AllRestaurantCitiesAsync()
+		{
+			return await _repository
+				.AllReadOnly<Infrastructure.Data.Models.City>()
+				.Select(c => new CityServiceModel
+				{
+					Id = c.Id,
+					Name = c.Name
+				})
+				.ToListAsync();
 		}
 
 		public async Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync()
@@ -349,6 +361,8 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 						Title = c.Title
 					})
 					.ToList();
+
+				var cities = await AllRestaurantCitiesAsync();
 			}
 
 			return restaurant;

@@ -1,4 +1,5 @@
-﻿using FoodDeliveryApp.Core.Models.Item;
+﻿using FoodDeliveryApp.Core.Models.City;
+using FoodDeliveryApp.Core.Models.Item;
 using FoodDeliveryApp.Core.Models.Restaurant;
 
 namespace FoodDeliveryApp.Core.Contracts
@@ -8,6 +9,7 @@ namespace FoodDeliveryApp.Core.Contracts
 		Task<int> AddRestaurantAsync(RestaurantFormModel model, DateTime openHour, DateTime closeHour);
 		Task EditAsync(int restaurantId, RestaurantFormModel model);
 		Task<RestaurantFormModel?> GetRestaurantFormModelByIdAsync(int restaurantId);
+		Task<IEnumerable<CityServiceModel>> AllRestaurantCitiesAsync();
 		Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories)> GetAllRestaurantsAndCategoriesAsync();
 		Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync();
 		Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync();
