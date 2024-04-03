@@ -1,6 +1,9 @@
-﻿namespace FoodDeliveryApp.Core.Contracts
+﻿using FoodDeliveryApp.Core.Models.Product;
+
+namespace FoodDeliveryApp.Core.Contracts
 {
-	public class IProductService
+	public interface IProductService
 	{
+		Task<ProductViewModel?> GetProductByIdAsync(int id);
 	}
 }
