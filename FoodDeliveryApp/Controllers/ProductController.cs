@@ -19,7 +19,7 @@ namespace FoodDeliveryApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int productId)
         {
-            ProductDetailsViewModel? model = await productService.GetProductByIdAsync(productId);
+            ProductDetailsViewModel? model = await productService.GetProductDetailsByIdAsync(productId);
 
 			if (model == null)
 			{
@@ -28,5 +28,22 @@ namespace FoodDeliveryApp.Controllers
 
 			return View(model);
         }
-    }
+
+		[HttpPost]
+		public async Task<IActionResult> Favourite(int productId)
+		{
+			var product = await productService.GetProductByIdAsync(productId);
+
+			if (product == null)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductErrorMessage });
+			}
+
+			product.IsFavourite = !product.IsFavourite;
+
+			await productService.UpdateFavouriteProduct(productId);
+
+			return Json(new { success = true, isFavorite = product.IsFavourite });
+		}
+	}
 }
