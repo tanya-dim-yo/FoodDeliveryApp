@@ -20,7 +20,14 @@ namespace FoodDeliveryApp.Core.Services
 			logger = _logger;
 		}
 
-		public async Task<ProductDetailsViewModel?> GetProductByIdAsync(int productId)
+		public async Task<Item?> GetProductByIdAsync(int productId)
+		{
+			var product = await repository.GetByIdAsync<Item>(productId);
+
+			return product;
+		}
+
+		public async Task<ProductDetailsViewModel?> GetProductDetailsByIdAsync(int productId)
 		{
 			return await repository
 				.AllReadOnly<Item>()
@@ -38,10 +45,27 @@ namespace FoodDeliveryApp.Core.Services
 					ImageURL = p.ImageURL,
 					RestaurantId = p.RestaurantId,
 					Restaurant = p.Restaurant.Title,
+					MinDeliveryTimeInMinutes = p.Restaurant.MinDeliveryTimeInMinutes,
+					MaxDeliveryTimeInMinutes = p.Restaurant.MaxDeliveryTimeInMinutes,
 					ItemCategory = p.ItemCategory.Title,
 					SpicyCategory = p.SpicyCategory.Title
 				})
 				.FirstOrDefaultAsync();
+		}
+
+		public async Task UpdateFavouriteProduct(int productId)
+		{
+			var product = await repository.GetByIdAsync<Item>(productId);
+
+			if (product == null)
+			{
+				logger.LogError($"Product with id {productId} not found.");
+				return;
+			}
+
+			product.IsFavourite = !product.IsFavourite;
+
+			await repository.SaveChangesAsync();
 		}
 	}
 }
