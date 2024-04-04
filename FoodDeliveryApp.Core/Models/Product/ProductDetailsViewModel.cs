@@ -1,4 +1,6 @@
-﻿namespace FoodDeliveryApp.Core.Models.Product
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FoodDeliveryApp.Core.Models.Product
 {
 	public class ProductDetailsViewModel
 	{
@@ -25,6 +27,10 @@
 		public int RestaurantId { get; set; }
 
 		public string Restaurant { get; set; } = string.Empty;
+
+		public int MinDeliveryTimeInMinutes { get; set; }
+
+		public int MaxDeliveryTimeInMinutes { get; set; }
 
 		public string SpicyCategory { get; set; } = string.Empty;
 
