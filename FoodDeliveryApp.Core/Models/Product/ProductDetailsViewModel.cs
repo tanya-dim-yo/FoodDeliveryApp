@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FoodDeliveryApp.Core.Models.ProductReview;
+using System.ComponentModel.DataAnnotations;
 
 namespace FoodDeliveryApp.Core.Models.Product
 {
@@ -35,5 +36,7 @@ namespace FoodDeliveryApp.Core.Models.Product
 		public string SpicyCategory { get; set; } = string.Empty;
 
 		public double AverageRatingPercent => (AverageRating / 5) * 100;
+
+		public IEnumerable<ProductReviewViewModel> Reviews { get; set; } = new List<ProductReviewViewModel>();
 	}
 }
