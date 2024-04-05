@@ -355,7 +355,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				var categories = await AllRestaurantCategoriesAsync();
 
 				restaurant.Categories = categories
-					.Select(c => new RestaurantCategoryModel
+					.Select(c => new RestaurantCategoryViewModel
 					{
 						Id = c.Id,
 						Title = c.Title

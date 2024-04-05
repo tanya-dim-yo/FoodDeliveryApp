@@ -24,7 +24,7 @@ namespace FoodDeliveryApp.Controllers
 		{
 			var (model, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
-			var modelWrapper = new RestaurantViewModelWrapper
+			var modelWrapper = new RestaurantWithCategoriesViewModel
 			{
 				RestaurantViewModels = model,
 				CategoryNames = categories.Select(c => c.Title),
@@ -49,7 +49,7 @@ namespace FoodDeliveryApp.Controllers
 
 			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
-			var modelWrapper = new RestaurantViewModelWrapper
+			var modelWrapper = new RestaurantWithCategoriesViewModel
 			{
 				RestaurantViewModels = model,
 				CategoryNames = categories.Select(c => c.Title),
@@ -68,7 +68,7 @@ namespace FoodDeliveryApp.Controllers
 
 			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
-			var modelWrapper = new RestaurantViewModelWrapper
+			var modelWrapper = new RestaurantWithCategoriesViewModel
 			{
 				RestaurantViewModels = model,
 				CategoryNames = categories.Select(c => c.Title),
@@ -96,7 +96,7 @@ namespace FoodDeliveryApp.Controllers
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidCategoryErrorMessage });
 			}
 
-			var model = new RestaurantViewModelWrapper
+			var model = new RestaurantWithCategoriesViewModel
 			{
 				CategoryNames = categories.Select(c => c.Title),
 				CategoryIds = categories.Select(c => c.Id),
@@ -116,7 +116,7 @@ namespace FoodDeliveryApp.Controllers
 
 			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
-			var modelWrapper = new RestaurantViewModelWrapper
+			var modelWrapper = new RestaurantWithCategoriesViewModel
 			{
 				RestaurantViewModels = results,
 				CategoryNames = categories.Select(c => c.Title),
@@ -141,7 +141,7 @@ namespace FoodDeliveryApp.Controllers
 
 			IEnumerable<ProductViewModel> items = await restaurantService.MenuRestaurantAsync(restaurantId);
 
-			var model = new RestaurantDetailViewModel
+			var model = new RestaurantWithProductsViewModel
 			{
 				Restaurant = restaurant,
 				Products = items
@@ -161,7 +161,7 @@ namespace FoodDeliveryApp.Controllers
 		public async Task<IActionResult> Add()
 		{
 			var (restaurants, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
-			var categoryViewModels = categories.Select(c => new RestaurantCategoryModel { Id = c.Id, Title = c.Title });
+			var categoryViewModels = categories.Select(c => new RestaurantCategoryViewModel { Id = c.Id, Title = c.Title });
 
 			var model = new RestaurantFormModel()
 			{
@@ -223,7 +223,7 @@ namespace FoodDeliveryApp.Controllers
 			if (ModelState.IsValid == false)
 			{
 				var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
-				model.Categories = categories.Select(c => new RestaurantCategoryModel { Id = c.Id, Title = c.Title });
+				model.Categories = categories.Select(c => new RestaurantCategoryViewModel { Id = c.Id, Title = c.Title });
 				return View(model);
 			}
 
@@ -235,7 +235,7 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> RestaurantCategories()
 		{
-			var model = new RestaurantViewModelWrapper
+			var model = new RestaurantWithCategoriesViewModel
 			{
 				CategoryNames = await restaurantService.AllRestaurantCategoriesNamesAsync()
 			};
@@ -272,7 +272,7 @@ namespace FoodDeliveryApp.Controllers
 			if (ModelState.IsValid == false)
 			{
 				var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
-				model.Categories = categories.Select(c => new RestaurantCategoryModel { Id = c.Id, Title = c.Title });
+				model.Categories = categories.Select(c => new RestaurantCategoryViewModel { Id = c.Id, Title = c.Title });
 				model.Cities = await restaurantService.AllRestaurantCitiesAsync();
 
 				return View(model);
