@@ -1,4 +1,5 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
+using FoodDeliveryApp.Core.Services;
 using FoodDeliveryApp.Core.Services.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data;
 using FoodDeliveryApp.Infrastructure.Data.Common;
@@ -12,8 +13,9 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IRestaurantService, RestaurantService>();
+			services.AddScoped<IProductService, ProductService>();
 
-            return services;
+			return services;
         }
 
         public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config)
@@ -33,8 +35,12 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddDefaultIdentity<IdentityUser>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = true;
-            })
+				options.SignIn.RequireConfirmedAccount = false;
+				options.Password.RequireNonAlphanumeric = false;
+				options.Password.RequireDigit = false;
+				options.Password.RequireLowercase = false;
+				options.Password.RequireUppercase = false;
+			})
                 .AddEntityFrameworkStores<FoodDeliveryAppDbContext>();
 
             return services;

@@ -7,5 +7,10 @@
 			public const string InvalidCategoryErrorMessage = "Категорията не съществува.";
 			public const string InvalidRestaurantErrorMessage = "Ресторантът не съществува.";
 		}
+
+		public static class ProductErrorMessagesConstants
+		{
+			public const string InvalidProductErrorMessage = "Продуктът не съществува.";
+		}
 	}
 }

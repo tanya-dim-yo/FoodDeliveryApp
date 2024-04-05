@@ -95,6 +95,6 @@ namespace FoodDeliveryApp.Core.Models.Restaurant
 		public int RestaurantCategoryId { get; set; }
 
 
-		public IEnumerable<RestaurantCategoryModel> Categories { get; set; } = new List<RestaurantCategoryModel>();
+		public IEnumerable<RestaurantCategoryViewModel> Categories { get; set; } = new List<RestaurantCategoryViewModel>();
 	}
 }

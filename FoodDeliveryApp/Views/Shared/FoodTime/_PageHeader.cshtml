@@ -27,31 +27,32 @@
 								<ul class="navbar-nav">
 									@if (SignInManager.IsSignedIn(User))
 									{
-		<li class="nav-item">
-			<a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-		</li>
-		<li class="nav-item">
-			<form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-				<button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-			</form>
-		</li>
+										<li class="nav-item">
+											<a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Здравей, @User.Identity?.Name!</a>
+										</li>
+										<li class="nav-item">
+											<form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+												<button  type="submit" class="nav-link btn btn-link text-dark">Изход</button>
+											</form>
+										</li>
 									}
 									else
 									{
-		<li class="nav-item">
-				<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-		</li>
-		<li class="nav-item">
-				<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-		</li>
+										<li class="nav-item">
+											<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Регистрация</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Вход</a>
+										</li>
 									}
-</ul>
 							</li>
 							<li>
 								<button type="button" class="btn btn-white btn-square btn-shadow cart-btn">
 									<i class="flaticon-shopping-bag-1"></i>
 									<span class="badge">6</span>
 								</button>
+							</li>
+						</ul>
 								<ul class="dropdown-menu cart-list">
 									<li class="cart-item">
 										<div class="media">

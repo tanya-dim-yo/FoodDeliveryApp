@@ -1,8 +1,8 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
-using FoodDeliveryApp.Core.Models.Item;
+using FoodDeliveryApp.Core.Models.City;
+using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
@@ -62,6 +62,18 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 
 			return categories.Select(c => (c.Id, c.Title));
+		}
+
+		public async Task<IEnumerable<CityServiceModel>> AllRestaurantCitiesAsync()
+		{
+			return await _repository
+				.AllReadOnly<Infrastructure.Data.Models.City>()
+				.Select(c => new CityServiceModel
+				{
+					Id = c.Id,
+					Name = c.Name
+				})
+				.ToListAsync();
 		}
 
 		public async Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync()
@@ -153,18 +165,18 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 		}
 
-		public async Task<IEnumerable<ItemViewModel>> MenuRestaurantAsync(int restaurantId)
+		public async Task<IEnumerable<ProductViewModel>> MenuRestaurantAsync(int restaurantId)
 		{
 			return await _repository
 				.AllReadOnly<Infrastructure.Data.Models.Item>()
 				.Where(i => i.RestaurantId == restaurantId)
-				.Select(i => new ItemViewModel()
+				.Select(i => new ProductViewModel()
 				{
 					Id = i.Id,
 					Title = i.Title,
 					Description = i.Description,
 					Price = i.Price,
-					Image = i.Image,
+					ImageURL = i.ImageURL,
 					ItemCategory = i.ItemCategory.Title,
 					AverageRating = i.AverageRating,
 					TotalReviews = i.TotalReviews
@@ -313,6 +325,69 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 				await _repository.SaveChangesAsync();
 			}
+		}
+
+		public async Task<RestaurantFormModel?> GetRestaurantFormModelByIdAsync(int restaurantId)
+		{
+			var restaurant = await _repository.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+						   .Where(r => r.Id == restaurantId)
+						   .Select(r => new RestaurantFormModel()
+						   {
+							   Title = r.Title,
+							   Address = r.Address,
+							   CityId = r.CityId,
+							   OpeningHour = r.OpeningHour.ToString("HH:mm"),
+							   OpenHourDateTime = r.OpeningHour,
+							   ClosingHour = r.ClosingHour.ToString("HH:mm"),
+							   CloseHourDateTime = r.ClosingHour,
+							   Latitude = r.Latitude,
+							   Longitude = r.Longitude,
+							   ServiceFee = r.ServiceFee,
+							   MinDeliveryTimeInMinutes = r.MinDeliveryTimeInMinutes,
+							   MaxDeliveryTimeInMinutes = r.MaxDeliveryTimeInMinutes,
+							   ImageURL = r.ImageURL,
+							   RestaurantCategoryId = r.RestaurantCategoryId
+						   })
+						   .FirstOrDefaultAsync();
+
+			if (restaurant != null)
+			{
+				var categories = await AllRestaurantCategoriesAsync();
+
+				restaurant.Categories = categories
+					.Select(c => new RestaurantCategoryViewModel
+					{
+						Id = c.Id,
+						Title = c.Title
+					})
+					.ToList();
+
+				var cities = await AllRestaurantCitiesAsync();
+			}
+
+			return restaurant;
+		}
+
+		public async Task DeleteAsync(int restaurantId)
+		{
+			var restaurant = await _repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
+
+			if (restaurant == null)
+			{
+				throw new Exception("Restaurant not found.");
+			}
+
+			var itemsToBeRemoved = _repository.All<Infrastructure.Data.Models.Item>()
+			.Where(i => i.RestaurantId == restaurantId);
+
+			foreach (var item in itemsToBeRemoved)
+			{
+				await _repository.DeleteAsync<Infrastructure.Data.Models.Item>(item);
+			}
+
+			await _repository.DeleteAsync<Infrastructure.Data.Models.Restaurant>(restaurant);
+
+			await _repository.SaveChangesAsync();
 		}
 	}
 }

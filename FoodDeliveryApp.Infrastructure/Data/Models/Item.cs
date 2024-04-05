@@ -35,7 +35,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
 
         [Required]
         [MaxLength(ItemImageMaxLength)]
-        public string Image { get; set; } = string.Empty;
+        public string ImageURL { get; set; } = string.Empty;
 
         [Required]
         public int ItemCategoryId { get; set; }

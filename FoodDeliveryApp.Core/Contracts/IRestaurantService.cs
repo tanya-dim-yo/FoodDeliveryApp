@@ -1,4 +1,5 @@
-﻿using FoodDeliveryApp.Core.Models.Item;
+﻿using FoodDeliveryApp.Core.Models.City;
+using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Core.Models.Restaurant;
 
 namespace FoodDeliveryApp.Core.Contracts
@@ -7,6 +8,9 @@ namespace FoodDeliveryApp.Core.Contracts
     {
 		Task<int> AddRestaurantAsync(RestaurantFormModel model, DateTime openHour, DateTime closeHour);
 		Task EditAsync(int restaurantId, RestaurantFormModel model);
+		Task DeleteAsync(int restaurantId);
+		Task<RestaurantFormModel?> GetRestaurantFormModelByIdAsync(int restaurantId);
+		Task<IEnumerable<CityServiceModel>> AllRestaurantCitiesAsync();
 		Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories)> GetAllRestaurantsAndCategoriesAsync();
 		Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync();
 		Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync();
@@ -14,7 +18,7 @@ namespace FoodDeliveryApp.Core.Contracts
 		Task<RestaurantViewModel?> GetRestaurantByIdAsync(int id);
 		Task<IEnumerable<RestaurantViewModel>> HighestRatingRestaurantsAsync();
 		Task<IEnumerable<RestaurantViewModel>> RestaurantsByServiceFeeAsync();
-		Task<IEnumerable<ItemViewModel>> MenuRestaurantAsync(int restaurantId);
+		Task<IEnumerable<ProductViewModel>> MenuRestaurantAsync(int restaurantId);
 		Task RateRestaurant(int restaurantId, double newRating);
 		Task<(string SanitizedKeyword, IEnumerable<RestaurantViewModel> Results)> SearchRestaurantsAsync(string keyword);
 		Task<bool> ExistsRestaurantAsync(int id);
