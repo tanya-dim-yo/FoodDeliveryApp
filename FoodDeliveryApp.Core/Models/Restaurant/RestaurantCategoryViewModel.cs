@@ -1,6 +1,6 @@
 ﻿namespace FoodDeliveryApp.Core.Models.Restaurant
 {
-	public class RestaurantCategoryModel
+	public class RestaurantCategoryViewModel
 	{
 		public int Id { get; set; }
 

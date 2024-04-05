@@ -2,7 +2,7 @@
 
 namespace FoodDeliveryApp.Core.Models.Restaurant
 {
-	public class RestaurantDetailViewModel
+	public class RestaurantWithProductsViewModel
 	{
 		public RestaurantViewModel Restaurant { get; set; } = new RestaurantViewModel();
 
