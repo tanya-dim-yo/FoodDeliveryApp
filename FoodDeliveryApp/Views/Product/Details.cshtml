@@ -27,7 +27,16 @@
 						<div class="dz-head">
 							<h2 class="title">@Model.Title</h2>
 							<div class="rating">
-								<i class="fa-solid fa-star"></i> <span><strong class="text-dark">@Model.AverageRatingPercent</strong> - 20 Reviews</span>
+								<i class="fa-solid fa-star"></i>
+									<span>
+										<strong class="text-dark">@Model.AverageRatingPercent</strong>
+										@{
+											if (@Model.Reviews.Count() > 0)
+                                            {
+												<span> - @Model.Reviews.Count() коментари</span>
+                                            }
+										}
+									</span>
 							</div>
 						</div>
 						<ul class="detail-list">
@@ -133,7 +142,7 @@
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" href="#developement-1">
 								<i class="icon-settings"></i>
-								<span class="d-none d-md-inline-block m-l10">Отзиви</span>
+								<span class="d-none d-md-inline-block m-l10">Коментари</span>
 							</button>
 						</li>
 					</ul>
@@ -151,7 +160,7 @@
 									<td>Съдържание</td>
 									<td>
 										@{
-											if (Model.IsVeggie)
+											if (@Model.IsVeggie)
 											{
 												<span class="badge">
 													<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -198,71 +207,50 @@
 						</div>
 						<div id="developement-1" class="tab-pane">
 							<div class="comments-area" id="comments">
-								<ul class="comment-list">
-									<li class="comment">
-										<div class="comment-body">
-											<div class="comment-author vcard">
-												<img class="avatar photo" src="~/foodtime/images/testimonial/mini/pic1.jpg" alt="/">
-												<cite class="fn">Monsur Rahman Lito</cite>
-											</div>
-											<div class="star-rating" data-rating="2">
-												<i class="fas fa-star text-secondary"></i>
-												<i class="fas fa-star text-secondary"></i>
-												<i class="far fa-star text-secondary"></i>
-												<i class="far fa-star text-secondary"></i>
-												<i class="far fa-star text-secondary"></i>
-											</div>
-											<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-										</div>
-										<!-- list END -->
-									</li>
-									<li class="comment">
-										<div class="comment-body">
-											<div class="comment-author vcard">
-												<img class="avatar photo" src="~/foodtime/images/testimonial/mini/pic2.jpg" alt="/">
-												<cite class="fn">Jake Johnson</cite>
-											</div>
-											<div class="star-rating" data-rating="3">
-												<i class="fas fa-star text-secondary"></i>
-												<i class="fas fa-star text-secondary"></i>
-												<i class="fas fa-star text-secondary"></i>
-												<i class="far fa-star text-secondary"></i>
-												<i class="far fa-star text-secondary"></i>
-											</div>
-											<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-										</div>
-									</li>
-									<li class="comment">
-										<div class="comment-body">
-											<div class="comment-author vcard">
-												<img class="avatar photo" src="~/foodtime/images/testimonial/mini/pic3.jpg" alt="/">
-												<cite class="fn">John Doe</cite>
-											</div>
-											<div class="star-rating" data-rating="4">
-												<i class="fas fa-star text-secondary"></i>
-												<i class="fas fa-star text-secondary"></i>
-												<i class="fas fa-star text-secondary"></i>
-												<i class="fas fa-star text-secondary"></i>
-												<i class="far fa-star text-secondary"></i>
-											</div>
-											<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-										</div>
-									</li>
-								</ul>
+								@{
+									@if (Model.Reviews.Count() == 0)
+                                    {
+										<p>Няма коментари за този продукт.</p>
+									}
+									else
+									{
+										<ul class="comment-list">
+										@foreach (var review in Model.Reviews)
+                                        {
+												<li class="comment">
+													<div class="comment-body">
+														<div class="comment-author vcard">
+															<img class="avatar photo" src="~/foodtime/images/testimonial/mini/pic1.jpg" alt="/">
+															<cite class="fn">@review.UserName</cite>
+														</div>
+														<div class="star-rating" data-rating="2">
+															<i class="fas fa-star text-secondary"></i>
+															<i class="fas fa-star text-secondary"></i>
+															<i class="far fa-star text-secondary"></i>
+															<i class="far fa-star text-secondary"></i>
+															<i class="far fa-star text-secondary"></i>
+														</div>
+														<p>@review.Review</p>
+													</div>
+												</li>
+										}
+										</ul>
+									}
+								}
 							</div>
 							<div class="comment-respond style-1" id="respond">
-								<h3 class="comment-reply-title mb-4" id="reply-title">Add a review</h3>
+								<h3 class="comment-reply-title mb-4" id="reply-title">Добавете коментар</h3>
 								<form class="comment-form" id="commentform" method="post">
 									<p class="comment-form-author">
-										<label for="author">Name <span class="required">*</span></label>
-										<input type="text" name="dzName" placeholder="Author" id="author">
+										<label for="author">Име <span class="required">*</span></label>
+										<input type="text" name="dzName" placeholder="Име" id="author">
 									</p>
 									<p class="comment-form-email">
-										<label for="email">Email <span class="required">*</span></label>
-										<input type="text" placeholder="Email" name="dzEmail" id="email">
+										<label for="email">Имейл <span class="required">*</span></label>
+										<input type="text" placeholder="Имейл" name="dzEmail" id="email">
 									</p>
 									<div class="comment-form-rating d-flex p-lr10">
-										<label class="pull-left m-r10 m-b20">Your Rating</label>
+										<label class="pull-left m-r10 m-b20">Вашата оценка</label>
 										<div class="rating-widget">
 											<!-- Rating Stars Box -->
 											<div class="rating-stars">
@@ -287,11 +275,11 @@
 										</div>
 									</div>
 									<p class="comment-form-comment">
-										<label for="comment">Comment</label>
-										<textarea rows="10" name="comment" placeholder="Type Review Here" id="comment"></textarea>
+										<label for="comment">Коментар</label>
+										<textarea rows="10" name="comment" placeholder="Напишете Вашият коментар за продукта..." id="comment"></textarea>
 									</p>
 									<p class="form-submit">
-										<button type="submit" class="btn btn-primary btn-hover-2" id="submit">Submit Now</button>
+										<button type="submit" class="btn btn-primary btn-hover-2" id="submit">Изпрати</button>
 									</p>
 								</form>
 							</div>
