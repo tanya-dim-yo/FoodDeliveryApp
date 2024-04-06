@@ -1,5 +1,4 @@
 ﻿using FoodDeliveryApp.Core.Models.ProductReview;
-using System.ComponentModel.DataAnnotations;
 
 namespace FoodDeliveryApp.Core.Models.Product
 {
