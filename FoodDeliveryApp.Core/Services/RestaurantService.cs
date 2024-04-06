@@ -11,15 +11,15 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 {
 	public class RestaurantService : IRestaurantService
 	{
-		private readonly IRepository _repository;
-		private readonly ILogger<RestaurantService> _logger;
+		private readonly IRepository repository;
+		private readonly ILogger<RestaurantService> logger;
 
 		public RestaurantService(
-			IRepository repository,
-			ILogger<RestaurantService> logger)
+			IRepository _repository,
+			ILogger<RestaurantService> _logger)
 		{
-			_repository = repository;
-			_logger = logger;
+			repository = _repository;
+			logger = _logger;
 		}
 
 		public async Task<int> AddRestaurantAsync(RestaurantFormModel model, DateTime openHour, DateTime closeHour)
@@ -40,8 +40,8 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				RestaurantCategoryId = model.RestaurantCategoryId
 			};
 
-			await _repository.AddAsync(restaurant);
-			await _repository.SaveChangesAsync();
+			await repository.AddAsync(restaurant);
+			await repository.SaveChangesAsync();
 
 			return restaurant.Id;
 		}
@@ -56,7 +56,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		private async Task<IEnumerable<(int Id, string Title)>> AllRestaurantCategoriesAsync()
 		{
-			var categories = await _repository
+			var categories = await repository
 				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
 				.Select(c => new { c.Id, c.Title })
 				.ToListAsync();
@@ -66,7 +66,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task<IEnumerable<CityServiceModel>> AllRestaurantCitiesAsync()
 		{
-			return await _repository
+			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.City>()
 				.Select(c => new CityServiceModel
 				{
@@ -78,7 +78,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync()
 		{
-			return await _repository
+			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
 				.OrderBy(c => c.Title)
 				.Select(c => c.Title)
@@ -88,7 +88,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync()
 		{
-			return await _repository
+			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.Select(p => new RestaurantViewModel()
 				{
@@ -107,7 +107,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task<IEnumerable<RestaurantViewModel>> GetRestaurantsByCategoryAsync(int categoryId)
 		{
-			return await _repository
+			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.Where(p => p.RestaurantCategoryId == categoryId)
 				.Select(p => new RestaurantViewModel()
@@ -127,7 +127,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task<RestaurantViewModel?> GetRestaurantByIdAsync(int id)
 		{
-			return await _repository
+			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.Where(p => p.Id == id)
 				.Select(p => new RestaurantViewModel()
@@ -147,7 +147,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task<IEnumerable<RestaurantViewModel>> HighestRatingRestaurantsAsync()
 		{
-			return await _repository
+			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.OrderByDescending(p => p.AverageRating)
 				.Select(p => new RestaurantViewModel()
@@ -167,7 +167,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task<IEnumerable<ProductViewModel>> MenuRestaurantAsync(int restaurantId)
 		{
-			return await _repository
+			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Item>()
 				.Where(i => i.RestaurantId == restaurantId)
 				.Select(i => new ProductViewModel()
@@ -186,7 +186,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task RateRestaurant(int restaurantId, double newRating)
 		{
-			var restaurant = await _repository.All<Infrastructure.Data.Models.Restaurant>()
+			var restaurant = await repository.All<Infrastructure.Data.Models.Restaurant>()
 				.FirstOrDefaultAsync(r => r.Id == restaurantId);
 
 			if (restaurant == null)
@@ -196,7 +196,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 			restaurant.UpdateRating(newRating);
 
-			await _repository.SaveChangesAsync();
+			await repository.SaveChangesAsync();
 		}
 
 		public async Task<(string SanitizedKeyword, IEnumerable<RestaurantViewModel> Results)> SearchRestaurantsAsync(string keyword)
@@ -205,7 +205,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 			var characters = sanitizedKeyword.ToLower().Select(c => c.ToString()).ToArray();
 
-			var query = _repository.AllReadOnly<Infrastructure.Data.Models.Restaurant>();
+			var query = repository.AllReadOnly<Infrastructure.Data.Models.Restaurant>();
 
 			foreach (var ch in characters)
 			{
@@ -237,7 +237,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task<IEnumerable<RestaurantViewModel>> RestaurantsByServiceFeeAsync()
 		{
-			return await _repository
+			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.OrderBy(p => p.ServiceFee)
 				.Select(p => new RestaurantViewModel()
@@ -285,28 +285,28 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task<bool> ExistsCityAsync(int cityId)
 		{
-			return await _repository
+			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.City>()
 				.AnyAsync(p => p.Id == cityId);
 		}
 
 		public async Task<bool> ExistsRestaurantAsync(int id)
 		{
-			return await _repository
+			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.AnyAsync(p => p.Id == id);
 		}
 
 		public async Task<bool> ExistsRestaurantCategoryAsync(int categoryId)
 		{
-			return await _repository
+			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
 				.AnyAsync(p => p.Id == categoryId);
 		}
 
 		public async Task EditAsync(int restaurantId, RestaurantFormModel model)
 		{
-			var restaurant = await _repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
+			var restaurant = await repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
 
 			if (restaurant != null)
 			{
@@ -323,13 +323,13 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				restaurant.ImageURL = model.ImageURL;
 				restaurant.RestaurantCategoryId = model.RestaurantCategoryId;
 
-				await _repository.SaveChangesAsync();
+				await repository.SaveChangesAsync();
 			}
 		}
 
 		public async Task<RestaurantFormModel?> GetRestaurantFormModelByIdAsync(int restaurantId)
 		{
-			var restaurant = await _repository.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+			var restaurant = await repository.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 						   .Where(r => r.Id == restaurantId)
 						   .Select(r => new RestaurantFormModel()
 						   {
@@ -370,24 +370,24 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 		public async Task DeleteAsync(int restaurantId)
 		{
-			var restaurant = await _repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
+			var restaurant = await repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
 
 			if (restaurant == null)
 			{
 				throw new Exception("Restaurant not found.");
 			}
 
-			var itemsToBeRemoved = _repository.All<Infrastructure.Data.Models.Item>()
+			var itemsToBeRemoved = repository.All<Infrastructure.Data.Models.Item>()
 			.Where(i => i.RestaurantId == restaurantId);
 
 			foreach (var item in itemsToBeRemoved)
 			{
-				await _repository.DeleteAsync<Infrastructure.Data.Models.Item>(item);
+				await repository.DeleteAsync<Infrastructure.Data.Models.Item>(item);
 			}
 
-			await _repository.DeleteAsync<Infrastructure.Data.Models.Restaurant>(restaurant);
+			await repository.DeleteAsync<Infrastructure.Data.Models.Restaurant>(restaurant);
 
-			await _repository.SaveChangesAsync();
+			await repository.SaveChangesAsync();
 		}
 	}
 }
