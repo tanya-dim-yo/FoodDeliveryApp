@@ -1,5 +1,7 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Product;
+using FoodDeliveryApp.Core.Models.Restaurant;
+using FoodDeliveryApp.Core.Services.Restaurant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.ProductErrorMessagesConstants;
@@ -44,6 +46,18 @@ namespace FoodDeliveryApp.Controllers
 			await productService.UpdateFavouriteProduct(productId);
 
 			return Json(new { success = true, isFavorite = product.IsFavourite });
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Add()
+		{
+			var model = new ProductFormModel()
+			{
+				Categories = await productService.GetCategories(),
+				SpicyCategories = await productService.GetSpicyCategories()
+			};
+
+			return View(model);
 		}
 	}
 }
