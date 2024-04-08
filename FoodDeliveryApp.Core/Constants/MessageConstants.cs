@@ -18,6 +18,16 @@
 			public const string RestaurantCategoryMessage = "Категория: {0}";
 		}
 
+		public static class ProductMessageConstants
+		{
+			public const string RequiredFieldMessage = "Полето {0} е задължително!";
+			public const string LengthMessage = "Полето {0} трябва да бъде с дължина между {2} и {1} символа.";
+			public const string ProductPriceMinValue = "0.00";
+			public const string ProductPriceMaxValue = "100.00";
+			public const string InvalidPriceMessage = "Цената на продукта трябва да бъде между {2} и {1} лв.";
+
+		}
+
 		public static class ProductReviewMessageConstants
 		{
 			public const string RequiredFieldMessage = "Полето {0} е задължително!";
