@@ -50,7 +50,8 @@
         {
 			public const int ItemReviewMinLength = 2;
 			public const int ItemReviewMaxLength = 1000;
-        }
+			public const int ItemReviewEmailMaxLength = 320;
+		}
 
         public static class ItemSpicyCategoryValidationConstants
         {
