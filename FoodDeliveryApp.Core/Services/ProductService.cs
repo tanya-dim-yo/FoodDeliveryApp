@@ -1,9 +1,11 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
+using FoodDeliveryApp.Core.Models.City;
 using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace FoodDeliveryApp.Core.Services
 {
@@ -18,6 +20,48 @@ namespace FoodDeliveryApp.Core.Services
 		{
 			repository = _repository;
 			logger = _logger;
+		}
+
+		public async Task<int> AddProductAsync(ProductFormModel model, int restaurantId)
+		{
+			var product = new Item()
+			{
+				Title = model.Title,
+				Description = model.Description,
+				Price = model.Price,
+				IsVeggie = model.IsVeggie,
+				ImageURL = model.ImageURL,
+				RestaurantId = restaurantId,
+				ItemCategoryId = model.ItemCategoryId,
+				SpicyCategoryId = model.SpicyCategoryId
+			};
+
+			await repository.AddAsync(product);
+			await repository.SaveChangesAsync();
+
+			return product.Id;
+		}
+
+		public Task DeleteProductAsync(int productId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task EditProductAsync(int productId, ProductFormModel model)
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<IEnumerable<ProductCategoryViewModel>> GetCategories()
+		{
+			return await repository
+				.AllReadOnly<ItemCategory>()
+				.Select(c => new ProductCategoryViewModel
+				{
+					Id = c.Id,
+					Title = c.Title
+				})
+				.ToListAsync();
 		}
 
 		public async Task<Item?> GetProductByIdAsync(int productId)
@@ -51,6 +95,18 @@ namespace FoodDeliveryApp.Core.Services
 					SpicyCategory = p.SpicyCategory.Title
 				})
 				.FirstOrDefaultAsync();
+		}
+
+		public async Task<IEnumerable<ProductSpicyCategoryViewModel>> GetSpicyCategories()
+		{
+			return await repository
+				.AllReadOnly<ItemSpicyCategory>()
+				.Select(c => new ProductSpicyCategoryViewModel
+				{
+					Id = c.Id,
+					Title = c.Title
+				})
+				.ToListAsync();
 		}
 
 		public async Task UpdateFavouriteProduct(int productId)
