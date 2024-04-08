@@ -1,9 +1,6 @@
-﻿using FoodDeliveryApp.Infrastructure.Data.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using static FoodDeliveryApp.Core.Constants.MessageConstants.ProductMessageConstants;
 using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.ItemValidationConstants;
-using FoodDeliveryApp.Core.Models.Product;
 
 namespace FoodDeliveryApp.Core.Models.Product
 {
