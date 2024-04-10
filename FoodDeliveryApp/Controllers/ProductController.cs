@@ -107,5 +107,18 @@ namespace FoodDeliveryApp.Controllers
 
 			return RedirectToAction(nameof(Details), new { productId });
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> Edit(int productId)
+		{
+			if (await productService.ExistsProductAsync(productId) == false)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductErrorMessage });
+			}
+
+			var model = await productService.GetProductFormModelByIdAsync(productId);
+
+			return View(model);
+		}
 	}
 }
