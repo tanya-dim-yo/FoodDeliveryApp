@@ -97,5 +97,5 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
         {
             builder.HasData(initialItems);
         }
-    }
+	}
 }
