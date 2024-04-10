@@ -103,7 +103,9 @@ namespace FoodDeliveryApp.Controllers
 
 			await productService.AddProductAsync(model, restaurantId);
 
-			return RedirectToAction("Menu", "Restaurant", new { restaurantId });
+			int productId = await productService.AddProductAsync(model, restaurantId);
+
+			return RedirectToAction(nameof(Details), new { restaurantId });
 		}
 	}
 }
