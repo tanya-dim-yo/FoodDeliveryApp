@@ -377,8 +377,10 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				throw new Exception("Restaurant not found.");
 			}
 
-			var itemsToBeRemoved = repository.All<Infrastructure.Data.Models.Item>()
-			.Where(i => i.RestaurantId == restaurantId);
+			var itemsToBeRemoved = await repository
+				.AllReadOnly<Infrastructure.Data.Models.Item>()
+				.Where(i => i.RestaurantId == restaurantId)
+				.ToListAsync();
 
 			foreach (var item in itemsToBeRemoved)
 			{
