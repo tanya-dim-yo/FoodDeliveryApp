@@ -1,5 +1,7 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Product;
+using FoodDeliveryApp.Core.Models.Restaurant;
+using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.ProductErrorMessagesConstants;
@@ -8,7 +10,7 @@ using static FoodDeliveryApp.Core.Constants.MessageConstants.ProductMessageConst
 namespace FoodDeliveryApp.Controllers
 {
 	public class ProductController : BaseController
-    {
+	{
 		private readonly IProductService productService;
 		private readonly IRestaurantService restaurantService;
 
@@ -19,10 +21,10 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Details(int productId)
-        {
-            ProductDetailsViewModel? model = await productService.GetProductDetailsByIdAsync(productId);
+		[AllowAnonymous]
+		public async Task<IActionResult> Details(int productId)
+		{
+			ProductDetailsViewModel? model = await productService.GetProductDetailsByIdAsync(productId);
 
 			if (model == null)
 			{
@@ -30,7 +32,7 @@ namespace FoodDeliveryApp.Controllers
 			}
 
 			return View(model);
-        }
+		}
 
 		[HttpPost]
 		public async Task<IActionResult> Favourite(int productId)
@@ -119,6 +121,32 @@ namespace FoodDeliveryApp.Controllers
 			var model = await productService.GetProductFormModelByIdAsync(productId);
 
 			return View(model);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(ProductFormModel model, int productId)
+		{
+			if (await productService.ExistsProductAsync(productId) == false)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductErrorMessage });
+			}
+
+			if (await productService.ExistsProductCategoryAsync(model.ItemCategoryId) == false)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductCategoryErrorMessage });
+			}
+
+			if (ModelState.IsValid == false)
+			{
+				model.Categories = await productService.GetCategoriesAsync();
+				model.SpicyCategories = await productService.GetSpicyCategoriesAsync();
+
+				return View(model);
+			}
+
+			await productService.EditProductAsync(model, productId);
+
+			return RedirectToAction(nameof(Details), new { productId });
 		}
 	}
 }
