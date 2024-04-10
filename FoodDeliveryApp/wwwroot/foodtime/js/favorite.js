@@ -1,18 +1,18 @@
 ﻿// favorite.js
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('favoriteToggle').addEventListener('click', function () {
-        toggleFavourite();
-    });
+document.getElementById('favoriteIcon').addEventListener('click', function (event) {
+    toggleFavourite(event);
 });
 
-function toggleFavourite() {
-    var productId = '@Model.Id';
-    var isFavourite = '@Model.IsFavourite';
+function toggleFavourite(event) {
+    event.preventDefault(); // Prevent the default action of the anchor tag (i.e., navigating to a new page)
+
+    var productId = parseInt('@Model.Id');
+    var isFavourite = '@Model.IsFavourite' === 'True'; // Corrected isFavourite assignment
 
     $.ajax({
-        url: '/Product/Favourite',
+        url: '/Product/Favourite?productId=' + productId + '&isFavourite=' + isFavourite,
         type: 'POST',
-        data: { productId: productId, isFavourite: !isFavourite },
+        contentType: 'application/json',
         success: function (response) {
             if (response.success) {
                 var favoriteIcon = document.getElementById('favoriteIcon');
