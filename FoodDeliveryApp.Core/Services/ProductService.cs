@@ -1,11 +1,9 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
-using FoodDeliveryApp.Core.Models.City;
 using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Net;
 
 namespace FoodDeliveryApp.Core.Services
 {
@@ -52,7 +50,28 @@ namespace FoodDeliveryApp.Core.Services
 			throw new NotImplementedException();
 		}
 
-		public async Task<IEnumerable<ProductCategoryViewModel>> GetCategories()
+		public async Task<bool> ExistsProductAsync(int productId)
+		{
+			return await repository
+				.AllReadOnly<Item>()
+				.AnyAsync(i => i.Id == productId);
+		}
+
+		public async Task<bool> ExistsProductCategoryAsync(int productCategoryId)
+		{
+			return await repository
+				.AllReadOnly<ItemCategory>()
+				.AnyAsync(i => i.Id == productCategoryId);
+		}
+
+		public async Task<bool> ExistsProductSpicyCategoryAsync(int productSpicyCategoryId)
+		{
+			return await repository
+				.AllReadOnly<ItemSpicyCategory>()
+				.AnyAsync(i => i.Id == productSpicyCategoryId);
+		}
+
+		public async Task<IEnumerable<ProductCategoryViewModel>> GetCategoriesAsync()
 		{
 			return await repository
 				.AllReadOnly<ItemCategory>()
@@ -97,7 +116,7 @@ namespace FoodDeliveryApp.Core.Services
 				.FirstOrDefaultAsync();
 		}
 
-		public async Task<IEnumerable<ProductSpicyCategoryViewModel>> GetSpicyCategories()
+		public async Task<IEnumerable<ProductSpicyCategoryViewModel>> GetSpicyCategoriesAsync()
 		{
 			return await repository
 				.AllReadOnly<ItemSpicyCategory>()
@@ -109,7 +128,7 @@ namespace FoodDeliveryApp.Core.Services
 				.ToListAsync();
 		}
 
-		public async Task UpdateFavouriteProduct(int productId)
+		public async Task UpdateFavouriteProductAsync(int productId)
 		{
 			var product = await repository.GetByIdAsync<Item>(productId);
 
