@@ -45,9 +45,23 @@ namespace FoodDeliveryApp.Core.Services
 			throw new NotImplementedException();
 		}
 
-		public Task EditProductAsync(int productId, ProductFormModel model)
+		public async Task EditProductAsync(ProductFormModel model, int productId)
 		{
-			throw new NotImplementedException();
+			var product = await repository.GetByIdAsync<Item>(productId);
+
+			if (product != null)
+			{
+				product.Title = model.Title;
+				product.Description = model.Description;
+				product.Price = model.Price;
+				product.IsVeggie = model.IsVeggie;
+				product.ImageURL = model.ImageURL;
+				product.ItemCategoryId = model.ItemCategoryId;
+				product.RestaurantId = model.RestaurantId;
+				product.SpicyCategoryId = model.SpicyCategoryId;
+
+				await repository.SaveChangesAsync();
+			}
 		}
 
 		public async Task<bool> ExistsProductAsync(int productId)

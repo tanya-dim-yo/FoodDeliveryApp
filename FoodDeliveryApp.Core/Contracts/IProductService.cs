@@ -11,7 +11,7 @@ namespace FoodDeliveryApp.Core.Contracts
 		Task<bool> ExistsProductAsync(int productId);
 		Task<bool> ExistsProductCategoryAsync(int productCategoryId);
 		Task<bool> ExistsProductSpicyCategoryAsync(int productSpicyCategoryId);
-		Task EditProductAsync(int productId, ProductFormModel model);
+		Task EditProductAsync(ProductFormModel model, int productId);
 		Task DeleteProductAsync(int productId);
 		Task<ProductDetailsViewModel?> GetProductDetailsByIdAsync(int productId);
 		Task<Item?> GetProductByIdAsync(int productId);
