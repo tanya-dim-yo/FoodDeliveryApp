@@ -11,6 +11,7 @@
 		public static class ProductErrorMessagesConstants
 		{
 			public const string InvalidProductErrorMessage = "Продуктът не съществува.";
+			public const string InvalidProductCategoryErrorMessage = "Категорията на продукта не съществува.";
 		}
 	}
 }
