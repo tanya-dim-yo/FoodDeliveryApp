@@ -1,5 +1,6 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Product;
+using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -128,6 +129,32 @@ namespace FoodDeliveryApp.Core.Services
 					SpicyCategory = p.SpicyCategory.Title
 				})
 				.FirstOrDefaultAsync();
+		}
+
+		public async Task<ProductFormModel?> GetProductFormModelByIdAsync(int productId)
+		{
+			var product = await repository.AllReadOnly<Item>()
+				.Where(p => p.Id == productId)
+				.Select(p => new ProductFormModel()
+				{
+					Title = p.Title,
+					Description = p.Description,
+					Price = p.Price,
+					IsVeggie = p.IsVeggie,
+					ImageURL = p.ImageURL,
+					ItemCategoryId = p.ItemCategoryId,
+					RestaurantId = p.RestaurantId,
+					SpicyCategoryId = p.SpicyCategoryId
+				})
+				.FirstOrDefaultAsync();
+
+			if (product != null)
+			{
+				product.Categories = await GetCategoriesAsync();
+				product.SpicyCategories = await GetSpicyCategoriesAsync();
+			}
+
+			return product;
 		}
 
 		public async Task<IEnumerable<ProductSpicyCategoryViewModel>> GetSpicyCategoriesAsync()

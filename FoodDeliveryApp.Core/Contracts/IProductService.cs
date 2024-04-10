@@ -1,4 +1,5 @@
 ﻿using FoodDeliveryApp.Core.Models.Product;
+using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 
 namespace FoodDeliveryApp.Core.Contracts
@@ -15,6 +16,7 @@ namespace FoodDeliveryApp.Core.Contracts
 		Task DeleteProductAsync(int productId);
 		Task<ProductDetailsViewModel?> GetProductDetailsByIdAsync(int productId);
 		Task<Item?> GetProductByIdAsync(int productId);
+		Task<ProductFormModel?> GetProductFormModelByIdAsync(int productId);
 		Task UpdateFavouriteProductAsync(int productId);
 	}
 }
