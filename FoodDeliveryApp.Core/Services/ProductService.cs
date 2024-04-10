@@ -1,6 +1,5 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Product;
-using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -41,9 +40,28 @@ namespace FoodDeliveryApp.Core.Services
 			return product.Id;
 		}
 
-		public Task DeleteProductAsync(int productId)
+		public async Task DeleteProductAsync(int productId)
 		{
-			throw new NotImplementedException();
+			var product = await repository.GetByIdAsync<Item>(productId);
+
+			if (product == null)
+			{
+				this.logger.LogError($"Product with id {productId} not found.");
+			}
+
+			var addOnsToBeRemoved = await repository
+				.AllReadOnly<ItemAddOn>()
+				.Where(a => a.ItemId == productId)
+				.ToListAsync();
+
+			foreach (var addOn in addOnsToBeRemoved)
+			{
+				await repository.DeleteAsync<ItemAddOn>(addOn);
+			}
+
+			await repository.DeleteAsync<Item>(product);
+
+			await repository.SaveChangesAsync();
 		}
 
 		public async Task EditProductAsync(ProductFormModel model, int productId)
