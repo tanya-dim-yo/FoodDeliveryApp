@@ -25,7 +25,9 @@
 			public const string ProductPriceMinValue = "0.00";
 			public const string ProductPriceMaxValue = "100.00";
 			public const string InvalidPriceMessage = "Цената на продукта трябва да бъде между {2} и {1} лв.";
-
+			public const string InvalidCategoryMessage = "Невалидна категория!";
+			public const string InvalidSpicyCategoryMessage = "Невалидна категория за степен на лютивост!";
+			public const string InvalidRestaurantMessage = "Невалиден ресторант!";
 		}
 
 		public static class ProductReviewMessageConstants
