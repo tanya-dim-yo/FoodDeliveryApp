@@ -330,25 +330,25 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 		public async Task<RestaurantFormModel?> GetRestaurantFormModelByIdAsync(int restaurantId)
 		{
 			var restaurant = await repository.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
-						   .Where(r => r.Id == restaurantId)
-						   .Select(r => new RestaurantFormModel()
-						   {
-							   Title = r.Title,
-							   Address = r.Address,
-							   CityId = r.CityId,
-							   OpeningHour = r.OpeningHour.ToString("HH:mm"),
-							   OpenHourDateTime = r.OpeningHour,
-							   ClosingHour = r.ClosingHour.ToString("HH:mm"),
-							   CloseHourDateTime = r.ClosingHour,
-							   Latitude = r.Latitude,
-							   Longitude = r.Longitude,
-							   ServiceFee = r.ServiceFee,
-							   MinDeliveryTimeInMinutes = r.MinDeliveryTimeInMinutes,
-							   MaxDeliveryTimeInMinutes = r.MaxDeliveryTimeInMinutes,
-							   ImageURL = r.ImageURL,
-							   RestaurantCategoryId = r.RestaurantCategoryId
-						   })
-						   .FirstOrDefaultAsync();
+				.Where(r => r.Id == restaurantId)
+				.Select(r => new RestaurantFormModel()
+				{
+					Title = r.Title,
+					Address = r.Address,
+					CityId = r.CityId,
+					OpeningHour = r.OpeningHour.ToString("HH:mm"),
+					OpenHourDateTime = r.OpeningHour,
+					ClosingHour = r.ClosingHour.ToString("HH:mm"),
+					CloseHourDateTime = r.ClosingHour,
+					Latitude = r.Latitude,
+					Longitude = r.Longitude,
+					ServiceFee = r.ServiceFee,
+					MinDeliveryTimeInMinutes = r.MinDeliveryTimeInMinutes,
+					MaxDeliveryTimeInMinutes = r.MaxDeliveryTimeInMinutes,
+					ImageURL = r.ImageURL,
+					RestaurantCategoryId = r.RestaurantCategoryId
+				})
+				.FirstOrDefaultAsync();
 
 			if (restaurant != null)
 			{
