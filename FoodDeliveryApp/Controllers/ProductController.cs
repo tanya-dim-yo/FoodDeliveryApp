@@ -1,7 +1,5 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Product;
-using FoodDeliveryApp.Core.Models.Restaurant;
-using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.ProductErrorMessagesConstants;
@@ -35,6 +33,7 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpPost]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Favourite(int productId)
 		{
 			if (productId <= 0)
@@ -78,6 +77,7 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpPost]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Add(ProductFormModel model, int restaurantId)
 		{
 			if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
@@ -124,6 +124,7 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpPost]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Edit(ProductFormModel model, int productId)
 		{
 			if (await productService.ExistsProductAsync(productId) == false)
