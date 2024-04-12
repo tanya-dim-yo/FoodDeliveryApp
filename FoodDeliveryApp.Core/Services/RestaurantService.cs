@@ -6,6 +6,7 @@ using FoodDeliveryApp.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
+using static FoodDeliveryApp.Core.Extensions.StringExtensions;
 
 namespace FoodDeliveryApp.Core.Services.Restaurant
 {
@@ -253,34 +254,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					RestaurantCategory = p.RestaurantCategory.Title
 				})
 				.ToListAsync();
-		}
-
-		private string Sanitize(string input)
-		{
-			if (string.IsNullOrWhiteSpace(input))
-			{
-				return string.Empty;
-			}
-
-			input = input.Trim();
-
-			input = System.Web.HttpUtility.HtmlEncode(input);
-
-			input = input.Replace("'", "").Replace(";", "");
-
-			const int MaxLength = 255;
-			input = input.Length > MaxLength ? input.Substring(0, MaxLength) : input;
-
-			input = input.ToLowerInvariant();
-
-			input = Regex.Replace(input, @"\s+", " ");
-
-			const string AllowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_/~.";
-			input = new string(input.Where(c => AllowedChars.Contains(c)).ToArray());
-
-			input = input.Replace("..", "");
-
-			return input;
 		}
 
 		public async Task<bool> ExistsCityAsync(int cityId)
