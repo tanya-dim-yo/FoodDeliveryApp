@@ -123,7 +123,7 @@ namespace FoodDeliveryApp.Controllers
 				CategoryIds = categories.Select(c => c.Id)
 			};
 
-			ViewData["ListTitle"] = searchResults.SanitizedKeyword;
+			ViewData["ListTitle"] = $"{modelWrapper.RestaurantViewModels.Count()} Обекти, съответстващи на търсенето на ‘{searchResults.SanitizedKeyword}‘";
 
 			return View(nameof(All), modelWrapper);
 		}
