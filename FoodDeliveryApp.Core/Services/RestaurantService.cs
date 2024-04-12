@@ -5,7 +5,6 @@ using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Text.RegularExpressions;
 using static FoodDeliveryApp.Core.Extensions.StringExtensions;
 
 namespace FoodDeliveryApp.Core.Services.Restaurant
@@ -47,12 +46,38 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			return restaurant.Id;
 		}
 
-		public async Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories)> GetAllRestaurantsAndCategoriesAsync()
+		public async Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories, int TotalRestaurantsCount)> GetAllRestaurantsAndCategoriesAsync()
 		{
+			var model = new RestaurantsWithCategoriesViewModel();
+			const int currentPage = 1;
+			const int restaurantsPerPage = 6;
+
 			var restaurants = await GetAllRestaurantsAsync();
 			var categories = await AllRestaurantCategoriesAsync();
 
-			return (restaurants, categories);
+			model.TotalRestaurantsCount = restaurants.Count();
+
+			model.RestaurantViewModels = restaurants
+				.Skip((currentPage - 1) * restaurantsPerPage)
+				.Take(restaurantsPerPage)
+				.Select(p => new RestaurantViewModel
+				{
+					Id = p.Id,
+					Title = p.Title,
+					ServiceFee = p.ServiceFee,
+					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
+					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
+					ImageURL = p.ImageURL,
+					AverageRating = p.AverageRating,
+					TotalReviews = p.TotalReviews,
+					RestaurantCategory = p.RestaurantCategory
+				})
+				.ToList();
+
+			model.CategoryNames = categories.Select(c => c.Title);
+			model.CategoryIds = categories.Select(c => c.Id);
+
+			return (model.RestaurantViewModels, categories.Select(c => (c.Id, c.Title)), model.TotalRestaurantsCount);
 		}
 
 		private async Task<IEnumerable<(int Id, string Title)>> AllRestaurantCategoriesAsync()

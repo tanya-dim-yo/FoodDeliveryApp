@@ -11,7 +11,7 @@ namespace FoodDeliveryApp.Core.Contracts
 		Task DeleteAsync(int restaurantId);
 		Task<RestaurantFormModel?> GetRestaurantFormModelByIdAsync(int restaurantId);
 		Task<IEnumerable<CityServiceModel>> AllRestaurantCitiesAsync();
-		Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories)> GetAllRestaurantsAndCategoriesAsync();
+		Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories, int TotalRestaurantsCount)> GetAllRestaurantsAndCategoriesAsync();
 		Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync();
 		Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync();
 		Task<IEnumerable<RestaurantViewModel>> GetRestaurantsByCategoryAsync(int categoryId);
