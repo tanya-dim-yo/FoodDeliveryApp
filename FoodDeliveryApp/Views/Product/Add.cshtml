@@ -9,7 +9,7 @@
 	<section class="content-inner-1 overflow-hidden">
 		<div class="container">
 			<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-				<form asp-action="Add" method="post">
+				<form asp-action="Add" asp-controller="Product" method="post">
 					<div class="mb-3">
 						<label asp-for="@Model.Title" class="form-label-add-edit">Име</label>
 						<input asp-for="@Model.Title" class="form-control" aria-required="true" />
