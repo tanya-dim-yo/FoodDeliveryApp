@@ -33,9 +33,13 @@
         public static class ItemValidationConstants
         {
             public const int ItemTitleMaxLength = 50;
-            public const int ItemDescriptionMaxLength = 500;
-            public const int ItemImageMaxLength = 200;
-        }
+			public const int ItemTitleMinLength = 2;
+			public const int ItemDescriptionMaxLength = 500;
+			public const int ItemDescriptionMinLength = 10;
+			public const int ItemImageMaxLength = 200;
+			public const int ProductImageURLMaxLength = 200;
+			public const int ProductImageURLMinLength = 10;
+		}
 
         public static class ItemCategoryValidationConstants
         {
@@ -44,9 +48,10 @@
 
         public static class ItemReviewValidationConstants
         {
-            public const int ItemReviewEmailMaxLength = 320;
-            public const int ItemReviewMaxLength = 1000;
-        }
+			public const int ItemReviewMinLength = 2;
+			public const int ItemReviewMaxLength = 1000;
+			public const int ItemReviewEmailMaxLength = 320;
+		}
 
         public static class ItemSpicyCategoryValidationConstants
         {

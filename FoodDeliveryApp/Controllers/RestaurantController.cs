@@ -172,6 +172,7 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpPost]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Add(RestaurantFormModel model)
 		{
 			if (await restaurantService.ExistsCityAsync(model.CityId) == false)
@@ -257,6 +258,7 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpPost]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Edit(int restaurantId, RestaurantFormModel model)
 		{
 			if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)

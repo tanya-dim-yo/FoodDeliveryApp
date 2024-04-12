@@ -20,6 +20,102 @@ namespace FoodDeliveryApp.Core.Services
 			logger = _logger;
 		}
 
+		public async Task<int> AddProductAsync(ProductFormModel model, int restaurantId)
+		{
+			var product = new Item()
+			{
+				Title = model.Title,
+				Description = model.Description,
+				Price = model.Price,
+				IsVeggie = model.IsVeggie,
+				ImageURL = model.ImageURL,
+				RestaurantId = restaurantId,
+				ItemCategoryId = model.ItemCategoryId,
+				SpicyCategoryId = model.SpicyCategoryId
+			};
+
+			await repository.AddAsync(product);
+			await repository.SaveChangesAsync();
+
+			return product.Id;
+		}
+
+		public async Task DeleteProductAsync(int productId)
+		{
+			var product = await repository.GetByIdAsync<Item>(productId);
+
+			if (product == null)
+			{
+				this.logger.LogError($"Product with id {productId} not found.");
+			}
+
+			var addOnsToBeRemoved = await repository
+				.AllReadOnly<ItemAddOn>()
+				.Where(a => a.ItemId == productId)
+				.ToListAsync();
+
+			foreach (var addOn in addOnsToBeRemoved)
+			{
+				await repository.DeleteAsync<ItemAddOn>(addOn);
+			}
+
+			await repository.DeleteAsync<Item>(product);
+
+			await repository.SaveChangesAsync();
+		}
+
+		public async Task EditProductAsync(ProductFormModel model, int productId)
+		{
+			var product = await repository.GetByIdAsync<Item>(productId);
+
+			if (product != null)
+			{
+				product.Title = model.Title;
+				product.Description = model.Description;
+				product.Price = model.Price;
+				product.IsVeggie = model.IsVeggie;
+				product.ImageURL = model.ImageURL;
+				product.ItemCategoryId = model.ItemCategoryId;
+				product.RestaurantId = model.RestaurantId;
+				product.SpicyCategoryId = model.SpicyCategoryId;
+
+				await repository.SaveChangesAsync();
+			}
+		}
+
+		public async Task<bool> ExistsProductAsync(int productId)
+		{
+			return await repository
+				.AllReadOnly<Item>()
+				.AnyAsync(i => i.Id == productId);
+		}
+
+		public async Task<bool> ExistsProductCategoryAsync(int productCategoryId)
+		{
+			return await repository
+				.AllReadOnly<ItemCategory>()
+				.AnyAsync(i => i.Id == productCategoryId);
+		}
+
+		public async Task<bool> ExistsProductSpicyCategoryAsync(int productSpicyCategoryId)
+		{
+			return await repository
+				.AllReadOnly<ItemSpicyCategory>()
+				.AnyAsync(i => i.Id == productSpicyCategoryId);
+		}
+
+		public async Task<IEnumerable<ProductCategoryViewModel>> GetCategoriesAsync()
+		{
+			return await repository
+				.AllReadOnly<ItemCategory>()
+				.Select(c => new ProductCategoryViewModel
+				{
+					Id = c.Id,
+					Title = c.Title
+				})
+				.ToListAsync();
+		}
+
 		public async Task<Item?> GetProductByIdAsync(int productId)
 		{
 			var product = await repository.GetByIdAsync<Item>(productId);
@@ -53,7 +149,45 @@ namespace FoodDeliveryApp.Core.Services
 				.FirstOrDefaultAsync();
 		}
 
-		public async Task UpdateFavouriteProduct(int productId)
+		public async Task<ProductFormModel?> GetProductFormModelByIdAsync(int productId)
+		{
+			var product = await repository.AllReadOnly<Item>()
+				.Where(p => p.Id == productId)
+				.Select(p => new ProductFormModel()
+				{
+					Title = p.Title,
+					Description = p.Description,
+					Price = p.Price,
+					IsVeggie = p.IsVeggie,
+					ImageURL = p.ImageURL,
+					ItemCategoryId = p.ItemCategoryId,
+					RestaurantId = p.RestaurantId,
+					SpicyCategoryId = p.SpicyCategoryId
+				})
+				.FirstOrDefaultAsync();
+
+			if (product != null)
+			{
+				product.Categories = await GetCategoriesAsync();
+				product.SpicyCategories = await GetSpicyCategoriesAsync();
+			}
+
+			return product;
+		}
+
+		public async Task<IEnumerable<ProductSpicyCategoryViewModel>> GetSpicyCategoriesAsync()
+		{
+			return await repository
+				.AllReadOnly<ItemSpicyCategory>()
+				.Select(c => new ProductSpicyCategoryViewModel
+				{
+					Id = c.Id,
+					Title = c.Title
+				})
+				.ToListAsync();
+		}
+
+		public async Task UpdateFavouriteProductAsync(int productId)
 		{
 			var product = await repository.GetByIdAsync<Item>(productId);
 

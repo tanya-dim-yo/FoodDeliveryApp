@@ -45,7 +45,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AddOns");
+                    b.ToTable("AddOns", (string)null);
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.BlogArticle", b =>
@@ -93,7 +93,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BlogArticles");
+                    b.ToTable("BlogArticles", (string)null);
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.BlogArticleCategory", b =>
@@ -111,7 +111,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BlogArticleCategories");
+                    b.ToTable("BlogArticleCategories", (string)null);
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.BlogArticleComment", b =>
@@ -140,7 +140,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BlogArticleComments");
+                    b.ToTable("BlogArticleComments", (string)null);
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.Cart", b =>
@@ -162,7 +162,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.CartItem", b =>
@@ -191,7 +191,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.City", b =>
@@ -209,7 +209,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
 
                     b.HasData(
                         new
@@ -250,7 +250,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Coupons");
+                    b.ToTable("Coupons", (string)null);
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.Item", b =>
@@ -308,7 +308,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasIndex("SpicyCategoryId");
 
-                    b.ToTable("Items");
+                    b.ToTable("Items", (string)null);
 
                     b.HasData(
                         new
@@ -415,7 +415,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasIndex("AddOnId");
 
-                    b.ToTable("ItemsAddOns");
+                    b.ToTable("ItemsAddOns", (string)null);
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.ItemCategory", b =>
@@ -433,7 +433,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ItemCategories");
+                    b.ToTable("ItemCategories", (string)null);
 
                     b.HasData(
                         new
@@ -495,7 +495,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("ItemReviews");
+                    b.ToTable("ItemReviews", (string)null);
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.ItemSpicyCategory", b =>
@@ -513,7 +513,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ItemSpicyCategories");
+                    b.ToTable("ItemSpicyCategories", (string)null);
 
                     b.HasData(
                         new
@@ -562,7 +562,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Locations", (string)null);
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.Order", b =>
@@ -619,7 +619,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.Payment", b =>
@@ -643,7 +643,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("FoodDeliveryApp.Infrastructure.Data.Models.Restaurant", b =>
@@ -708,7 +708,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasIndex("RestaurantCategoryId");
 
-                    b.ToTable("Restaurants");
+                    b.ToTable("Restaurants", (string)null);
 
                     b.HasData(
                         new
@@ -782,7 +782,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RestaurantCategories");
+                    b.ToTable("RestaurantCategories", (string)null);
 
                     b.HasData(
                         new
