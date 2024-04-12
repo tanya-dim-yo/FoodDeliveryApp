@@ -275,7 +275,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 			input = Regex.Replace(input, @"\s+", " ");
 
-			const string AllowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+			const string AllowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_/~.";
 			input = new string(input.Where(c => AllowedChars.Contains(c)).ToArray());
 
 			input = input.Replace("..", "");
