@@ -192,6 +192,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 			if (restaurant == null)
 			{
+				logger.LogError("Restaurant not found.");
 				throw new Exception("Restaurant not found.");
 			}
 
