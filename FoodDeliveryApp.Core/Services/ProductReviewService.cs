@@ -1,7 +1,9 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
+using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Core.Models.ProductReview;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace FoodDeliveryApp.Core.Services
@@ -32,9 +34,18 @@ namespace FoodDeliveryApp.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<ProductReviewViewModel>> GetProductReviewsByProductIdAsync(int productId)
+        public async Task<IEnumerable<ProductReviewViewModel>> GetProductReviewsByProductIdAsync(int productId)
         {
-            throw new NotImplementedException();
+            return await repository
+                .AllReadOnly<ItemReview>()
+                .Where(i => i.ItemId == productId)
+                .Select(c => new ProductReviewViewModel
+                {
+                    Id = c.Id,
+                    AverageRating = c.AverageRating,
+                    Review = c.Review
+                })
+                .ToListAsync();
         }
     }
 }

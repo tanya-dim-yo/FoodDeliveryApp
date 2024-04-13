@@ -33,7 +33,7 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Favourite(int productId)
+		public async Task<IActionResult> Favourite(int productId, bool IsFavourite)
 		{
 			if (productId <= 0)
 			{
@@ -46,10 +46,10 @@ namespace FoodDeliveryApp.Controllers
 
 				if (product == null)
 				{
-					return NotFound(); // Product not found
+					return NotFound();
 				}
 
-				product.IsFavourite = !product.IsFavourite;
+				//product.IsFavourite = !product.IsFavourite;
 
 				await productService.UpdateFavouriteProductAsync(productId);
 
