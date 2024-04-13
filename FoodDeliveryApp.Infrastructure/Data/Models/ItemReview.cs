@@ -17,7 +17,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        public double AverageRating { get; private set; }
+        public double AverageRating { get; set; }
 
         [Required]
         [MaxLength(ItemReviewMaxLength)]
