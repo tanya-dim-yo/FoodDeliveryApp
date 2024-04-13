@@ -13,7 +13,7 @@ namespace FoodDeliveryApp.Core.Models.ProductReview
 			ConvertValueInInvariantCulture = true,
 			ErrorMessage = RatingMessage)]
 		[Display(Name = "Добавете оценка за продукта")]
-		public double AverageRating { get; private set; }
+		public double AverageRating { get; set; }
 
 		[Required(ErrorMessage = RequiredFieldMessage)]
 		[StringLength(ItemReviewMaxLength,
