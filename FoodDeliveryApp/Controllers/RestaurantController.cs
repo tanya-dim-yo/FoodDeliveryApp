@@ -12,16 +12,22 @@ namespace FoodDeliveryApp.Controllers
 	public class RestaurantController : BaseController
 	{
 		private readonly IRestaurantService restaurantService;
+		private readonly IPaginationService paginationService;
 
-		public RestaurantController(IRestaurantService _restaurantService)
+		public RestaurantController(
+			IRestaurantService _restaurantService,
+			IPaginationService _paginationService)
 		{
 			restaurantService = _restaurantService;
+			paginationService = _paginationService;
 		}
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All([FromServices] IPaginationService paginationService, [FromServices] IRestaurantService restaurantService)
         {
+            paginationService.IncrementCurrentPage();
+
             var (model, categories, totalRestaurantsCount) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
             var modelWrapper = new RestaurantsWithCategoriesViewModel

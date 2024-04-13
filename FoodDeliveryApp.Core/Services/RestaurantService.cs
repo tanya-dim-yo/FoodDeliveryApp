@@ -12,13 +12,16 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 	public class RestaurantService : IRestaurantService
 	{
 		private readonly IRepository repository;
+		private readonly IPaginationService paginationService;
 		private readonly ILogger<RestaurantService> logger;
 
 		public RestaurantService(
 			IRepository _repository,
+			IPaginationService _paginationService,
 			ILogger<RestaurantService> _logger)
 		{
 			repository = _repository;
+			paginationService = _paginationService;
 			logger = _logger;
 		}
 
@@ -49,8 +52,9 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
         public async Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories, int TotalRestaurantsCount)> GetAllRestaurantsAndCategoriesAsync()
         {
             var model = new RestaurantsWithCategoriesViewModel();
-            const int currentPage = 1; // Default current page
-            const int restaurantsPerPage = 6; // Default number of restaurants per page
+
+            var currentPage = paginationService.CurrentPage;
+            var restaurantsPerPage = paginationService.RestaurantsPerPage;
 
             var restaurants = await GetAllRestaurantsAsync();
             var categories = await AllRestaurantCategoriesAsync();
@@ -79,7 +83,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
             return (model.RestaurantViewModels, categories.Select(c => (c.Id, c.Title)), model.TotalRestaurantsCount);
         }
-
 
         private async Task<IEnumerable<(int Id, string Title)>> AllRestaurantCategoriesAsync()
 		{
