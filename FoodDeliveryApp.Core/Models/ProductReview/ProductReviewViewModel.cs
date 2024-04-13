@@ -8,7 +8,7 @@
 
 		public string Email { get; set; } = string.Empty;
 
-		public double AverageRating { get; private set; }
+		public double AverageRating { get; set; }
 
 		public string Review { get; set; } = string.Empty;
 	}
