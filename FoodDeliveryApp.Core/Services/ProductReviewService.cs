@@ -47,5 +47,10 @@ namespace FoodDeliveryApp.Core.Services
                 })
                 .ToListAsync();
         }
-    }
+
+		public Task<ProductReviewViewModel?> GetProductReviewByIdAsync(int productId)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
