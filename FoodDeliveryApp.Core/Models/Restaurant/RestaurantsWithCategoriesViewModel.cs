@@ -2,7 +2,7 @@
 {
 	public class RestaurantsWithCategoriesViewModel
 	{
-		public int RestaurantsPerPage { get; } = 6;
+		public int RestaurantsPerPage { get; } = 9;
 		public int CurrentPage { get; init; } = 1;
 		public int TotalRestaurantsCount { get; set; }
 		public IEnumerable<string> CategoryNames { get; set; } = new List<string>();
