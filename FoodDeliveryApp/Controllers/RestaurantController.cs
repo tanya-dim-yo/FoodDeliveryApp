@@ -18,24 +18,24 @@ namespace FoodDeliveryApp.Controllers
 			restaurantService = _restaurantService;
 		}
 
-		[AllowAnonymous]
-		[HttpGet]
-		public async Task<IActionResult> All()
-		{
-			var (model, categories, totalRestaurantsCount) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> All()
+        {
+            var (model, categories, totalRestaurantsCount) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
-			var modelWrapper = new RestaurantsWithCategoriesViewModel
-			{
-				RestaurantViewModels = model,
-				CategoryNames = categories.Select(c => c.Title),
-				CategoryIds = categories.Select(c => c.Id),
-				TotalRestaurantsCount = totalRestaurantsCount
-			};
+            var modelWrapper = new RestaurantsWithCategoriesViewModel
+            {
+                RestaurantViewModels = model,
+                CategoryNames = categories.Select(c => c.Title),
+                CategoryIds = categories.Select(c => c.Id),
+                TotalRestaurantsCount = totalRestaurantsCount
+            };
 
-			return View(modelWrapper);
-		}
+            return View(modelWrapper);
+        }
 
-		[AllowAnonymous]
+        [AllowAnonymous]
 		[HttpGet]
 		public IActionResult Nearest()
 		{

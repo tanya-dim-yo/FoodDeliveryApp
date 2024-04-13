@@ -46,41 +46,42 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			return restaurant.Id;
 		}
 
-		public async Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories, int TotalRestaurantsCount)> GetAllRestaurantsAndCategoriesAsync()
-		{
-			var model = new RestaurantsWithCategoriesViewModel();
-			const int currentPage = 1;
-			const int restaurantsPerPage = 6;
+        public async Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories, int TotalRestaurantsCount)> GetAllRestaurantsAndCategoriesAsync()
+        {
+            var model = new RestaurantsWithCategoriesViewModel();
+            const int currentPage = 1; // Default current page
+            const int restaurantsPerPage = 6; // Default number of restaurants per page
 
-			var restaurants = await GetAllRestaurantsAsync();
-			var categories = await AllRestaurantCategoriesAsync();
+            var restaurants = await GetAllRestaurantsAsync();
+            var categories = await AllRestaurantCategoriesAsync();
 
-			model.TotalRestaurantsCount = restaurants.Count();
+            model.TotalRestaurantsCount = restaurants.Count();
 
-			model.RestaurantViewModels = restaurants
-				.Skip((currentPage - 1) * restaurantsPerPage)
-				.Take(restaurantsPerPage)
-				.Select(p => new RestaurantViewModel
-				{
-					Id = p.Id,
-					Title = p.Title,
-					ServiceFee = p.ServiceFee,
-					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
-					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					ImageURL = p.ImageURL,
-					AverageRating = p.AverageRating,
-					TotalReviews = p.TotalReviews,
-					RestaurantCategory = p.RestaurantCategory
-				})
-				.ToList();
+            model.RestaurantViewModels = restaurants
+                .Skip((currentPage - 1) * restaurantsPerPage)
+                .Take(restaurantsPerPage)
+                .Select(p => new RestaurantViewModel
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    ServiceFee = p.ServiceFee,
+                    MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
+                    MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
+                    ImageURL = p.ImageURL,
+                    AverageRating = p.AverageRating,
+                    TotalReviews = p.TotalReviews,
+                    RestaurantCategory = p.RestaurantCategory
+                })
+                .ToList();
 
-			model.CategoryNames = categories.Select(c => c.Title);
-			model.CategoryIds = categories.Select(c => c.Id);
+            model.CategoryNames = categories.Select(c => c.Title);
+            model.CategoryIds = categories.Select(c => c.Id);
 
-			return (model.RestaurantViewModels, categories.Select(c => (c.Id, c.Title)), model.TotalRestaurantsCount);
-		}
+            return (model.RestaurantViewModels, categories.Select(c => (c.Id, c.Title)), model.TotalRestaurantsCount);
+        }
 
-		private async Task<IEnumerable<(int Id, string Title)>> AllRestaurantCategoriesAsync()
+
+        private async Task<IEnumerable<(int Id, string Title)>> AllRestaurantCategoriesAsync()
 		{
 			var categories = await repository
 				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
