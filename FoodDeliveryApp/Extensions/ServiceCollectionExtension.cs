@@ -14,8 +14,9 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<IRestaurantService, RestaurantService>();
 			services.AddScoped<IProductService, ProductService>();
+            services.AddSingleton<IPaginationService, PaginationService>();
 
-			return services;
+            return services;
         }
 
         public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config)
