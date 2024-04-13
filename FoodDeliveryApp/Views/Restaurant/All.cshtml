@@ -21,97 +21,135 @@
 		</div>
 	</div>
 	<!-- Banner End -->
-	<!-- Search Section -->
-	<section class="content-inner-1">
-		<div class="container">
-			<div class="row search-wraper text-center">
-				<div class="col-lg-8 m-auto">
-					<form>
-						<div class="input-group">
-							<input name="keyword" required="required" type="text" class="form-control" placeholder="Търсене в ресторанти...">
-							<div class="input-group-addon">
-								<button name="submit" asp-controller="Restaurant" asp-action="Search" asp-route-id="keyword" value="submit" type="submit" class="btn btn-primary btn-hover-2">
-									<span>Търсене</span><i class="icon-search"></i>
-								</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-3">
-					<aside class="side-bar left sticky-top">
-						<div class="shop-filter">
-							<div class="widget widget_tag_cloud ">
-								<div class="d-flex justify-content-between">
-									<div class="widget-title">
-										<h4 class="title">Сортиране по:</h4>
-									</div>
-									<a href="javascript:void(0);" class="panel-close-btn"><i class="fa-solid fa-xmark"></i></a>
-								</div>
-								<div class="tagcloud">
-									<a href="@Url.Action("ProductDetail","FoodTime")">Близо до мен</a>
-									<a href="@Url.Action("HighestRating","Restaurant")">С най-висок рейтинг</a>
-									<a href="@Url.Action("ServiceFee","Restaurant")">Такса за доставка</a>
-								</div>
-							</div>
-							<div class="widget widget_tag_cloud ">
-								<div class="d-flex justify-content-between">
-									<div class="widget-title">
-										<h4 class="title">Филтър</h4>
-									</div>
-									<a href="javascript:void(0);" class="panel-close-btn"><i class="fa-solid fa-xmark"></i></a>
-								</div>
-								<div class="tagcloud">
-									@foreach (var (categoryName, categoryId) in Model.CategoryNames.Zip(Model.CategoryIds, (name, id) => (name, id)))
-									{
-										<div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId })">@categoryName</a></div>
-									}
-								</div>
-							</div>
-						</div>
-					</aside>
-				</div>
-				<div class="col-lg-9">
-					<div class="d-flex justify-content-between align-items-center">
-						<h5 class="title mb-md-3 mb-lg-4 m-b20 d-none d-lg-block">@ViewData["ListTitle"]</h5>
-					</div>
-					<ul id="masonry" class="row">
-						@if (Model.RestaurantViewModels.Count() == 0)
+    <!-- Search Section -->
+    <section class="content-inner-1">
+        <div class="container">
+            <div class="row search-wraper text-center">
+                <div class="col-lg-8 m-auto">
+                    <form>
+                        <div class="input-group">
+                            <input name="keyword" required="required" type="text" class="form-control" placeholder="Търсене в ресторанти...">
+                            <div class="input-group-addon">
+                                <button name="submit" asp-controller="Restaurant" asp-action="Search" asp-route-id="keyword" value="submit" type="submit" class="btn btn-primary btn-hover-2">
+                                    <span>Търсене</span><i class="icon-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <aside class="side-bar left sticky-top">
+                        <div class="shop-filter">
+                            <div class="widget widget_tag_cloud ">
+                                <div class="d-flex justify-content-between">
+                                    <div class="widget-title">
+                                        <h4 class="title">Сортиране по:</h4>
+                                    </div>
+                                    <a href="javascript:void(0);" class="panel-close-btn"><i class="fa-solid fa-xmark"></i></a>
+                                </div>
+                                <div class="tagcloud">
+                                    <a href="@Url.Action("ProductDetail","FoodTime")">Близо до мен</a>
+                                    <a href="@Url.Action("HighestRating","Restaurant")">С най-висок рейтинг</a>
+                                    <a href="@Url.Action("ServiceFee","Restaurant")">Такса за доставка</a>
+                                </div>
+                            </div>
+                            <div class="widget widget_tag_cloud ">
+                                <div class="d-flex justify-content-between">
+                                    <div class="widget-title">
+                                        <h4 class="title">Филтър</h4>
+                                    </div>
+                                    <a href="javascript:void(0);" class="panel-close-btn"><i class="fa-solid fa-xmark"></i></a>
+                                </div>
+                                <div class="tagcloud">
+                                    @foreach (var (categoryName, categoryId) in Model.CategoryNames.Zip(Model.CategoryIds, (name, id) => (name, id)))
+                                    {
+                                        <div><a href="@Url.Action("ByCategory", "Restaurant", new { categoryId })">@categoryName</a></div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+                <div class="col-lg-9">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="title mb-md-3 mb-lg-4 m-b20 d-none d-lg-block">@ViewData["ListTitle"]</h5>
+                    </div>
+                    @if (Model.RestaurantViewModels.Count() == 0)
+                    {
+                        <p>Няма намерени резултати.</p>
+                    }
+                    else
+                    {
+                        var previousPage = Model.CurrentPage - 1;
+                        if (previousPage < 1)
                         {
-                            <p>Няма намерени резултати.</p>
+                            previousPage = 1;
                         }
-						else
-						{
-							@foreach (var restaurant in Model.RestaurantViewModels)
-							{
-								<li class="card-container col-xl-4 col-md-6 m-b30">
-									<div class="dz-img-box style-7">
-										<div class="dz-media">
-											<img src="@Url.Content(restaurant.ImageURL)" alt="@restaurant.Title">
-											<div class="dz-meta">
-												<ul>
-													<li class="seller">@restaurant.RestaurantCategory</li>
-													<li class="rating"><i class="fa-solid fa-star"></i> @restaurant.AverageRatingPercent</li>
-												</ul>
-											</div>
-										</div>
-										<div class="dz-content">
-												<h5 class="title"><a href="@Url.Action("Menu","Restaurant", new { restaurantId = restaurant.Id })">@restaurant.Title</a></h5>
-													<span>@restaurant.ServiceFee лв. · @restaurant.MinDeliveryTimeInMinutes - @restaurant.MaxDeliveryTimeInMinutes мин.</span>
-										</div>
-									</div>
-								</li>
-							}
-						}
-					</ul>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- Search Section -->
 
-</div>
+                        var maxPage = Math.Ceiling((double)Model.TotalRestaurantsCount / Model.RestaurantsPerPage);
+
+                        <!-- Pagination buttons -->
+                        <div class="row mb-5">
+                            <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
+                                <a class="btn btn-outline-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty) btn-sm"
+                                   asp-controller="Restaurant"
+                                   asp-action="All"
+                                   asp-route-currentPage="@previousPage"
+                                   style="@(Model.CurrentPage == 1 ? "color: grey;" : string.Empty)">
+                                    <span style="color: white;">Предишна</span>
+                                </a>
+                            </div>
+                            @if (Model.CurrentPage < maxPage)
+                            {
+                                <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a class="btn btn-primary btn-sm @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)"
+                                       asp-controller="Restaurant"
+                                       asp-action="All"
+                                       asp-route-currentPage="@(Model.CurrentPage + 1)"
+                                       style="@(Model.CurrentPage == maxPage ? "color: grey;" : string.Empty)">
+                                        <span style="color: white;">Следваща</span>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                        <!-- End of pagination buttons -->
+                        <!-- Display the number of restaurants being shown out of the total -->
+                        <div>
+                            <p>Показване на @Model.RestaurantsPerPage от общо @Model.TotalRestaurantsCount ресторанта</p>
+                        </div>
+
+                        <ul id="masonry" class="row">
+                            <!-- Display restaurant cards -->
+                            @foreach (var restaurant in Model.RestaurantViewModels)
+                            {
+                                <li class="card-container col-xl-4 col-md-6 m-b30">
+                                    <div class="dz-img-box style-7">
+                                        <div class="dz-media">
+                                            <img src="@Url.Content(restaurant.ImageURL)" alt="@restaurant.Title">
+                                            <div class="dz-meta">
+                                                <ul>
+                                                    <li class="seller">@restaurant.RestaurantCategory</li>
+                                                    <li class="rating"><i class="fa-solid fa-star"></i> @restaurant.AverageRatingPercent</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="dz-content">
+                                            <h5 class="title"><a href="@Url.Action("Menu","Restaurant", new { restaurantId = restaurant.Id })">@restaurant.Title</a></h5>
+                                            <span>@restaurant.ServiceFee лв. · @restaurant.MinDeliveryTimeInMinutes - @restaurant.MaxDeliveryTimeInMinutes мин.</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+
+
+
+        </div>
 <partial name="FoodTime/_MenuDetailModal" />
 @section foodtime_style
 	{
