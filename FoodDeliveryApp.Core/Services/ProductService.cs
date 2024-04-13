@@ -1,5 +1,6 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Product;
+using FoodDeliveryApp.Core.Models.ProductReview;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -144,7 +145,15 @@ namespace FoodDeliveryApp.Core.Services
 					MinDeliveryTimeInMinutes = p.Restaurant.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.Restaurant.MaxDeliveryTimeInMinutes,
 					ItemCategory = p.ItemCategory.Title,
-					SpicyCategory = p.SpicyCategory.Title
+					SpicyCategory = p.SpicyCategory.Title,
+					Reviews = p.Reviews
+						.Select(r => new ProductReviewViewModel
+						{
+							Id = r.Id,
+							AverageRating = r.AverageRating,
+							Review = r.Review
+						})
+						.ToList()
 				})
 				.FirstOrDefaultAsync();
 		}

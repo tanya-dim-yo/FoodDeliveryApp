@@ -1,4 +1,5 @@
 ﻿using FoodDeliveryApp.Core.Models.Product;
+using FoodDeliveryApp.Core.Models.ProductReview;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 
 namespace FoodDeliveryApp.Core.Contracts
