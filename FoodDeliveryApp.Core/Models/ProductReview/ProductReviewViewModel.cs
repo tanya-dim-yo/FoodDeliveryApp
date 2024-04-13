@@ -11,5 +11,7 @@
 		public double AverageRating { get; set; }
 
 		public string Review { get; set; } = string.Empty;
+
+		public double AverageRatingPercent => (AverageRating / 5) * 100;
 	}
 }
