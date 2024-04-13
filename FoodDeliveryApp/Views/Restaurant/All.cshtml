@@ -90,6 +90,11 @@
 
                         var maxPage = Math.Ceiling((double)Model.TotalRestaurantsCount / Model.RestaurantsPerPage);
 
+                        @* <!-- Display the number of restaurants being shown out of the total -->
+                        <div>
+                            <p>Показване на @Model.RestaurantsPerPage от общо @Model.RestaurantViewModels.Count() ресторанта</p>
+                        </div> *@
+
                         <!-- Pagination buttons -->
                         <div class="row mb-5">
                             <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
@@ -115,10 +120,6 @@
                             }
                         </div>
                         <!-- End of pagination buttons -->
-                        <!-- Display the number of restaurants being shown out of the total -->
-                        <div>
-                            <p>Показване на @Model.RestaurantsPerPage от общо @Model.TotalRestaurantsCount ресторанта</p>
-                        </div>
 
                         <ul id="masonry" class="row">
                             <!-- Display restaurant cards -->
@@ -146,9 +147,6 @@
                     }
                 </div>
             </div>
-
-
-
         </div>
 <partial name="FoodTime/_MenuDetailModal" />
 @section foodtime_style
