@@ -221,7 +221,7 @@
 													<div class="comment-body">
 														<div class="comment-author vcard">
 															<img class="avatar photo" src="~/foodtime/images/testimonial/mini/pic1.jpg" alt="/">
-															<cite class="fn">@review.UserName</cite>
+															<cite class="fn">@User.Identity?.Name</cite>
 														</div>
 														<div class="star-rating" data-rating="2">
 															<i class="fas fa-star text-secondary"></i>
@@ -238,19 +238,11 @@
 									}
 								}
 							</div>
-							@if(User.Identity.IsAuthenticated)
+							@if (User?.Identity?.IsAuthenticated ?? false)
 							{
 								<div class="comment-respond style-1" id="respond">
 									<h3 class="comment-reply-title mb-4" id="reply-title">Добавете коментар</h3>
 									<form class="comment-form" id="commentform" method="post">
-										<p class="comment-form-author">
-											<label for="author">Име <span class="required">*</span></label>
-											<input type="text" name="dzName" placeholder="Име" id="author">
-										</p>
-										<p class="comment-form-email">
-											<label for="email">Имейл <span class="required">*</span></label>
-											<input type="text" placeholder="Имейл" name="dzEmail" id="email">
-										</p>
 										<div class="comment-form-rating d-flex p-lr10">
 											<label class="pull-left m-r10 m-b20">Вашата оценка</label>
 											<div class="rating-widget">
