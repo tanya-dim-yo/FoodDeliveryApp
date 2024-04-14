@@ -135,12 +135,13 @@ namespace FoodDeliveryApp.Controllers
 
 		public async Task<IActionResult> Delete(int productId)
 		{
-			if (await productService.ExistsProductAsync(productId) == false)
+			var product = await productService.GetProductByIdAsync(productId);
+
+			if (product == null)
 			{
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductErrorMessage });
+			
 			}
-
-			var product = await productService.GetProductByIdAsync(productId);
 
 			await productService.DeleteProductAsync(productId);
 

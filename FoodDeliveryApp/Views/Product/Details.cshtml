@@ -105,7 +105,7 @@
 						<div class="d-lg-flex justify-content-between">
 							<ul class="modal-btn-group">
 								<li><a href="@Url.Action("ShopCart","FoodTime")" class="btn btn-primary btn-hover-1"><span>Добави<i class="flaticon-shopping-bag-1 m-l10"></i></span></a></li>
-								<li><a href="@Url.Action("ShopCheckout","FoodTime")" class="btn btn-outline-secondary btn-hover-1"><span>Количка<i class="flaticon-shopping-cart m-l10"></i></a></span></li>
+								<li><a href="@Url.Action("ShopCheckout","FoodTime")" class="btn btn-outline-secondary btn-hover-1"><span>Количка<i class="flaticon-shopping-cart m-l10"></i></span></a></li>
 							</ul>
 							<ul class="avatar-list avatar-list-stacked">
 								<li class="avatar"><img src="~/foodtime/images/testimonial/small/pic1.jpg" alt=""></li>
@@ -142,7 +142,7 @@
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" href="#developement-1">
 								<i class="icon-settings"></i>
-								<span class="d-none d-md-inline-block m-l10">Коментари</span>
+								<span class="d-none d-md-inline-block m-l10">Отзиви</span>
 							</button>
 						</li>
 					</ul>
@@ -210,7 +210,7 @@
 								@{
 									@if (Model.Reviews.Count() == 0)
                                     {
-										<p>Няма коментари за този продукт.</p>
+										<p>Няма отзиви за този продукт.</p>
 									}
 									else
 									{
