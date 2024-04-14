@@ -12,17 +12,10 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 	public class RestaurantService : IRestaurantService
 	{
 		private readonly IRepository repository;
-		private readonly IPaginationService paginationService;
-		private readonly ILogger<RestaurantService> logger;
 
-		public RestaurantService(
-			IRepository _repository,
-			IPaginationService _paginationService,
-			ILogger<RestaurantService> _logger)
+		public RestaurantService(IRepository _repository)
 		{
 			repository = _repository;
-			paginationService = _paginationService;
-			logger = _logger;
 		}
 
 		public async Task<int> AddRestaurantAsync(RestaurantFormModel model, DateTime openHour, DateTime closeHour)
@@ -49,21 +42,14 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			return restaurant.Id;
 		}
 
-        public async Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories, int TotalRestaurantsCount)> GetAllRestaurantsAndCategoriesAsync()
+        public async Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories)> GetAllRestaurantsAndCategoriesAsync()
         {
             var model = new RestaurantsWithCategoriesViewModel();
-
-            var currentPage = paginationService.CurrentPage;
-            var restaurantsPerPage = paginationService.RestaurantsPerPage;
 
             var restaurants = await GetAllRestaurantsAsync();
             var categories = await AllRestaurantCategoriesAsync();
 
-            model.TotalRestaurantsCount = restaurants.Count();
-
             model.RestaurantViewModels = restaurants
-                .Skip((currentPage - 1) * restaurantsPerPage)
-                .Take(restaurantsPerPage)
                 .Select(p => new RestaurantViewModel
                 {
                     Id = p.Id,
@@ -79,7 +65,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
             model.CategoryNames = categories.Select(c => c.Title);
             model.CategoryIds = categories.Select(c => c.Id);
 
-            return (model.RestaurantViewModels, categories.Select(c => (c.Id, c.Title)), model.TotalRestaurantsCount);
+            return (model.RestaurantViewModels, categories.Select(c => (c.Id, c.Title)));
         }
 
         private async Task<IEnumerable<(int Id, string Title)>> AllRestaurantCategoriesAsync()
