@@ -72,8 +72,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
                     MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
                     MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
                     ImageURL = p.ImageURL,
-                    AverageRating = p.AverageRating,
-                    TotalReviews = p.TotalReviews,
                     RestaurantCategory = p.RestaurantCategory
                 })
                 .ToList();
@@ -128,8 +126,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
 					ImageURL = p.ImageURL,
-					AverageRating = p.AverageRating,
-					TotalReviews = p.TotalReviews,
 					RestaurantCategory = p.RestaurantCategory.Title
 				})
 				.ToListAsync();
@@ -148,8 +144,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
 					ImageURL = p.ImageURL,
-					AverageRating = p.AverageRating,
-					TotalReviews = p.TotalReviews,
 					RestaurantCategory = p.RestaurantCategory.Title
 				})
 				.ToListAsync();
@@ -168,8 +162,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
 					ImageURL = p.ImageURL,
-					AverageRating = p.AverageRating,
-					TotalReviews = p.TotalReviews,
 					RestaurantCategory = p.RestaurantCategory.Title
 				})
 				.FirstOrDefaultAsync();
@@ -188,8 +180,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
 					ImageURL = p.ImageURL,
-					AverageRating = p.AverageRating,
-					TotalReviews = p.TotalReviews,
 					RestaurantCategory = p.RestaurantCategory.Title
 				})
 				.ToListAsync();
@@ -207,9 +197,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					Description = i.Description,
 					Price = i.Price,
 					ImageURL = i.ImageURL,
-					ItemCategory = i.ItemCategory.Title,
-					AverageRating = i.AverageRating,
-					TotalReviews = i.TotalReviews
+					ItemCategory = i.ItemCategory.Title
 				})
 				.ToListAsync();
 		}
@@ -257,8 +245,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
 					ImageURL = p.ImageURL,
-					AverageRating = p.AverageRating,
-					TotalReviews = p.TotalReviews,
 					RestaurantCategory = p.RestaurantCategory.Title
 				})
 				.ToListAsync();
@@ -279,8 +265,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
 					ImageURL = p.ImageURL,
-					AverageRating = p.AverageRating,
-					TotalReviews = p.TotalReviews,
 					RestaurantCategory = p.RestaurantCategory.Title
 				})
 				.ToListAsync();

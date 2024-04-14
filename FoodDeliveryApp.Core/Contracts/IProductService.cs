@@ -1,5 +1,4 @@
 ﻿using FoodDeliveryApp.Core.Models.Product;
-using FoodDeliveryApp.Core.Models.ProductReview;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 
 namespace FoodDeliveryApp.Core.Contracts
@@ -17,7 +16,5 @@ namespace FoodDeliveryApp.Core.Contracts
 		Task<ProductDetailsViewModel?> GetProductDetailsByIdAsync(int productId);
 		Task<Item?> GetProductByIdAsync(int productId);
 		Task<ProductFormModel?> GetProductFormModelByIdAsync(int productId);
-		Task UpdateFavouriteProductAsync(int productId, bool isFavourite);
-		Task AddProductReviewAsync(ProductDetailsViewModel model, int productId);
 	}
 }

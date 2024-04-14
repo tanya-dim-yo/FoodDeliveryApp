@@ -1,11 +1,9 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Product;
-using FoodDeliveryApp.Core.Models.ProductReview;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using static FoodDeliveryApp.Core.Extensions.StringExtensions;
 
 namespace FoodDeliveryApp.Core.Services
 {
@@ -40,29 +38,6 @@ namespace FoodDeliveryApp.Core.Services
 			await repository.SaveChangesAsync();
 
 			return product.Id;
-		}
-
-		public async Task AddProductReviewAsync(ProductDetailsViewModel model, int productId)
-		{
-			var product = await repository.GetByIdAsync<Item>(productId);
-
-			if (product == null)
-			{
-				this.logger.LogError($"Product with id {productId} not found.");
-				return;
-			}
-
-			string sanitizedReview = Sanitize(model.Review);
-
-			var review = new ItemReview()
-			{
-				Review = sanitizedReview,
-				AverageRating = model.SetAverageRating,
-				ItemId = productId
-			};
-
-			await repository.AddAsync(review);
-			await repository.SaveChangesAsync();
 		}
 
 		public async Task DeleteProductAsync(int productId)
@@ -160,9 +135,6 @@ namespace FoodDeliveryApp.Core.Services
 					Title = p.Title,
 					Description = p.Description,
 					Price = p.Price,
-					AverageRating = p.AverageRating,
-					TotalReviews = p.TotalReviews,
-					IsFavourite = p.IsFavourite,
 					IsVeggie = p.IsVeggie,
 					ImageURL = p.ImageURL,
 					RestaurantId = p.RestaurantId,
@@ -171,14 +143,6 @@ namespace FoodDeliveryApp.Core.Services
 					MaxDeliveryTimeInMinutes = p.Restaurant.MaxDeliveryTimeInMinutes,
 					ItemCategory = p.ItemCategory.Title,
 					SpicyCategory = p.SpicyCategory.Title,
-					Reviews = p.Reviews
-						.Select(r => new ProductReviewViewModel
-						{
-							Id = r.Id,
-							AverageRating = r.AverageRating,
-							Review = r.Review
-						})
-						.ToList()
 				})
 				.FirstOrDefaultAsync();
 		}
@@ -220,21 +184,5 @@ namespace FoodDeliveryApp.Core.Services
 				})
 				.ToListAsync();
 		}
-
-		public async Task UpdateFavouriteProductAsync(int productId, bool isFavourite)
-		{
-			var product = await repository.GetByIdAsync<Item>(productId);
-
-			if (product == null)
-			{
-				logger.LogError($"Product with id {productId} not found.");
-				return;
-			}
-
-			product.IsFavourite = isFavourite;
-
-			await repository.SaveChangesAsync();
-		}
-
 	}
 }
