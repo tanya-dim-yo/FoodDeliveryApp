@@ -1,5 +1,4 @@
-﻿// favorite.js
-document.getElementById('favoriteIcon').addEventListener('click', function (event) {
+﻿document.getElementById('favoriteIcon').addEventListener('click', function (event) {
     toggleFavourite(event);
 });
 
@@ -7,12 +6,13 @@ function toggleFavourite(event) {
     event.preventDefault();
 
     var productId = parseInt('@Model.Id');
-    var isFavourite = '@Model.IsFavourite'/* === 'True';*/ // Corrected isFavourite assignment
+    var isFavourite = '@Model.IsFavourite' === 'True'; // Parse string to boolean
 
     $.ajax({
-        url: '/Product/Favourite?productId=' + productId + '&isFavourite=' + isFavourite,
+        url: '/Product/Favourite',
         type: 'POST',
         contentType: 'application/json',
+        data: JSON.stringify({ productId: productId, isFavourite: !isFavourite }), // Pass isFavourite as data
         success: function (response) {
             if (response.success) {
                 var favoriteIcon = document.getElementById('favoriteIcon');
