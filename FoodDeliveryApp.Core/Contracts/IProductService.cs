@@ -18,6 +18,6 @@ namespace FoodDeliveryApp.Core.Contracts
 		Task<Item?> GetProductByIdAsync(int productId);
 		Task<ProductFormModel?> GetProductFormModelByIdAsync(int productId);
 		Task UpdateFavouriteProductAsync(int productId, bool isFavourite);
-		Task AddProductReviewAsync(ProductReviewFormModel model, int productId);
+		Task AddProductReviewAsync(ProductDetailsViewModel model, int productId);
 	}
 }

@@ -5,6 +5,7 @@ using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using static FoodDeliveryApp.Core.Extensions.StringExtensions;
 
 namespace FoodDeliveryApp.Core.Services
 {
@@ -41,7 +42,7 @@ namespace FoodDeliveryApp.Core.Services
 			return product.Id;
 		}
 
-		public async Task AddProductReviewAsync(ProductReviewFormModel model, int productId)
+		public async Task AddProductReviewAsync(ProductDetailsViewModel model, int productId)
 		{
 			var product = await repository.GetByIdAsync<Item>(productId);
 
@@ -51,10 +52,12 @@ namespace FoodDeliveryApp.Core.Services
 				return;
 			}
 
+			string sanitizedReview = Sanitize(model.Review);
+
 			var review = new ItemReview()
 			{
-				Review = model.Review,
-				AverageRating = model.AverageRating,
+				Review = sanitizedReview,
+				AverageRating = model.SetAverageRating,
 				ItemId = productId
 			};
 
