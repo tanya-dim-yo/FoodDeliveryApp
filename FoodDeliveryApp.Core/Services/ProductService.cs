@@ -41,6 +41,27 @@ namespace FoodDeliveryApp.Core.Services
 			return product.Id;
 		}
 
+		public async Task AddProductReviewAsync(ProductReviewFormModel model, int productId)
+		{
+			var product = await repository.GetByIdAsync<Item>(productId);
+
+			if (product == null)
+			{
+				this.logger.LogError($"Product with id {productId} not found.");
+				return;
+			}
+
+			var review = new ItemReview()
+			{
+				Review = model.Review,
+				AverageRating = model.AverageRating,
+				ItemId = productId
+			};
+
+			await repository.AddAsync(review);
+			await repository.SaveChangesAsync();
+		}
+
 		public async Task DeleteProductAsync(int productId)
 		{
 			var product = await repository.GetByIdAsync<Item>(productId);
@@ -48,6 +69,7 @@ namespace FoodDeliveryApp.Core.Services
 			if (product == null)
 			{
 				this.logger.LogError($"Product with id {productId} not found.");
+				return;
 			}
 
 			var addOnsToBeRemoved = await repository
@@ -196,7 +218,7 @@ namespace FoodDeliveryApp.Core.Services
 				.ToListAsync();
 		}
 
-		public async Task UpdateFavouriteProductAsync(int productId)
+		public async Task UpdateFavouriteProductAsync(int productId, bool isFavourite)
 		{
 			var product = await repository.GetByIdAsync<Item>(productId);
 
@@ -206,9 +228,10 @@ namespace FoodDeliveryApp.Core.Services
 				return;
 			}
 
-			product.IsFavourite = !product.IsFavourite;
+			product.IsFavourite = isFavourite;
 
 			await repository.SaveChangesAsync();
 		}
+
 	}
 }

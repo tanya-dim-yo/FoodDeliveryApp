@@ -33,35 +33,21 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Favourite(int productId, bool IsFavourite)
+		public async Task<IActionResult> Favourite(int productId, bool isFavourite)
 		{
-			if (productId <= 0)
+			var product = await productService.GetProductByIdAsync(productId);
+
+			if (product == null)
 			{
-				return BadRequest("Invalid productId");
+				return NotFound();
 			}
 
-			try
-			{
-				var product = await productService.GetProductByIdAsync(productId);
+			product.IsFavourite = isFavourite;
 
-				if (product == null)
-				{
-					return NotFound();
-				}
+			await productService.UpdateFavouriteProductAsync(productId, isFavourite);
 
-				//product.IsFavourite = !product.IsFavourite;
-
-				await productService.UpdateFavouriteProductAsync(productId);
-
-				return Json(new { success = true, isFavorite = product.IsFavourite });
-			}
-			catch (Exception ex)
-			{
-				// Log exception
-				return StatusCode(500, "An error occurred while processing the request");
-			}
+			return Json(new { success = true, isFavorite = isFavourite });
 		}
-
 
 		[HttpGet]
 		public async Task<IActionResult> Add()
