@@ -133,6 +133,7 @@ namespace FoodDeliveryApp.Controllers
 			return RedirectToAction(nameof(Details), new { productId });
 		}
 
+		[HttpPost]
 		public async Task<IActionResult> Delete(int productId)
 		{
 			var product = await productService.GetProductByIdAsync(productId);
@@ -147,5 +148,35 @@ namespace FoodDeliveryApp.Controllers
 
 			return RedirectToAction("Menu", "Restaurant", new { product.RestaurantId });
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> AddProductReview(ProductDetailsViewModel model, int productId)
+		{
+			var product = await productService.GetProductByIdAsync(productId);
+
+			if (product == null)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductErrorMessage });
+			}
+
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
+
+			try
+			{
+				await productService.AddProductReviewAsync(model, productId);
+			}
+			catch (ArgumentException ex)
+			{
+				ModelState.AddModelError("", ex.Message);
+				return View(model);
+			}
+
+			return RedirectToAction(nameof(Details), new { productId });
+		}
+
+
 	}
 }
