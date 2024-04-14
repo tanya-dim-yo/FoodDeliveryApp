@@ -32,23 +32,6 @@ namespace FoodDeliveryApp.Controllers
 			return View(model);
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> Favourite(int productId, bool isFavourite)
-		{
-			var product = await productService.GetProductByIdAsync(productId);
-
-			if (product == null)
-			{
-				return NotFound();
-			}
-
-			product.IsFavourite = isFavourite;
-
-			await productService.UpdateFavouriteProductAsync(productId, isFavourite);
-
-			return Json(new { success = true, isFavorite = isFavourite });
-		}
-
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
@@ -148,35 +131,5 @@ namespace FoodDeliveryApp.Controllers
 
 			return RedirectToAction("Menu", "Restaurant", new { product.RestaurantId });
 		}
-
-		[HttpPost]
-		public async Task<IActionResult> AddProductReview(ProductDetailsViewModel model, int productId)
-		{
-			var product = await productService.GetProductByIdAsync(productId);
-
-			if (product == null)
-			{
-				return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductErrorMessage });
-			}
-
-			if (!ModelState.IsValid)
-			{
-				return View(model);
-			}
-
-			try
-			{
-				await productService.AddProductReviewAsync(model, productId);
-			}
-			catch (ArgumentException ex)
-			{
-				ModelState.AddModelError("", ex.Message);
-				return View(model);
-			}
-
-			return RedirectToAction(nameof(Details), new { productId });
-		}
-
-
 	}
 }
