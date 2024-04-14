@@ -202,22 +202,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.ToListAsync();
 		}
 
-		public async Task RateRestaurant(int restaurantId, double newRating)
-		{
-			var restaurant = await repository.All<Infrastructure.Data.Models.Restaurant>()
-				.FirstOrDefaultAsync(r => r.Id == restaurantId);
-
-			if (restaurant == null)
-			{
-				logger.LogError("Restaurant not found.");
-				throw new Exception("Restaurant not found.");
-			}
-
-			restaurant.UpdateRating(newRating);
-
-			await repository.SaveChangesAsync();
-		}
-
 		public async Task<(string SanitizedKeyword, IEnumerable<RestaurantViewModel> Results)> SearchRestaurantsAsync(string keyword)
 		{
 			string sanitizedKeyword = Sanitize(keyword);

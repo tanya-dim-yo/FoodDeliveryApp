@@ -195,13 +195,6 @@ namespace FoodDeliveryApp.Controllers
 			return View(model);
 		}
 
-		public async Task<IActionResult> RateRestaurant(int id, double newRating)
-		{
-			await restaurantService.RateRestaurant(id, newRating);
-
-			return RedirectToAction(nameof(All));
-		}
-
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
