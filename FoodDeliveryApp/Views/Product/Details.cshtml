@@ -238,51 +238,54 @@
 									}
 								}
 							</div>
-							<div class="comment-respond style-1" id="respond">
-								<h3 class="comment-reply-title mb-4" id="reply-title">Добавете коментар</h3>
-								<form class="comment-form" id="commentform" method="post">
-									<p class="comment-form-author">
-										<label for="author">Име <span class="required">*</span></label>
-										<input type="text" name="dzName" placeholder="Име" id="author">
-									</p>
-									<p class="comment-form-email">
-										<label for="email">Имейл <span class="required">*</span></label>
-										<input type="text" placeholder="Имейл" name="dzEmail" id="email">
-									</p>
-									<div class="comment-form-rating d-flex p-lr10">
-										<label class="pull-left m-r10 m-b20">Вашата оценка</label>
-										<div class="rating-widget">
-											<!-- Rating Stars Box -->
-											<div class="rating-stars">
-												<ul id="stars">
-													<li class="star" title="Poor" data-value="1">
-														<i class="fas fa-star fa-fw"></i>
-													</li>
-													<li class="star" title="Fair" data-value="2">
-														<i class="fas fa-star fa-fw"></i>
-													</li>
-													<li class="star" title="Good" data-value="3">
-														<i class="fas fa-star fa-fw"></i>
-													</li>
-													<li class="star" title="Excellent" data-value="4">
-														<i class="fas fa-star fa-fw"></i>
-													</li>
-													<li class="star" title="WOW!!!" data-value="5">
-														<i class="fas fa-star fa-fw"></i>
-													</li>
-												</ul>
+							@if(User.Identity.IsAuthenticated)
+							{
+								<div class="comment-respond style-1" id="respond">
+									<h3 class="comment-reply-title mb-4" id="reply-title">Добавете коментар</h3>
+									<form class="comment-form" id="commentform" method="post">
+										<p class="comment-form-author">
+											<label for="author">Име <span class="required">*</span></label>
+											<input type="text" name="dzName" placeholder="Име" id="author">
+										</p>
+										<p class="comment-form-email">
+											<label for="email">Имейл <span class="required">*</span></label>
+											<input type="text" placeholder="Имейл" name="dzEmail" id="email">
+										</p>
+										<div class="comment-form-rating d-flex p-lr10">
+											<label class="pull-left m-r10 m-b20">Вашата оценка</label>
+											<div class="rating-widget">
+												<!-- Rating Stars Box -->
+												<div class="rating-stars">
+													<ul id="stars">
+														<li class="star" title="Poor" data-value="1">
+															<i class="fas fa-star fa-fw"></i>
+														</li>
+														<li class="star" title="Fair" data-value="2">
+															<i class="fas fa-star fa-fw"></i>
+														</li>
+														<li class="star" title="Good" data-value="3">
+															<i class="fas fa-star fa-fw"></i>
+														</li>
+														<li class="star" title="Excellent" data-value="4">
+															<i class="fas fa-star fa-fw"></i>
+														</li>
+														<li class="star" title="WOW!!!" data-value="5">
+															<i class="fas fa-star fa-fw"></i>
+														</li>
+													</ul>
+												</div>
 											</div>
 										</div>
-									</div>
-									<p class="comment-form-comment">
-										<label for="comment">Коментар</label>
-										<textarea rows="10" name="comment" placeholder="Напишете Вашият коментар за продукта..." id="comment"></textarea>
-									</p>
-									<p class="form-submit">
-										<button type="submit" class="btn btn-primary btn-hover-2" id="submit">Изпрати</button>
-									</p>
-								</form>
-							</div>
+										<p class="comment-form-comment">
+											<label for="comment">Коментар</label>
+											<textarea rows="10" name="comment" placeholder="Напишете Вашият коментар за продукта..." id="comment"></textarea>
+										</p>
+										<p class="form-submit">
+											<button type="submit" class="btn btn-primary btn-hover-2" id="submit">Добави</button>
+										</p>
+									</form>
+								</div>
+							}
 						</div>
 					</div>
 				</div>
