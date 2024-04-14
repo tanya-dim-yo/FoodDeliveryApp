@@ -16,28 +16,8 @@
 				</div>
 				<div class="col-lg-8 col-md-7">
 					<div class="detail-info">
-						<span class="badge">
-							<a href="#" id="favoriteToggle" onclick="toggleFavourite(event);">
-								<svg id="favoriteIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#000000" />
-								</svg>
-							</a>
-							Любим продукт
-						</span>
 						<div class="dz-head">
 							<h2 class="title">@Model.Title</h2>
-							<div class="rating">
-								<i class="fa-solid fa-star"></i>
-									<span>
-										<strong class="text-dark">@Model.AverageRatingPercent</strong>
-										@{
-											if (@Model.Reviews.Count() > 0)
-                                            {
-												<span> - @Model.Reviews.Count() коментари</span>
-                                            }
-										}
-									</span>
-							</div>
 						</div>
 						<ul class="detail-list">
 							<li><span class="text-primary m-t5">@Model.Price лв.</span></li>
@@ -107,14 +87,6 @@
 								<li><a href="@Url.Action("ShopCart","FoodTime")" class="btn btn-primary btn-hover-1"><span>Добави<i class="flaticon-shopping-bag-1 m-l10"></i></span></a></li>
 								<li><a href="@Url.Action("ShopCheckout","FoodTime")" class="btn btn-outline-secondary btn-hover-1"><span>Количка<i class="flaticon-shopping-cart m-l10"></i></span></a></li>
 							</ul>
-							<ul class="avatar-list avatar-list-stacked">
-								<li class="avatar"><img src="~/foodtime/images/testimonial/small/pic1.jpg" alt=""></li>
-								<li class="avatar"><img src="~/foodtime/images/testimonial/small/pic2.jpg" alt=""></li>
-								<li class="avatar"><img src="~/foodtime/images/testimonial/small/pic3.jpg" alt=""></li>
-								<li class="avatar"><img src="~/foodtime/images/testimonial/small/pic4.jpg" alt=""></li>
-								<li class="avatar"><img src="~/foodtime/images/testimonial/small/pic5.jpg" alt=""></li>
-								<li class="avatar"><span>150+</span></li>
-							</ul>
 						</div>
 					</div>
 				</div>
@@ -137,12 +109,6 @@
 							<button class="nav-link" data-bs-toggle="tab" href="#graphic-design-1">
 								<i class="icon-image"></i>
 								<span class="d-none d-md-inline-block m-l10">Допълнителна информация</span>
-							</button>
-						</li>
-						<li class="nav-item">
-							<button class="nav-link" data-bs-toggle="tab" href="#developement-1">
-								<i class="icon-settings"></i>
-								<span class="d-none d-md-inline-block m-l10">Отзиви</span>
 							</button>
 						</li>
 					</ul>
@@ -191,220 +157,13 @@
 									<td>Време за доставка</td>
 									<td>@Model.MinDeliveryTimeInMinutes - @Model.MaxDeliveryTimeInMinutes мин.</td>
 								</tr>
-								<tr>
-									<td>Оценка</td>
-									<td>
-										<span class="rating-bx">
-											<i class="fas fa-star text-secondary"></i>
-											<i class="fas fa-star text-secondary"></i>
-											<i class="fas fa-star text-secondary"></i>
-											<i class="fas fa-star text-secondary"></i>
-											<i class="far fa-star text-secondary"></i>
-										</span>
-									</td>
-								</tr>
 							</table>
-						</div>
-						<div id="developement-1" class="tab-pane">
-							<div class="comments-area" id="comments">
-								@{
-									@if (Model.Reviews.Count() == 0)
-                                    {
-										<p>Няма отзиви за този продукт.</p>
-									}
-									else
-									{
-										<ul class="comment-list">
-										@foreach (var review in Model.Reviews)
-                                        {
-												<li class="comment">
-													<div class="comment-body">
-														<div class="comment-author vcard">
-															<img class="avatar photo" src="~/foodtime/images/testimonial/mini/pic1.jpg" alt="/">
-															<cite class="fn">@User.Identity?.Name</cite>
-														</div>
-														<div class="star-rating" data-rating="2">
-															<i class="fas fa-star text-secondary"></i>
-															<i class="fas fa-star text-secondary"></i>
-															<i class="far fa-star text-secondary"></i>
-															<i class="far fa-star text-secondary"></i>
-															<i class="far fa-star text-secondary"></i>
-														</div>
-														<p>@review.Review</p>
-													</div>
-												</li>
-										}
-										</ul>
-									}
-								}
-							</div>
-							@if (User?.Identity?.IsAuthenticated ?? false)
-							{
-								<div class="comment-respond style-1" id="respond">
-									<h3 class="comment-reply-title mb-4" id="reply-title">Добавете коментар</h3>
-									<form class="comment-form" id="commentform" method="post">
-										<div class="comment-form-rating d-flex p-lr10">
-											<label class="pull-left m-r10 m-b20">Вашата оценка</label>
-											<div class="rating-widget">
-												<!-- Rating Stars Box -->
-												<div class="rating-stars">
-													<ul id="stars">
-														<li class="star" title="Poor" data-value="1">
-															<i class="fas fa-star fa-fw"></i>
-														</li>
-														<li class="star" title="Fair" data-value="2">
-															<i class="fas fa-star fa-fw"></i>
-														</li>
-														<li class="star" title="Good" data-value="3">
-															<i class="fas fa-star fa-fw"></i>
-														</li>
-														<li class="star" title="Excellent" data-value="4">
-															<i class="fas fa-star fa-fw"></i>
-														</li>
-														<li class="star" title="WOW!!!" data-value="5">
-															<i class="fas fa-star fa-fw"></i>
-														</li>
-													</ul>
-												</div>
-											</div>
-										</div>
-										<p class="comment-form-comment">
-											<label for="comment">Коментар</label>
-											<textarea rows="10" name="comment" placeholder="Напишете Вашият коментар за продукта..." id="comment"></textarea>
-										</p>
-										<p class="form-submit">
-											<button type="submit" class="btn btn-primary btn-hover-2" id="submit">Добави</button>
-										</p>
-									</form>
-								</div>
-							}
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<section class="content-inner-1 pt-0">
-		<div class="container">
-			<div class="section-head text-center">
-				<h2 class="title">Избрани продукти</h2>
-			</div>
-			<div class="swiper-btn-lr">
-				<div class="swiper portfolio-swiper">
-					<div class="swiper-wrapper p-b5">
-						<div class="swiper-slide">
-							<div class="dz-img-box style-2">
-								<div class="dz-media">
-									<img src="~/foodtime/images/gallery/small/pic1.jpg" alt="/">
-								</div>
-								<div class="dz-content">
-									<h4 class="dz-title"><a href="@Url.Action("ProductDetail","FoodTime")">Pizza</a></h4>
-									<p>Lorem ipsum dolor sit amet consectetur adipiscing.</p>
-									<h5 class="dz-price text-primary">$55.00</h5>
-									<a href="@Url.Action("ShopCart","FoodTime")" class="btn btn-primary btn-hover-2"> Add To Cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="swiper-slide">
-							<div class="dz-img-box style-2">
-								<div class="dz-media">
-									<img src="~/foodtime/images/gallery/small/pic2.jpg" alt="/">
-								</div>
-								<div class="dz-content">
-									<h4 class="dz-title"><a href="@Url.Action("ProductDetail","FoodTime")">Rice</a></h4>
-									<p>Lorem ipsum dolor sit amet consectetur adipiscing.</p>
-									<h5 class="dz-price text-primary">$50.00</h5>
-									<a href="@Url.Action("ShopCart","FoodTime")" class="btn btn-primary btn-hover-2"> Add To Cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="swiper-slide">
-							<div class="dz-img-box style-2">
-								<div class="dz-media">
-									<img src="~/foodtime/images/gallery/small/pic3.jpg" alt="/">
-								</div>
-								<div class="dz-content">
-									<h4 class="dz-title"><a href="@Url.Action("ProductDetail","FoodTime")">Green Salad</a></h4>
-									<p>Lorem ipsum dolor sit amet consectetur adipiscing.</p>
-									<h5 class="dz-price text-primary">$45.00</h5>
-									<a href="@Url.Action("ShopCart","FoodTime")" class="btn btn-primary btn-hover-2"> Add To Cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="swiper-slide">
-							<div class="dz-img-box style-2">
-								<div class="dz-media">
-									<img src="~/foodtime/images/gallery/small/pic4.jpg" alt="/">
-								</div>
-								<div class="dz-content">
-									<h4 class="dz-title"><a href="@Url.Action("ProductDetail","FoodTime")">Pasta</a></h4>
-									<p>Lorem ipsum dolor sit amet consectetur adipiscing.</p>
-									<h5 class="dz-price text-primary">$35.00</h5>
-									<a href="@Url.Action("ShopCart","FoodTime")" class="btn btn-primary btn-hover-2"> Add To Cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="swiper-slide">
-							<div class="dz-img-box style-2">
-								<div class="dz-media">
-									<img src="~/foodtime/images/gallery/small/pic1.jpg" alt="/">
-								</div>
-								<div class="dz-content">
-									<h4 class="dz-title"><a href="@Url.Action("ProductDetail","FoodTime")">Pizza</a></h4>
-									<p>Lorem ipsum dolor sit amet consectetur adipiscing.</p>
-									<h5 class="dz-price text-primary">$55.00</h5>
-									<a href="@Url.Action("ShopCart","FoodTime")" class="btn btn-primary btn-hover-2"> Add To Cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="swiper-slide">
-							<div class="dz-img-box style-2">
-								<div class="dz-media">
-									<img src="~/foodtime/images/gallery/small/pic2.jpg" alt="/">
-								</div>
-								<div class="dz-content">
-									<h4 class="dz-title"><a href="@Url.Action("ProductDetail","FoodTime")">Rice</a></h4>
-									<p>Lorem ipsum dolor sit amet consectetur adipiscing.</p>
-									<h5 class="dz-price text-primary">$50.00</h5>
-									<a href="@Url.Action("ShopCart","FoodTime")" class="btn btn-primary btn-hover-2"> Add To Cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="swiper-slide">
-							<div class="dz-img-box style-2">
-								<div class="dz-media">
-									<img src="~/foodtime/images/gallery/small/pic3.jpg" alt="/">
-								</div>
-								<div class="dz-content">
-									<h4 class="dz-title"><a href="@Url.Action("ProductDetail","FoodTime")">Green Salad</a></h4>
-									<p>Lorem ipsum dolor sit amet consectetur adipiscing.</p>
-									<h5 class="dz-price text-primary">$45.00</h5>
-									<a href="@Url.Action("ShopCart","FoodTime")" class="btn btn-primary btn-hover-2"> Add To Cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="swiper-slide">
-							<div class="dz-img-box style-2">
-								<div class="dz-media">
-									<img src="~/foodtime/images/gallery/small/pic4.jpg" alt="/">
-								</div>
-								<div class="dz-content">
-									<h4 class="dz-title"><a href="@Url.Action("ProductDetail","FoodTime")">Pasta</a></h4>
-									<p>Lorem ipsum dolor sit amet consectetur adipiscing.</p>
-									<h5 class="dz-price text-primary">$35.00</h5>
-									<a href="@Url.Action("ShopCart","FoodTime")" class="btn btn-primary btn-hover-2"> Add To Cart</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="pagination mt-xl-0 m-t40">
-					<div class="img-button-prev btn-prev-long"><i class="fa-solid fa-arrow-left"></i></div>
-					<div class="img-button-next btn-next-long"><i class="fa-solid fa-arrow-right"></i></div>
-				</div>
-			</div>
-		</div>
-	</section>
 	<!-- Product Detail Section -->
 
 </div>
