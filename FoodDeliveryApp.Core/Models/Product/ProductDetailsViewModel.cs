@@ -1,4 +1,7 @@
 ﻿using FoodDeliveryApp.Core.Models.ProductReview;
+using System.ComponentModel.DataAnnotations;
+using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.ItemReviewValidationConstants;
+using static FoodDeliveryApp.Core.Constants.MessageConstants.ProductReviewMessageConstants;
 
 namespace FoodDeliveryApp.Core.Models.Product
 {
@@ -37,5 +40,21 @@ namespace FoodDeliveryApp.Core.Models.Product
 		public double AverageRatingPercent => (AverageRating / 5) * 100;
 
 		public IEnumerable<ProductReviewViewModel> Reviews { get; set; } = new List<ProductReviewViewModel>();
+
+		[Required(ErrorMessage = RequiredFieldMessage)]
+		[Range(typeof(double),
+			RatingMinValue,
+			RatingMaxValue,
+			ConvertValueInInvariantCulture = true,
+			ErrorMessage = RatingMessage)]
+		[Display(Name = "Добавете оценка за продукта")]
+		public double SetAverageRating { get; set; }
+
+		[Required(ErrorMessage = RequiredFieldMessage)]
+		[StringLength(ItemReviewMaxLength,
+			MinimumLength = ItemReviewMinLength,
+			ErrorMessage = LengthMessage)]
+		[Display(Name = "Добавете Вашият коментар за продукта.")]
+		public string Review { get; set; } = string.Empty;
 	}
 }
