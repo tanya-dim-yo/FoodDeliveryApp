@@ -12,30 +12,23 @@ namespace FoodDeliveryApp.Controllers
 	public class RestaurantController : BaseController
 	{
 		private readonly IRestaurantService restaurantService;
-		private readonly IPaginationService paginationService;
 
-		public RestaurantController(
-			IRestaurantService _restaurantService,
-			IPaginationService _paginationService)
+		public RestaurantController(IRestaurantService _restaurantService)
 		{
 			restaurantService = _restaurantService;
-			paginationService = _paginationService;
 		}
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> All([FromServices] IPaginationService paginationService, [FromServices] IRestaurantService restaurantService)
+        public async Task<IActionResult> All([FromServices] IRestaurantService restaurantService)
         {
-            paginationService.IncrementCurrentPage();
-
-            var (model, categories, totalRestaurantsCount) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+            var (model, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
             var modelWrapper = new RestaurantsWithCategoriesViewModel
             {
                 RestaurantViewModels = model,
                 CategoryNames = categories.Select(c => c.Title),
-                CategoryIds = categories.Select(c => c.Id),
-                TotalRestaurantsCount = totalRestaurantsCount
+                CategoryIds = categories.Select(c => c.Id)
             };
 
             return View(modelWrapper);
@@ -48,57 +41,19 @@ namespace FoodDeliveryApp.Controllers
 			return View();
 		}
 
-		[AllowAnonymous]
-		[HttpGet]
-		public async Task<IActionResult> HighestRating(int? currentPage = null, int restaurantsPerPage = 6)
-		{
-			currentPage ??= 1;
-
-			var restaurants = await restaurantService.HighestRatingRestaurantsAsync();
-
-			var categories = Enumerable.Empty<(int Id, string Title)>();
-			var totalRestaurantsCount = 0;
-
-			var paginatedRestaurants = restaurants
-				.Skip((currentPage.Value - 1) * restaurantsPerPage)
-				.Take(restaurantsPerPage)
-				.ToList();
-
-			var modelWrapper = new RestaurantsWithCategoriesViewModel
-			{
-				RestaurantViewModels = paginatedRestaurants,
-				CategoryNames = categories.Select(c => c.Title),
-				CategoryIds = categories.Select(c => c.Id),
-				TotalRestaurantsCount = totalRestaurantsCount
-			};
-
-			ViewData["ListTitle"] = RestaurantsSortedByHighestRatingMessage;
-
-			return View(nameof(All), modelWrapper);
-		}
 
 		[AllowAnonymous]
 		[HttpGet]
-		public async Task<IActionResult> ServiceFee(int? currentPage = null, int restaurantsPerPage = 6)
+		public async Task<IActionResult> ServiceFee()
 		{
-			currentPage ??= 1;
-
 			var restaurants = await restaurantService.RestaurantsByServiceFeeAsync();
-
 			var categories = Enumerable.Empty<(int Id, string Title)>();
-			var totalRestaurantsCount = 0;
-
-			var paginatedRestaurants = restaurants
-				.Skip((currentPage.Value - 1) * restaurantsPerPage)
-				.Take(restaurantsPerPage)
-				.ToList();
 
 			var modelWrapper = new RestaurantsWithCategoriesViewModel
 			{
-				RestaurantViewModels = paginatedRestaurants,
+				RestaurantViewModels = restaurants,
 				CategoryNames = categories.Select(c => c.Title),
-				CategoryIds = categories.Select(c => c.Id),
-				TotalRestaurantsCount = totalRestaurantsCount
+				CategoryIds = categories.Select(c => c.Id)
 			};
 
 			ViewData["ListTitle"] = RestaurantsSortedByServiceFeeMessage;
@@ -108,14 +63,14 @@ namespace FoodDeliveryApp.Controllers
 
 		[AllowAnonymous]
 		[HttpGet]
-		public async Task<IActionResult> ByCategory(int categoryId, int currentPage = 1, int restaurantsPerPage = 6)
+		public async Task<IActionResult> ByCategory(int categoryId)
 		{
 			if (await restaurantService.ExistsRestaurantCategoryAsync(categoryId) == false)
 			{
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidCategoryErrorMessage });
 			}
 
-			var (restaurants, categories, totalRestaurantsCount) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+			var (restaurants, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
 			var categoryName = categories.FirstOrDefault(c => c.Id == categoryId).Title;
 
@@ -126,17 +81,11 @@ namespace FoodDeliveryApp.Controllers
 
 			var filteredRestaurants = restaurants.Where(r => r.RestaurantCategory == categoryName);
 
-			var paginatedRestaurants = filteredRestaurants
-				.Skip((currentPage - 1) * restaurantsPerPage)
-				.Take(restaurantsPerPage)
-				.ToList();
-
 			var model = new RestaurantsWithCategoriesViewModel
 			{
 				CategoryNames = categories.Select(c => c.Title),
 				CategoryIds = categories.Select(c => c.Id),
-				RestaurantViewModels = paginatedRestaurants,
-				TotalRestaurantsCount = filteredRestaurants.Count()
+				RestaurantViewModels = filteredRestaurants
 			};
 
 			ViewData["ListTitle"] = string.Format(RestaurantCategoryMessage, categoryName);
@@ -147,25 +96,19 @@ namespace FoodDeliveryApp.Controllers
 
 		[AllowAnonymous]
 		[HttpGet]
-		public async Task<IActionResult> Search(string keyword, int currentPage = 1, int restaurantsPerPage = 6)
+		public async Task<IActionResult> Search(string keyword)
 		{
 			var searchResults = await restaurantService.SearchRestaurantsAsync(keyword);
 			var results = searchResults.Results;
 
-			var (_, categories, totalRestaurantsCount) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
 			var modelWrapper = new RestaurantsWithCategoriesViewModel
 			{
 				CategoryNames = categories.Select(c => c.Title),
 				CategoryIds = categories.Select(c => c.Id),
+				RestaurantViewModels = results
 			};
-
-			var paginatedResults = results
-				.Skip((currentPage - 1) * restaurantsPerPage)
-				.Take(restaurantsPerPage)
-				.ToList();
-
-			modelWrapper.RestaurantViewModels = paginatedResults;
 
 			ViewData["ListTitle"] = $"{searchResults.Results.Count()} Обекти, съответстващи на търсенето на ‘{searchResults.SanitizedKeyword}‘";
 
@@ -198,7 +141,7 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
-			var (restaurants, categories, _) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+			var (restaurants, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 			var categoryViewModels = categories.Select(c => new RestaurantCategoryViewModel { Id = c.Id, Title = c.Title });
 
 			var model = new RestaurantFormModel()
@@ -260,7 +203,7 @@ namespace FoodDeliveryApp.Controllers
 
 			if (ModelState.IsValid == false)
 			{
-				var (_, categories, _) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+				var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 				model.Categories = categories.Select(c => new RestaurantCategoryViewModel { Id = c.Id, Title = c.Title });
 				return View(model);
 			}
@@ -309,7 +252,7 @@ namespace FoodDeliveryApp.Controllers
 
 			if (ModelState.IsValid == false)
 			{
-				var (_, categories, _) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+				var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 				model.Categories = categories.Select(c => new RestaurantCategoryViewModel { Id = c.Id, Title = c.Title });
 				model.Cities = await restaurantService.AllRestaurantCitiesAsync();
 
