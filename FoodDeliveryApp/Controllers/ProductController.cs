@@ -140,8 +140,26 @@ namespace FoodDeliveryApp.Controllers
 			return RedirectToAction(nameof(Details), new { productId });
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> Delete(int productId)
+        [HttpGet]
+        public async Task<IActionResult> Delete(int productId)
+        {
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await productService.ExistsProductAsync(productId) == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductErrorMessage });
+            }
+
+            var model = await productService.GetProductFormModelByIdAsync(productId);
+
+            return View(model);
+        }
+
+        [HttpPost]
+		public async Task<IActionResult> DeleteConfirmed(int productId)
 		{
             if (User.IsAdmin() == false)
             {
@@ -153,12 +171,13 @@ namespace FoodDeliveryApp.Controllers
 			if (product == null)
 			{
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductErrorMessage });
-			
 			}
+
+			int restaurantId = product.RestaurantId;
 
 			await productService.DeleteProductAsync(productId);
 
-			return RedirectToAction("Menu", "Restaurant", new { product.RestaurantId });
+			return RedirectToAction("Menu", "Restaurant", new { restaurantId });
 		}
 	}
 }
