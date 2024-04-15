@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FoodDeliveryApp.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Configuration
 {
 	public class SeedData
 	{
-		public IdentityUser GuestUser { get; set; }
+		public ApplicationUser GuestUser { get; set; }
 
 		public SeedData()
 		{
@@ -13,9 +14,9 @@ namespace FoodDeliveryApp.Infrastructure.Data.Configuration
 
 		private void SeedUsers()
 		{
-			var hasher = new PasswordHasher<IdentityUser>();
+			var hasher = new PasswordHasher<ApplicationUser>();
 
-			GuestUser = new IdentityUser()
+			GuestUser = new ApplicationUser()
 			{
 				Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
 				UserName = "guest@mail.com",
