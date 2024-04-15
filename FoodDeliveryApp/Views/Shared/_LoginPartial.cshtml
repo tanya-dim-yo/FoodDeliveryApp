@@ -1,5 +1,6 @@
 ﻿@using FoodDeliveryApp.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -8,8 +9,7 @@
 
     if (SignInManager.IsSignedIn(User))
     {
-        var user = await UserManager.GetUserAsync(User);
-        userName = $"{user.FirstName} {user.LastName}";
+        userName = User.FindFirstValue(FoodDeliveryApp.Core.Constants.CustomClaims.UserFullNameClaim) ?? string.Empty;
     }
 }
 
