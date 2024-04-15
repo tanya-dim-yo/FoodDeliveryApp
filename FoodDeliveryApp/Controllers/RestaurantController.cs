@@ -4,18 +4,22 @@ using FoodDeliveryApp.Core.Models.Restaurant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
-using static FoodDeliveryApp.Core.Constants.MessageConstants.RestaurantMessageConstants;
 using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.RestaurantErrorMessagesConstants;
+using static FoodDeliveryApp.Core.Constants.MessageConstants.RestaurantMessageConstants;
 
 namespace FoodDeliveryApp.Controllers
 {
 	public class RestaurantController : BaseController
 	{
 		private readonly IRestaurantService restaurantService;
+		private readonly ILogger logger;
 
-		public RestaurantController(IRestaurantService _restaurantService)
+		public RestaurantController(
+			IRestaurantService _restaurantService,
+			ILogger _logger)
 		{
 			restaurantService = _restaurantService;
+			logger = _logger;
 		}
 
         [AllowAnonymous]
