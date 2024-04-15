@@ -3,6 +3,7 @@ using FoodDeliveryApp.Core.Models.City;
 using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
+using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using static FoodDeliveryApp.Core.Extensions.StringExtensions;
@@ -119,15 +120,6 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.Where(p => p.Id == id)
 				.ProjectToRestaurantViewModel()
 				.FirstOrDefaultAsync();
-		}
-
-		public async Task<IEnumerable<RestaurantViewModel>> HighestRatingRestaurantsAsync()
-		{
-			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
-				.OrderByDescending(p => p.AverageRating)
-				.ProjectToRestaurantViewModel()
-				.ToListAsync();
 		}
 
 		public async Task<IEnumerable<ProductViewModel>> MenuRestaurantAsync(int restaurantId)
@@ -266,29 +258,62 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			return restaurant;
 		}
 
-		public async Task DeleteAsync(int restaurantId)
-		{
-			var restaurant = await repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
+        public async Task DeleteAsync(int restaurantId)
+        {
+            var restaurant = await repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
 
-			if (restaurant == null)
-			{
-				this.logger.LogError($"Restaurant with id {restaurantId} not found.");
-				return;
-			}
+            if (restaurant == null)
+            {
+                this.logger.LogError($"Restaurant with id {restaurantId} not found.");
+                return;
+            }
 
-			var itemsToBeRemoved = await repository
-				.AllReadOnly<Infrastructure.Data.Models.Item>()
-				.Where(i => i.RestaurantId == restaurantId)
-				.ToListAsync();
+            var itemsToBeDeleted = await repository
+                .AllReadOnly<Item>()
+                .Where(i => i.RestaurantId == restaurantId)
+                .ToListAsync();
 
-			foreach (var item in itemsToBeRemoved)
-			{
-				await repository.DeleteAsync<Infrastructure.Data.Models.Item>(item);
-			}
+            foreach (var item in itemsToBeDeleted)
+            {
+                await DeleteRelatedEntitiesAsync(item);
+                await repository.DeleteAsync<Item>(item);
+            }
 
-			await repository.DeleteAsync<Infrastructure.Data.Models.Restaurant>(restaurant);
+            await repository.DeleteAsync<Infrastructure.Data.Models.Restaurant>(restaurant);
+            await repository.SaveChangesAsync();
+        }
 
-			await repository.SaveChangesAsync();
-		}
-	}
+        private async Task DeleteRelatedEntitiesAsync(Item item)
+        {
+            var addOns = await repository
+                .AllReadOnly<ItemAddOn>()
+                .Where(a => a.ItemId == item.Id)
+                .ToListAsync();
+
+            foreach (var addOn in addOns)
+            {
+                await repository.DeleteAsync<ItemAddOn>(addOn);
+            }
+
+            var reviews = await repository
+                .AllReadOnly<ItemReview>()
+                .Where(r => r.ItemId == item.Id)
+                .ToListAsync();
+
+            foreach (var review in reviews)
+            {
+                await repository.DeleteAsync<ItemReview>(review);
+            }
+
+            var cartItems = await repository
+                .AllReadOnly<CartItem>()
+                .Where(c => c.ItemId == item.Id)
+                .ToListAsync();
+
+            foreach (var cartItem in cartItems)
+            {
+                await repository.DeleteAsync<CartItem>(cartItem);
+            }
+        }
+    }
 }

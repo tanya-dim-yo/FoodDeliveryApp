@@ -16,7 +16,6 @@ namespace FoodDeliveryApp.Core.Contracts
 		Task<IEnumerable<RestaurantViewModel>> GetAllRestaurantsAsync();
 		Task<IEnumerable<RestaurantViewModel>> GetRestaurantsByCategoryAsync(int categoryId);
 		Task<RestaurantViewModel?> GetRestaurantByIdAsync(int id);
-		Task<IEnumerable<RestaurantViewModel>> HighestRatingRestaurantsAsync();
 		Task<IEnumerable<RestaurantViewModel>> RestaurantsByServiceFeeAsync();
 		Task<IEnumerable<ProductViewModel>> MenuRestaurantAsync(int restaurantId);
 		Task<(string SanitizedKeyword, IEnumerable<RestaurantViewModel> Results)> SearchRestaurantsAsync(string keyword);
