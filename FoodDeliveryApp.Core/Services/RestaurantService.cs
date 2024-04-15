@@ -12,10 +12,14 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 	public class RestaurantService : IRestaurantService
 	{
 		private readonly IRepository repository;
+		private readonly ILogger<RestaurantService> logger;
 
-		public RestaurantService(IRepository _repository)
+		public RestaurantService(
+			IRepository _repository,
+			ILogger<RestaurantService> _logger)
 		{
 			repository = _repository;
+			logger = _logger;
 		}
 
 		public async Task<int> AddRestaurantAsync(RestaurantFormModel model, DateTime openHour, DateTime closeHour)
@@ -46,26 +50,17 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
         {
             var model = new RestaurantsWithCategoriesViewModel();
 
-            var restaurants = await GetAllRestaurantsAsync();
             var categories = await AllRestaurantCategoriesAsync();
 
-            model.RestaurantViewModels = restaurants
-                .Select(p => new RestaurantViewModel
-                {
-                    Id = p.Id,
-                    Title = p.Title,
-                    ServiceFee = p.ServiceFee,
-                    MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
-                    MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-                    ImageURL = p.ImageURL,
-                    RestaurantCategory = p.RestaurantCategory
-                })
-                .ToList();
+			var restaurants = await repository
+				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+				.ProjectToRestaurantViewModel()
+				.ToListAsync();
 
             model.CategoryNames = categories.Select(c => c.Title);
             model.CategoryIds = categories.Select(c => c.Id);
 
-            return (model.RestaurantViewModels, categories.Select(c => (c.Id, c.Title)));
+            return (restaurants, categories.Select(c => (c.Id, c.Title)));
         }
 
         private async Task<IEnumerable<(int Id, string Title)>> AllRestaurantCategoriesAsync()
@@ -104,16 +99,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 		{
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
-				.Select(p => new RestaurantViewModel()
-				{
-					Id = p.Id,
-					Title = p.Title,
-					ServiceFee = p.ServiceFee,
-					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
-					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					ImageURL = p.ImageURL,
-					RestaurantCategory = p.RestaurantCategory.Title
-				})
+				.ProjectToRestaurantViewModel()
 				.ToListAsync();
 		}
 
@@ -122,16 +108,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.Where(p => p.RestaurantCategoryId == categoryId)
-				.Select(p => new RestaurantViewModel()
-				{
-					Id = p.Id,
-					Title = p.Title,
-					ServiceFee = p.ServiceFee,
-					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
-					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					ImageURL = p.ImageURL,
-					RestaurantCategory = p.RestaurantCategory.Title
-				})
+				.ProjectToRestaurantViewModel()
 				.ToListAsync();
 		}
 
@@ -140,16 +117,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.Where(p => p.Id == id)
-				.Select(p => new RestaurantViewModel()
-				{
-					Id = p.Id,
-					Title = p.Title,
-					ServiceFee = p.ServiceFee,
-					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
-					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					ImageURL = p.ImageURL,
-					RestaurantCategory = p.RestaurantCategory.Title
-				})
+				.ProjectToRestaurantViewModel()
 				.FirstOrDefaultAsync();
 		}
 
@@ -158,16 +126,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.OrderByDescending(p => p.AverageRating)
-				.Select(p => new RestaurantViewModel()
-				{
-					Id = p.Id,
-					Title = p.Title,
-					ServiceFee = p.ServiceFee,
-					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
-					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					ImageURL = p.ImageURL,
-					RestaurantCategory = p.RestaurantCategory.Title
-				})
+				.ProjectToRestaurantViewModel()
 				.ToListAsync();
 		}
 
@@ -207,16 +166,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			}
 
 			var results = await query
-				.Select(p => new RestaurantViewModel
-				{
-					Id = p.Id,
-					Title = p.Title,
-					ServiceFee = p.ServiceFee,
-					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
-					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					ImageURL = p.ImageURL,
-					RestaurantCategory = p.RestaurantCategory.Title
-				})
+				.ProjectToRestaurantViewModel()
 				.ToListAsync();
 
 			return (sanitizedKeyword, results);
@@ -227,16 +177,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 			return await repository
 				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
 				.OrderBy(p => p.ServiceFee)
-				.Select(p => new RestaurantViewModel()
-				{
-					Id = p.Id,
-					Title = p.Title,
-					ServiceFee = p.ServiceFee,
-					MinDeliveryTimeInMinutes = p.MinDeliveryTimeInMinutes,
-					MaxDeliveryTimeInMinutes = p.MaxDeliveryTimeInMinutes,
-					ImageURL = p.ImageURL,
-					RestaurantCategory = p.RestaurantCategory.Title
-				})
+				.ProjectToRestaurantViewModel()
 				.ToListAsync();
 		}
 
@@ -331,7 +272,8 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 			if (restaurant == null)
 			{
-				throw new Exception("Restaurant not found.");
+				this.logger.LogError($"Restaurant with id {restaurantId} not found.");
+				return;
 			}
 
 			var itemsToBeRemoved = await repository
