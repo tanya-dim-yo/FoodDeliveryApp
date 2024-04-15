@@ -50,22 +50,13 @@ namespace FoodDeliveryApp.Core.Services
 				return;
 			}
 
-			var addOnsToBeRemoved = await repository
-				.AllReadOnly<ItemAddOn>()
-				.Where(a => a.ItemId == productId)
-				.ToListAsync();
+            await DeleteRelatedEntitiesAsync(product);
 
-			foreach (var addOn in addOnsToBeRemoved)
-			{
-				await repository.DeleteAsync<ItemAddOn>(addOn);
-			}
+            await repository.DeleteAsync<Item>(product);
+            await repository.SaveChangesAsync();
+        }
 
-			await repository.DeleteAsync<Item>(product);
-
-			await repository.SaveChangesAsync();
-		}
-
-		public async Task EditProductAsync(ProductFormModel model, int productId)
+        public async Task EditProductAsync(ProductFormModel model, int productId)
 		{
 			var product = await repository.GetByIdAsync<Item>(productId);
 
@@ -184,5 +175,38 @@ namespace FoodDeliveryApp.Core.Services
 				})
 				.ToListAsync();
 		}
-	}
+
+        private async Task DeleteRelatedEntitiesAsync(Item item)
+        {
+            var addOns = await repository
+                .AllReadOnly<ItemAddOn>()
+                .Where(a => a.ItemId == item.Id)
+                .ToListAsync();
+
+            foreach (var addOn in addOns)
+            {
+                await repository.DeleteAsync<ItemAddOn>(addOn);
+            }
+
+            var reviews = await repository
+                .AllReadOnly<ItemReview>()
+                .Where(r => r.ItemId == item.Id)
+                .ToListAsync();
+
+            foreach (var review in reviews)
+            {
+                await repository.DeleteAsync<ItemReview>(review);
+            }
+
+            var cartItems = await repository
+                .AllReadOnly<CartItem>()
+                .Where(c => c.ItemId == item.Id)
+                .ToListAsync();
+
+            foreach (var cartItem in cartItems)
+            {
+                await repository.DeleteAsync<CartItem>(cartItem);
+            }
+        }
+    }
 }
