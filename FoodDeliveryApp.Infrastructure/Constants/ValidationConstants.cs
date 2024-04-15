@@ -2,7 +2,15 @@
 {
     public static class ValidationConstants
     {
-        public static class AddOnValidationConstants
+		public static class ApplicationUserValidationConstants
+		{
+			public const int ApplicationUserFirstNameMaxLength = 50;
+			public const int ApplicationUserFirstNameMinLength = 2;
+			public const int ApplicationUserLastNameMaxLength = 50;
+			public const int ApplicationUserLastNameMinLength = 2;
+		}
+
+		public static class AddOnValidationConstants
         {
             public const int AddOnTitleMaxLength = 50;
             public const int AddOnImageMaxLength = 200;
