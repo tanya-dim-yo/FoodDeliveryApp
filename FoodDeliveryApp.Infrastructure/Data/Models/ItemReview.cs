@@ -10,10 +10,13 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        public string UserName { get; set; } = string.Empty;
+		[Required]
+		public string UserId { get; set; } = string.Empty;
 
-        [Required]
+		[ForeignKey(nameof(UserId))]
+		public virtual ApplicationUser User { get; set; } = null!;
+
+		[Required]
         [MaxLength(ItemReviewEmailMaxLength)]
         public string Email { get; set; } = string.Empty;
 

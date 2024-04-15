@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FoodDeliveryApp.Infrastructure.Data
 {
-    public class FoodDeliveryAppDbContext : IdentityDbContext
+    public class FoodDeliveryAppDbContext : IdentityDbContext<ApplicationUser>
     {
         public FoodDeliveryAppDbContext(DbContextOptions<FoodDeliveryAppDbContext> options)
             : base(options)
@@ -14,7 +14,8 @@ namespace FoodDeliveryApp.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new ItemAddOnConfiguration());
+			builder.ApplyConfiguration(new ApplicationUserConfiguration());
+			builder.ApplyConfiguration(new ItemAddOnConfiguration());
             builder.ApplyConfiguration(new OrderConfiguration());
             builder.ApplyConfiguration(new RestaurantCategoryConfiguration());
             builder.ApplyConfiguration(new RestaurantConfiguration());

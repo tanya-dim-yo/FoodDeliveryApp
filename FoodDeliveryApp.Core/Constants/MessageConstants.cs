@@ -38,5 +38,11 @@
 			public const string RatingMaxValue = "5";
 			public const string RatingMessage = "Оценката трябва да бъде между {2} и {1}.";
 		}
-	}
+
+        public static class ApplicationUserMessageConstants
+        {
+            public const string RequiredFieldMessage = "Полето {0} е задължително!";
+            public const string LengthMessage = "Полето {0} трябва да бъде с дължина между {2} и {1} символа.";
+        }
+    }
 }

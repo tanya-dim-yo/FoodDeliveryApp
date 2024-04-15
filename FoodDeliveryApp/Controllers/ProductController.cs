@@ -11,16 +11,13 @@ namespace FoodDeliveryApp.Controllers
 	{
 		private readonly IProductService productService;
 		private readonly IRestaurantService restaurantService;
-		private readonly ILogger logger;
 
 		public ProductController(
 			IProductService _productService,
-			IRestaurantService _restaurantService,
-			ILogger _logger)
+			IRestaurantService _restaurantService)
 		{
 			productService = _productService;
 			restaurantService = _restaurantService;
-			logger = _logger;
 		}
 
 		[HttpGet]

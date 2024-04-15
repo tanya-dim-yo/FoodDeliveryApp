@@ -12,19 +12,15 @@ namespace FoodDeliveryApp.Controllers
 	public class RestaurantController : BaseController
 	{
 		private readonly IRestaurantService restaurantService;
-		private readonly ILogger logger;
 
-		public RestaurantController(
-			IRestaurantService _restaurantService,
-			ILogger _logger)
+		public RestaurantController(IRestaurantService _restaurantService)
 		{
 			restaurantService = _restaurantService;
-			logger = _logger;
 		}
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> All([FromServices] IRestaurantService restaurantService)
+        public async Task<IActionResult> All()
         {
             var (model, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
@@ -44,7 +40,6 @@ namespace FoodDeliveryApp.Controllers
 		{
 			return View();
 		}
-
 
 		[AllowAnonymous]
 		[HttpGet]
