@@ -14,7 +14,8 @@ namespace FoodDeliveryApp.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new ItemAddOnConfiguration());
+			builder.ApplyConfiguration(new IdentityUserConfiguration());
+			builder.ApplyConfiguration(new ItemAddOnConfiguration());
             builder.ApplyConfiguration(new OrderConfiguration());
             builder.ApplyConfiguration(new RestaurantCategoryConfiguration());
             builder.ApplyConfiguration(new RestaurantConfiguration());
