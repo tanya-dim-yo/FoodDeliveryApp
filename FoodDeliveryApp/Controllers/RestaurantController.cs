@@ -1,10 +1,14 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Core.Models.Restaurant;
+using FoodDeliveryApp.Core.Services;
+using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
+using System.Security.Claims;
 using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.RestaurantErrorMessagesConstants;
+using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.UserErrorMessagesConstants;
 using static FoodDeliveryApp.Core.Constants.MessageConstants.RestaurantMessageConstants;
 
 namespace FoodDeliveryApp.Controllers
@@ -140,6 +144,11 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
+			if (User.IsAdmin() == false)
+			{
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
 			var (restaurants, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 			var categoryViewModels = categories.Select(c => new RestaurantCategoryViewModel { Id = c.Id, Title = c.Title });
 
@@ -154,7 +163,12 @@ namespace FoodDeliveryApp.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Add(RestaurantFormModel model)
 		{
-			if (await restaurantService.ExistsCityAsync(model.CityId) == false)
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await restaurantService.ExistsCityAsync(model.CityId) == false)
 			{
 				ModelState.AddModelError(nameof(model.CityId), InvalidCityMessage);
 			}
@@ -226,7 +240,12 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Edit(int restaurantId)
 		{
-			if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
 			{
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
 			}
@@ -239,7 +258,12 @@ namespace FoodDeliveryApp.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Edit(int restaurantId, RestaurantFormModel model)
 		{
-			if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
 			{
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
 			}
@@ -261,6 +285,42 @@ namespace FoodDeliveryApp.Controllers
 			await restaurantService.EditAsync(restaurantId, model);
 
 			return RedirectToAction("Menu", new { restaurantId });
+		}
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int restaurantId)
+        {
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
+            }
+
+            var model = await restaurantService.GetRestaurantFormModelByIdAsync(restaurantId);
+
+            return View(model);
+        }
+
+		[HttpPost]
+		public async Task<IActionResult> DeleteConfirmed(int restaurantId)
+		{
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
+            }
+
+            await restaurantService.DeleteAsync(restaurantId);
+
+			return RedirectToAction(nameof(All));
 		}
 	}
 }
