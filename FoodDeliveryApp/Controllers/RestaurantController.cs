@@ -1,8 +1,6 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Core.Models.Restaurant;
-using FoodDeliveryApp.Core.Services;
-using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
@@ -13,7 +11,7 @@ using static FoodDeliveryApp.Core.Constants.MessageConstants.RestaurantMessageCo
 
 namespace FoodDeliveryApp.Controllers
 {
-	public class RestaurantController : BaseController
+    public class RestaurantController : BaseController
 	{
 		private readonly IRestaurantService restaurantService;
 

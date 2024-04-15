@@ -2,7 +2,9 @@
 using FoodDeliveryApp.Core.Models.Product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.ProductErrorMessagesConstants;
+using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.UserErrorMessagesConstants;
 using static FoodDeliveryApp.Core.Constants.MessageConstants.ProductMessageConstants;
 
 namespace FoodDeliveryApp.Controllers
@@ -37,7 +39,12 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
-			var model = new ProductFormModel()
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            var model = new ProductFormModel()
 			{
 				Categories = await productService.GetCategoriesAsync(),
 				SpicyCategories = await productService.GetSpicyCategoriesAsync()
@@ -49,7 +56,12 @@ namespace FoodDeliveryApp.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Add(ProductFormModel model, int restaurantId)
 		{
-			if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
 			{
 				ModelState.AddModelError(nameof(restaurantId), InvalidRestaurantMessage);
 			}
@@ -82,7 +94,12 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Edit(int productId)
 		{
-			if (await productService.ExistsProductAsync(productId) == false)
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await productService.ExistsProductAsync(productId) == false)
 			{
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductErrorMessage });
 			}
@@ -95,7 +112,12 @@ namespace FoodDeliveryApp.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Edit(ProductFormModel model, int productId)
 		{
-			if (await productService.ExistsProductAsync(productId) == false)
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await productService.ExistsProductAsync(productId) == false)
 			{
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductErrorMessage });
 			}
@@ -121,7 +143,12 @@ namespace FoodDeliveryApp.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Delete(int productId)
 		{
-			var product = await productService.GetProductByIdAsync(productId);
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            var product = await productService.GetProductByIdAsync(productId);
 
 			if (product == null)
 			{
