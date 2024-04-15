@@ -11,11 +11,16 @@ namespace FoodDeliveryApp.Controllers
 	{
 		private readonly IProductService productService;
 		private readonly IRestaurantService restaurantService;
+		private readonly ILogger logger;
 
-		public ProductController(IProductService _productService, IRestaurantService _restaurantService)
+		public ProductController(
+			IProductService _productService,
+			IRestaurantService _restaurantService,
+			ILogger _logger)
 		{
 			productService = _productService;
 			restaurantService = _restaurantService;
+			logger = _logger;
 		}
 
 		[HttpGet]
@@ -32,38 +37,6 @@ namespace FoodDeliveryApp.Controllers
 			return View(model);
 		}
 
-		[HttpPost]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Favourite(int productId)
-		{
-			if (productId <= 0)
-			{
-				return BadRequest("Invalid productId");
-			}
-
-			try
-			{
-				var product = await productService.GetProductByIdAsync(productId);
-
-				if (product == null)
-				{
-					return NotFound(); // Product not found
-				}
-
-				product.IsFavourite = !product.IsFavourite;
-
-				await productService.UpdateFavouriteProductAsync(productId);
-
-				return Json(new { success = true, isFavorite = product.IsFavourite });
-			}
-			catch (Exception ex)
-			{
-				// Log exception
-				return StatusCode(500, "An error occurred while processing the request");
-			}
-		}
-
-
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
@@ -77,7 +50,6 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpPost]
-		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Add(ProductFormModel model, int restaurantId)
 		{
 			if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
@@ -124,7 +96,6 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpPost]
-		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Edit(ProductFormModel model, int productId)
 		{
 			if (await productService.ExistsProductAsync(productId) == false)
@@ -148,6 +119,22 @@ namespace FoodDeliveryApp.Controllers
 			await productService.EditProductAsync(model, productId);
 
 			return RedirectToAction(nameof(Details), new { productId });
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Delete(int productId)
+		{
+			var product = await productService.GetProductByIdAsync(productId);
+
+			if (product == null)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductErrorMessage });
+			
+			}
+
+			await productService.DeleteProductAsync(productId);
+
+			return RedirectToAction("Menu", "Restaurant", new { product.RestaurantId });
 		}
 	}
 }

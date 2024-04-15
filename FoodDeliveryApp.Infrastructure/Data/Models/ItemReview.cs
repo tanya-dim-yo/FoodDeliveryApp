@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.ItemReviewValidationConstants;
 
 
@@ -17,7 +18,13 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        public double AverageRating { get; private set; }
+        public int ItemId { get; set; }
+
+        [ForeignKey(nameof(ItemId))]
+        public virtual Item Item { get; set; } = null!;
+
+        [Required]
+        public double AverageRating { get; set; }
 
         [Required]
         [MaxLength(ItemReviewMaxLength)]

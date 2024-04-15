@@ -1,6 +1,4 @@
-﻿using FoodDeliveryApp.Core.Models.ProductReview;
-
-namespace FoodDeliveryApp.Core.Models.Product
+﻿namespace FoodDeliveryApp.Core.Models.Product
 {
 	public class ProductDetailsViewModel
 	{
@@ -11,12 +9,6 @@ namespace FoodDeliveryApp.Core.Models.Product
 		public string Description { get; set; } = string.Empty;
 
 		public decimal Price { get; set; }
-
-		public double AverageRating { get; set; }
-
-		public int TotalReviews { get; set; }
-
-		public bool IsFavourite { get; set; }
 
 		public bool IsVeggie { get; set; }
 
@@ -33,9 +25,5 @@ namespace FoodDeliveryApp.Core.Models.Product
 		public int MaxDeliveryTimeInMinutes { get; set; }
 
 		public string SpicyCategory { get; set; } = string.Empty;
-
-		public double AverageRatingPercent => (AverageRating / 5) * 100;
-
-		public IEnumerable<ProductReviewViewModel> Reviews { get; set; } = new List<ProductReviewViewModel>();
 	}
 }

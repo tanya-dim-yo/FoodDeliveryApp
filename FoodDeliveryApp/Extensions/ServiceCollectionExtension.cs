@@ -13,7 +13,8 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IRestaurantService, RestaurantService>();
-			services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductService, ProductService>();
+			services.AddScoped<IShoppingCartService, ShoppingCartService>();
 
 			return services;
         }

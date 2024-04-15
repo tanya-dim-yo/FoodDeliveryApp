@@ -47,6 +47,7 @@ namespace FoodDeliveryApp.Core.Services
 			if (product == null)
 			{
 				this.logger.LogError($"Product with id {productId} not found.");
+				return;
 			}
 
 			var addOnsToBeRemoved = await repository
@@ -134,9 +135,6 @@ namespace FoodDeliveryApp.Core.Services
 					Title = p.Title,
 					Description = p.Description,
 					Price = p.Price,
-					AverageRating = p.AverageRating,
-					TotalReviews = p.TotalReviews,
-					IsFavourite = p.IsFavourite,
 					IsVeggie = p.IsVeggie,
 					ImageURL = p.ImageURL,
 					RestaurantId = p.RestaurantId,
@@ -144,7 +142,7 @@ namespace FoodDeliveryApp.Core.Services
 					MinDeliveryTimeInMinutes = p.Restaurant.MinDeliveryTimeInMinutes,
 					MaxDeliveryTimeInMinutes = p.Restaurant.MaxDeliveryTimeInMinutes,
 					ItemCategory = p.ItemCategory.Title,
-					SpicyCategory = p.SpicyCategory.Title
+					SpicyCategory = p.SpicyCategory.Title,
 				})
 				.FirstOrDefaultAsync();
 		}
@@ -185,21 +183,6 @@ namespace FoodDeliveryApp.Core.Services
 					Title = c.Title
 				})
 				.ToListAsync();
-		}
-
-		public async Task UpdateFavouriteProductAsync(int productId)
-		{
-			var product = await repository.GetByIdAsync<Item>(productId);
-
-			if (product == null)
-			{
-				logger.LogError($"Product with id {productId} not found.");
-				return;
-			}
-
-			product.IsFavourite = !product.IsFavourite;
-
-			await repository.SaveChangesAsync();
 		}
 	}
 }

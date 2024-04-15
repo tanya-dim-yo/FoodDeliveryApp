@@ -4,78 +4,64 @@ using FoodDeliveryApp.Core.Models.Restaurant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
-using static FoodDeliveryApp.Core.Constants.MessageConstants.RestaurantMessageConstants;
 using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.RestaurantErrorMessagesConstants;
+using static FoodDeliveryApp.Core.Constants.MessageConstants.RestaurantMessageConstants;
 
 namespace FoodDeliveryApp.Controllers
 {
 	public class RestaurantController : BaseController
 	{
 		private readonly IRestaurantService restaurantService;
+		private readonly ILogger logger;
 
-		public RestaurantController(IRestaurantService _restaurantService)
+		public RestaurantController(
+			IRestaurantService _restaurantService,
+			ILogger _logger)
 		{
 			restaurantService = _restaurantService;
+			logger = _logger;
 		}
 
-		[AllowAnonymous]
-		[HttpGet]
-		public async Task<IActionResult> All()
-		{
-			var (model, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> All([FromServices] IRestaurantService restaurantService)
+        {
+            var (model, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
-			var modelWrapper = new RestaurantWithCategoriesViewModel
-			{
-				RestaurantViewModels = model,
-				CategoryNames = categories.Select(c => c.Title),
-				CategoryIds = categories.Select(c => c.Id)
-			};
+            var modelWrapper = new RestaurantsWithCategoriesViewModel
+            {
+                RestaurantViewModels = model,
+                CategoryNames = categories.Select(c => c.Title),
+                CategoryIds = categories.Select(c => c.Id)
+            };
 
-			return View(modelWrapper);
-		}
+            return View(modelWrapper);
+        }
 
-		[AllowAnonymous]
+        [AllowAnonymous]
 		[HttpGet]
 		public IActionResult Nearest()
 		{
 			return View();
 		}
 
-		[AllowAnonymous]
-		[HttpGet]
-		public async Task<IActionResult> HighestRating()
-		{
-			IEnumerable<RestaurantViewModel> model = await restaurantService.HighestRatingRestaurantsAsync();
-
-			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
-
-			var modelWrapper = new RestaurantWithCategoriesViewModel
-			{
-				RestaurantViewModels = model,
-				CategoryNames = categories.Select(c => c.Title),
-				CategoryIds = categories.Select(c => c.Id)
-			};
-
-			ViewData["ListTitle"] = RestaurantsSortedByHighestRatingMessage;
-			return View(nameof(All), modelWrapper);
-		}
 
 		[AllowAnonymous]
 		[HttpGet]
 		public async Task<IActionResult> ServiceFee()
 		{
-			IEnumerable<RestaurantViewModel> model = await restaurantService.RestaurantsByServiceFeeAsync();
+			var restaurants = await restaurantService.RestaurantsByServiceFeeAsync();
+			var categories = Enumerable.Empty<(int Id, string Title)>();
 
-			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
-
-			var modelWrapper = new RestaurantWithCategoriesViewModel
+			var modelWrapper = new RestaurantsWithCategoriesViewModel
 			{
-				RestaurantViewModels = model,
+				RestaurantViewModels = restaurants,
 				CategoryNames = categories.Select(c => c.Title),
 				CategoryIds = categories.Select(c => c.Id)
 			};
 
 			ViewData["ListTitle"] = RestaurantsSortedByServiceFeeMessage;
+
 			return View(nameof(All), modelWrapper);
 		}
 
@@ -89,6 +75,7 @@ namespace FoodDeliveryApp.Controllers
 			}
 
 			var (restaurants, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
+
 			var categoryName = categories.FirstOrDefault(c => c.Id == categoryId).Title;
 
 			if (categoryName == null)
@@ -96,37 +83,42 @@ namespace FoodDeliveryApp.Controllers
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidCategoryErrorMessage });
 			}
 
-			var model = new RestaurantWithCategoriesViewModel
+			var filteredRestaurants = restaurants.Where(r => r.RestaurantCategory == categoryName);
+
+			var model = new RestaurantsWithCategoriesViewModel
 			{
 				CategoryNames = categories.Select(c => c.Title),
 				CategoryIds = categories.Select(c => c.Id),
-				RestaurantViewModels = restaurants.Where(r => r.RestaurantCategory == categoryName).ToList(),
+				RestaurantViewModels = filteredRestaurants
 			};
 
 			ViewData["ListTitle"] = string.Format(RestaurantCategoryMessage, categoryName);
+
 			return View(nameof(All), model);
 		}
+
 
 		[AllowAnonymous]
 		[HttpGet]
 		public async Task<IActionResult> Search(string keyword)
 		{
 			var searchResults = await restaurantService.SearchRestaurantsAsync(keyword);
-			IEnumerable<RestaurantViewModel> results = searchResults.Results;
+			var results = searchResults.Results;
 
 			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
-			var modelWrapper = new RestaurantWithCategoriesViewModel
+			var modelWrapper = new RestaurantsWithCategoriesViewModel
 			{
-				RestaurantViewModels = results,
 				CategoryNames = categories.Select(c => c.Title),
-				CategoryIds = categories.Select(c => c.Id)
+				CategoryIds = categories.Select(c => c.Id),
+				RestaurantViewModels = results
 			};
 
-			ViewData["ListTitle"] = searchResults.SanitizedKeyword;
+			ViewData["ListTitle"] = $"{searchResults.Results.Count()} Обекти, съответстващи на търсенето на ‘{searchResults.SanitizedKeyword}‘";
 
 			return View(nameof(All), modelWrapper);
 		}
+
 
 		[AllowAnonymous]
 		[HttpGet]
@@ -150,13 +142,6 @@ namespace FoodDeliveryApp.Controllers
 			return View(model);
 		}
 
-		public async Task<IActionResult> RateRestaurant(int id, double newRating)
-		{
-			await restaurantService.RateRestaurant(id, newRating);
-
-			return RedirectToAction(nameof(All));
-		}
-
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
@@ -172,7 +157,6 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpPost]
-		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Add(RestaurantFormModel model)
 		{
 			if (await restaurantService.ExistsCityAsync(model.CityId) == false)
@@ -236,7 +220,7 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> RestaurantCategories()
 		{
-			var model = new RestaurantWithCategoriesViewModel
+			var model = new RestaurantsWithCategoriesViewModel
 			{
 				CategoryNames = await restaurantService.AllRestaurantCategoriesNamesAsync()
 			};
@@ -258,7 +242,6 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpPost]
-		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Edit(int restaurantId, RestaurantFormModel model)
 		{
 			if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)

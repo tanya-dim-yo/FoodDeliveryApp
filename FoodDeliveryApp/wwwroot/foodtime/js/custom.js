@@ -917,10 +917,10 @@ var foodtime = function(){
 			handlePlaceholderAnimation();
 			handleParallaxScroll();
 			handleTempusDominus();
-/*			handlePointerEffect();*/
+	     // handlePointerEffect();
 			handleBoxAware();
 			handledzNumber();
-/*			handleSupport();*/
+         // handleSupport();
 		},
 
 		load:function(){
