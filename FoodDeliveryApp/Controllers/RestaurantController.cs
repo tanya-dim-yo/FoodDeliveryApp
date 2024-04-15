@@ -41,7 +41,6 @@ namespace FoodDeliveryApp.Controllers
 			return View();
 		}
 
-
 		[AllowAnonymous]
 		[HttpGet]
 		public async Task<IActionResult> ServiceFee()
