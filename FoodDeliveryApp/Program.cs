@@ -1,7 +1,17 @@
 using FoodDeliveryApp.ModelBinders;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using FoodDeliveryApp.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("FoodDeliveryAppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'FoodDeliveryAppDbContextConnection' not found.");
+
+builder.Services.AddDbContext<FoodDeliveryAppDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<FoodDeliveryAppDbContext>();
 
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity(builder.Configuration);
