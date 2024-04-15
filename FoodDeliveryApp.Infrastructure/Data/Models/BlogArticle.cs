@@ -18,7 +18,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public string UserId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(UserId))]
-        public virtual IdentityUser User { get; set; } = null!;
+        public virtual ApplicationUser User { get; set; } = null!;
 
         [Required]
         public DateTime PublicationDate { get; set; }
