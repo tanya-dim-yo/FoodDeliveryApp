@@ -1,5 +1,6 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Product;
+using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -105,6 +106,8 @@ namespace FoodDeliveryApp.Controllers
 			}
 
 			var model = await productService.GetProductFormModelByIdAsync(productId);
+
+			ViewBag.ProductId = productId;
 
 			return View(model);
 		}
