@@ -89,6 +89,7 @@
 			public const string RestaurantDeliveryTimeMinValue = "10";
 			public const int RestaurantImageURLMaxLength = 200;
 			public const int RestaurantImageURLMinLength = 10;
+            public const string DateTimeFormat = "HH:mm";
 		}
 
         public static class RestaurantCategoryValidationConstants
