@@ -115,6 +115,27 @@ namespace FoodDeliveryApp.Core.Services
 			return product;
 		}
 
+		public async Task<ProductDeleteModel?> GetProductDeleteModelByIdAsync(int productId)
+		{
+			var product = await repository.AllReadOnly<Item>()
+				.Where(p => p.Id == productId)
+				.Select(p => new ProductDeleteModel()
+				{
+					Id = p.Id,
+					Title = p.Title,
+					Description = p.Description,
+					Price = p.Price,
+					IsVeggie = p.IsVeggie,
+					ItemCategory = p.ItemCategory.Title,
+					RestaurantId = p.RestaurantId,
+					Restaurant = p.Restaurant.Title,
+					SpicyCategory = p.SpicyCategory.Title
+				})
+				.FirstOrDefaultAsync();
+
+			return product;
+		}
+
 		public async Task<ProductDetailsViewModel?> GetProductDetailsByIdAsync(int productId)
 		{
 			return await repository
