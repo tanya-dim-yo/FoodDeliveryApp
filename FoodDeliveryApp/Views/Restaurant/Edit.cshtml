@@ -51,7 +51,6 @@
 								</div>
 								<div class="tagcloud">
 									<a href="@Url.Action("ProductDetail","FoodTime")">Близо до мен</a>
-									<a href="@Url.Action("HighestRating","Restaurant")">С най-висок рейтинг</a>
 									<a href="@Url.Action("ServiceFee","Restaurant")">Такса за доставка</a>
 								</div>
 							</div>
@@ -92,11 +91,11 @@
 				</div>
 				<div class="col-lg-9">
 					<div class="d-flex justify-content-between align-items-center">
-						<h5 class="title mb-md-3 mb-lg-4 m-b20 d-none d-lg-block">Добавяне на ресторант</h5>
+						<h5 class="title mb-md-3 mb-lg-4 m-b20 d-none d-lg-block">Редактиране на ресторант</h5>
 					</div>
 					<div class="row">
 	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-		<form asp-action="Add" asp-controller="Restaurant" method="post">
+		<form asp-action="Edit" asp-controller="Restaurant" method="post">
 			<div class="mb-3">
 				<label asp-for="@Model.Title" class="form-label-add-edit">Заглавие</label>
 				<input asp-for="@Model.Title" class="form-control" aria-required="true" />
@@ -169,6 +168,7 @@
 				</select>
 				<span asp-validation-for="@Model.RestaurantCategoryId" class="text-danger"></span>
 			</div>
+				<input type="hidden" name="restaurantId" value="@ViewBag.RestaurantId" />
 			<div class="mb-3">
 				<input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Запазете промените" />
 			</div>
