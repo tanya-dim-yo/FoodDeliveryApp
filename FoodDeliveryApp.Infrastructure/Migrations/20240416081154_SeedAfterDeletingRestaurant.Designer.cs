@@ -4,6 +4,7 @@ using FoodDeliveryApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodDeliveryApp.Infrastructure.Migrations
 {
     [DbContext(typeof(FoodDeliveryAppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240416081154_SeedAfterDeletingRestaurant")]
+    partial class SeedAfterDeletingRestaurant
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,7 +129,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1fbf0d65-12cc-4022-aaeb-adb20a20459d",
+                            ConcurrencyStamp = "bb06db77-e493-4ff8-9976-da5bf035e8de",
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Tanya",
@@ -135,9 +137,9 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "guest@mail.com",
                             NormalizedUserName = "guest@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEpRWzslzHAbM/wLgbmZ9zk3ZST14hs7dt6InwmQd9Qfe+C3KBs/e3hwJP+cV9Folw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECh4Exhpno7OEmv5lGKCJ5p1pH3R4HVLhmBgu1m7l2nllTv7R6yiGu+I4bR6QeHeXA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b44dc259-3bc1-41a7-8d3d-364978a29a8b",
+                            SecurityStamp = "2b7a9ff8-960b-4f46-817e-a5c6b54f5d43",
                             TwoFactorEnabled = false,
                             UserName = "guest@mail.com"
                         },
@@ -145,7 +147,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                         {
                             Id = "ec6b753c-96eb-4fd3-a6b4-5b4cadb367ac",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9c5d4122-e207-4375-a7fd-9c7681f87f4f",
+                            ConcurrencyStamp = "806c1725-ea90-4982-994b-af6d781ea8df",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Tanya",
@@ -153,9 +155,9 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFiHoO3nxfn2ACKcRzSCEWrOkDwoRCdu8FbzCL89X5kzQjiXWLdpNBXH/TEYDz5iuQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPeIaMNzKEECvtOGA6gsKYYX1FHNWLEORXo4GPtAAcoERU68I1WqNULt9lo9RoTpoA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2eaf809b-d806-450a-aec0-903a37ab1519",
+                            SecurityStamp = "307f9cd9-a6ef-4a2e-a96a-3b6510cfdb99",
                             TwoFactorEnabled = false,
                             UserName = "admin@mail.com"
                         });
