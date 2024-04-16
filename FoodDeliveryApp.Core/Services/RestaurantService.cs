@@ -67,7 +67,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
         private async Task<IEnumerable<(int Id, string Title)>> AllRestaurantCategoriesAsync()
 		{
 			var categories = await repository
-				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
+				.AllReadOnly<RestaurantCategory>()
 				.Select(c => new { c.Id, c.Title })
 				.ToListAsync();
 
@@ -77,7 +77,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 		public async Task<IEnumerable<CityServiceModel>> AllRestaurantCitiesAsync()
 		{
 			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.City>()
+				.AllReadOnly<City>()
 				.Select(c => new CityServiceModel
 				{
 					Id = c.Id,
@@ -89,7 +89,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 		public async Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync()
 		{
 			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
+				.AllReadOnly<RestaurantCategory>()
 				.OrderBy(c => c.Title)
 				.Select(c => c.Title)
 				.Distinct()
@@ -125,7 +125,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 		public async Task<IEnumerable<ProductViewModel>> MenuRestaurantAsync(int restaurantId)
 		{
 			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.Item>()
+				.AllReadOnly<Item>()
 				.Where(i => i.RestaurantId == restaurantId)
 				.Select(i => new ProductViewModel()
 				{
@@ -176,7 +176,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 		public async Task<bool> ExistsCityAsync(int cityId)
 		{
 			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.City>()
+				.AllReadOnly<City>()
 				.AnyAsync(p => p.Id == cityId);
 		}
 
@@ -190,11 +190,11 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 		public async Task<bool> ExistsRestaurantCategoryAsync(int categoryId)
 		{
 			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
+				.AllReadOnly<RestaurantCategory>()
 				.AnyAsync(p => p.Id == categoryId);
 		}
 
-		public async Task EditAsync(int restaurantId, RestaurantFormModel model)
+		public async Task EditRestaurantAsync(int restaurantId, RestaurantFormModel model)
 		{
 			var restaurant = await repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
 
@@ -252,13 +252,13 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					})
 					.ToList();
 
-				var cities = await AllRestaurantCitiesAsync();
+                restaurant.Cities = await AllRestaurantCitiesAsync();
 			}
 
 			return restaurant;
 		}
 
-        public async Task DeleteAsync(int restaurantId)
+        public async Task DeleteRestaurantAsync(int restaurantId)
         {
             var restaurant = await repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
 
