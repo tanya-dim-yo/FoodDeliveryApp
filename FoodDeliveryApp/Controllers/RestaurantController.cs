@@ -152,7 +152,8 @@ namespace FoodDeliveryApp.Controllers
 
 			var model = new RestaurantFormModel()
 			{
-				Categories = categoryViewModels
+				Categories = categoryViewModels,
+				Cities = await restaurantService.AllRestaurantCitiesAsync()
 			};
 
 			return View(model);
@@ -199,7 +200,7 @@ namespace FoodDeliveryApp.Controllers
 				ModelState.AddModelError(nameof(model.ClosingHour), InvalidTimeMessage);
 			}
 
-			if (model.OpeningHour == model.ClosingHour)
+			if (openHour == closeHour)
 			{
 				ModelState.AddModelError(nameof(model.OpeningHour), InvalidSameTimeMessage);
 			}
@@ -250,6 +251,8 @@ namespace FoodDeliveryApp.Controllers
 
 			var model = await restaurantService.GetRestaurantFormModelByIdAsync(restaurantId);
 
+			ViewBag.RestaurantId = restaurantId;
+
 			return View(model);
 		}
 
@@ -271,6 +274,42 @@ namespace FoodDeliveryApp.Controllers
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantCategoryMessage });
 			}
 
+			DateTime openHour = DateTime.MinValue;
+			DateTime closeHour = DateTime.MinValue;
+
+			if (!DateTime.TryParseExact(
+				model.OpeningHour,
+				"HH:mm",
+				CultureInfo.InvariantCulture,
+				DateTimeStyles.None,
+				out openHour))
+			{
+				ModelState.AddModelError(nameof(model.OpeningHour), InvalidTimeMessage);
+			}
+
+			if (!DateTime.TryParseExact(
+				model.ClosingHour,
+				"HH:mm",
+				CultureInfo.InvariantCulture,
+				DateTimeStyles.None,
+				out closeHour))
+			{
+				ModelState.AddModelError(nameof(model.ClosingHour), InvalidTimeMessage);
+			}
+
+			if (openHour == closeHour)
+			{
+				ModelState.AddModelError(nameof(model.OpeningHour), InvalidSameTimeMessage);
+			}
+
+			if (openHour > closeHour)
+			{
+				ModelState.AddModelError(nameof(model.OpeningHour), OpenHourBiggerMessage);
+			}
+
+			model.OpenHourDateTime = openHour;
+			model.CloseHourDateTime = closeHour;
+
 			if (ModelState.IsValid == false)
 			{
 				var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
@@ -280,7 +319,7 @@ namespace FoodDeliveryApp.Controllers
 				return View(model);
 			}
 
-			await restaurantService.EditAsync(restaurantId, model);
+			await restaurantService.EditRestaurantAsync(restaurantId, model);
 
 			return RedirectToAction("Menu", new { restaurantId });
 		}
@@ -316,7 +355,7 @@ namespace FoodDeliveryApp.Controllers
                 return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
             }
 
-            await restaurantService.DeleteAsync(restaurantId);
+            await restaurantService.DeleteRestaurantAsync(restaurantId);
 
 			return RedirectToAction(nameof(All));
 		}
