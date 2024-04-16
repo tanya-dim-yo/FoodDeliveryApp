@@ -276,10 +276,10 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
             foreach (var item in itemsToBeDeleted)
             {
                 await DeleteRelatedEntitiesAsync(item);
-                await repository.DeleteAsync<Item>(item);
+                await repository.DeleteAsync<Item>(item.Id);
             }
 
-            await repository.DeleteAsync<Infrastructure.Data.Models.Restaurant>(restaurant);
+            await repository.DeleteAsync<Infrastructure.Data.Models.Restaurant>(restaurant.Id);
             await repository.SaveChangesAsync();
         }
 
@@ -292,7 +292,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
             foreach (var addOn in addOns)
             {
-                await repository.DeleteAsync<ItemAddOn>(addOn);
+                await repository.DeleteAsync<ItemAddOn>(addOn.ItemId);
             }
 
             var reviews = await repository
@@ -302,7 +302,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
             foreach (var review in reviews)
             {
-                await repository.DeleteAsync<ItemReview>(review);
+                await repository.DeleteAsync<ItemReview>(review.Id);
             }
 
             var cartItems = await repository
@@ -312,8 +312,28 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
             foreach (var cartItem in cartItems)
             {
-                await repository.DeleteAsync<CartItem>(cartItem);
+                await repository.DeleteAsync<CartItem>(cartItem.Id);
             }
         }
-    }
+
+		public async Task<RestaurantDeleteModel?> GetRestaurantDeleteModelByIdAsync(int restaurantId)
+		{
+			var restaurant = await repository.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+				.Where(r => r.Id == restaurantId)
+				.Include(r => r.City)
+				.Include(r => r.RestaurantCategory)
+				.Select(r => new RestaurantDeleteModel(
+					r.Id,
+					r.Title,
+					r.Address,
+					r.City.Name,
+					r.OpeningHour,
+					r.ClosingHour,
+					r.ServiceFee,
+					r.RestaurantCategory.Title))
+				.FirstOrDefaultAsync();
+
+			return restaurant;
+		}
+	}
 }

@@ -10,6 +10,7 @@ namespace FoodDeliveryApp.Core.Contracts
 		Task EditRestaurantAsync(int restaurantId, RestaurantFormModel model);
 		Task DeleteRestaurantAsync(int restaurantId);
 		Task<RestaurantFormModel?> GetRestaurantFormModelByIdAsync(int restaurantId);
+		Task<RestaurantDeleteModel?> GetRestaurantDeleteModelByIdAsync(int restaurantId);
 		Task<IEnumerable<CityServiceModel>> AllRestaurantCitiesAsync();
 		Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories)> GetAllRestaurantsAndCategoriesAsync();
 		Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync();
