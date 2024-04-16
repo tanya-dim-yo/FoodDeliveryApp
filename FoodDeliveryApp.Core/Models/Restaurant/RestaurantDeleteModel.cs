@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.RestaurantValidationConstants;
+﻿using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.RestaurantValidationConstants;
 
 namespace FoodDeliveryApp.Core.Models.Restaurant
 {
