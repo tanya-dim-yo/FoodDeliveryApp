@@ -102,7 +102,7 @@
                                         </div>
                                         @if (User.IsAdmin())
                                         {
-                                            <div class="dz-action">
+                                            <div class="dz-action" style="padding-bottom: 20px;">
                                                 <button type="button" class="btn btn-warning btn-sm" onclick="location.href='@Url.Action("Edit", "Restaurant", new { restaurantId = restaurant.Id })'">Редактирай</button>
                                                 <button type="button" class="btn btn-danger btn-sm" onclick="location.href='@Url.Action("Delete", "Restaurant", new { restaurantId = restaurant.Id })'">Изтрий</button>
                                             </div>
