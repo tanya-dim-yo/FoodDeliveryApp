@@ -337,7 +337,7 @@ namespace FoodDeliveryApp.Controllers
                 return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
             }
 
-            var model = await restaurantService.GetRestaurantFormModelByIdAsync(restaurantId);
+            var model = await restaurantService.GetRestaurantDeleteModelByIdAsync(restaurantId);
 
             return View(model);
         }
@@ -345,17 +345,17 @@ namespace FoodDeliveryApp.Controllers
 		[HttpPost]
 		public async Task<IActionResult> DeleteConfirmed(int restaurantId)
 		{
-            if (User.IsAdmin() == false)
-            {
-                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
-            }
+			if (User.IsAdmin() == false)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+			}
 
-            if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
-            {
-                return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
-            }
+			if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
+			}
 
-            await restaurantService.DeleteRestaurantAsync(restaurantId);
+			await restaurantService.DeleteRestaurantAsync(restaurantId);
 
 			return RedirectToAction(nameof(All));
 		}
