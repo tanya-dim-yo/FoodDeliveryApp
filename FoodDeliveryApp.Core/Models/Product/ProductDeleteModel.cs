@@ -14,6 +14,8 @@
 
 		public string ItemCategory { get; set; } = string.Empty;
 
+		public int RestaurantId { get; set; }
+
 		public string Restaurant { get; set; } = string.Empty;
 
 		public string SpicyCategory { get; set; } = string.Empty;
