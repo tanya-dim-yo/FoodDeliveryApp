@@ -156,7 +156,7 @@ namespace FoodDeliveryApp.Controllers
                 return RedirectToAction("Error", "Home", new { errorMessage = InvalidProductErrorMessage });
             }
 
-            var model = await productService.GetProductFormModelByIdAsync(productId);
+            var model = await productService.GetProductDeleteModelByIdAsync(productId);
 
             return View(model);
         }
