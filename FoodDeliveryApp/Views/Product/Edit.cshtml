@@ -9,7 +9,10 @@
 	<section class="content-inner-1 overflow-hidden">
 		<div class="container">
 			<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-				<form asp-action="Add" asp-controller="Product" method="post">
+				<div class="d-flex justify-content-between align-items-center">
+					<h5 class="title mb-md-3 mb-lg-4 m-b20 d-none d-lg-block">Редактиране на продукт</h5>
+				</div>
+				<form asp-action="Edit" asp-controller="Product" method="post">
 					<div class="mb-3">
 						<label asp-for="@Model.Title" class="form-label-add-edit">Име</label>
 						<input asp-for="@Model.Title" class="form-control" aria-required="true" />
@@ -57,6 +60,8 @@
 						</select>
 						<span asp-validation-for="@Model.SpicyCategoryId" class="text-danger"></span>
 					</div>
+					<input type="hidden" name="productId" value="@ViewBag.ProductId" />
+					<input type="hidden" name="restaurantId" value="@Model.RestaurantId" />
 					<div class="mb-3">
 						<input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Запазете промените" />
 					</div>
@@ -97,4 +102,8 @@
 		<script src="~/foodtime/js/jquery.star-rating-svg.js"></script><!-- Star Rating JS -->
 
 		<script src="~/foodtime/vendor/rangeslider/rangeslider.js"></script><!-- CUSTOM JS -->
+}
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
 }
