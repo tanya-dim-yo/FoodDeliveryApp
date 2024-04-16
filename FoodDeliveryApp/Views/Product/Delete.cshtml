@@ -16,8 +16,11 @@
 					<div class="card-body">
 						<h3 class="card-title text-center">@Model.Title</h3>
 						<p class="mb-0"><strong>Описание:</strong> @Model.Description</p>
-						<p class="mb-0"><strong>Цена:</strong> @Model.Price</p>
-						<p class="mb-0"><strong>Вегетарианско ястие:</strong> @Model.IsVeggie</p>
+						<p class="mb-0"><strong>Цена:</strong> @Model.Price лв.</p>
+						<p class="mb-0">
+							<strong>Вегетарианско ястие:</strong>
+							@(Model.IsVeggie ? "Да" : "Не")
+						</p>
 						<p class="mb-0"><strong>Категория:</strong> @Model.ItemCategory</p>
 						<p class="mb-0"><strong>Степен на лютивост:</strong> @Model.SpicyCategory</p>
 						<p class="mb-0"><strong>Ресторант:</strong> @Model.Restaurant</p>
@@ -34,7 +37,6 @@
 			</div>
 		</div>
 	</div>
-</div>
 	<!-- Product Detail Section -->
 
 @section foodtime_style
@@ -67,4 +69,8 @@
 		<script src="~/foodtime/js/jquery.star-rating-svg.js"></script><!-- Star Rating JS -->
 
 		<script src="~/foodtime/vendor/rangeslider/rangeslider.js"></script><!-- CUSTOM JS -->
+}
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
 }
