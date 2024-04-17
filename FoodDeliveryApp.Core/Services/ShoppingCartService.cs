@@ -43,17 +43,13 @@ namespace FoodDeliveryApp.Core.Services
 
 		public async Task AddItemToCartAsync(int itemId, int quantity, int cartId, string userId)
 		{
-			if (await ExistsCartAsync(cartId) == false)
-			{
-				throw new ArgumentException("Количката не съществува.");
-			}
-			else
+			if (!await ExistsCartAsync(cartId))
 			{
 				cartId = await CreateCartAsync(userId);
 			}
 
 			var cartItem = await repository.AllReadOnly<CartItem>()
-					.FirstOrDefaultAsync(ci => ci.ItemId == itemId && ci.CartId == cartId);
+				.FirstOrDefaultAsync(ci => ci.ItemId == itemId && ci.CartId == cartId);
 
 			if (cartItem == null)
 			{
