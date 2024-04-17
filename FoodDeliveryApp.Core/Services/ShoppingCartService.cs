@@ -57,10 +57,6 @@ namespace FoodDeliveryApp.Core.Services
 				cartItem.CartId = cartId;
 				await repository.AddAsync(cartItem);
 			}
-			else
-			{
-				cartItem.Quantity += quantity;
-			}
 
 			await repository.SaveChangesAsync();
 		}
@@ -120,9 +116,19 @@ namespace FoodDeliveryApp.Core.Services
 			throw new NotImplementedException();
 		}
 
-		public Task RemoveItemFromCartAsync(int itemId, int quantity, int cartId)
+		public async Task RemoveItemFromCartAsync(int itemId, int cartId)
 		{
-			throw new NotImplementedException();
+			var cartItem = await repository.All<CartItem>()
+				.FirstOrDefaultAsync(ci => ci.ItemId == itemId && ci.CartId == cartId);
+
+			if (cartItem == null)
+			{
+				throw new InvalidOperationException("Несъществуващ продукт!");
+			}
+
+			await repository.DeleteAsync<CartItem>(cartItem.Id);
+			await repository.SaveChangesAsync();
 		}
+
 	}
 }
