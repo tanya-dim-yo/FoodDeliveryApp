@@ -34,5 +34,19 @@ namespace FoodDeliveryApp.Controllers
 				return StatusCode(500, $"Възникна грешка: {ex.Message}");
 			}
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> AddAddOnToCart(int itemId, int addOnId, int quantity, int cartId)
+		{
+			try
+			{
+				await shoppingCartService.AddAddOnToCartAsync(itemId, addOnId, quantity, cartId);
+				return Ok("Добавката беше добавена успешно към количката!");
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"Възникна грешка: {ex.Message}");
+			}
+		}
 	}
 }
