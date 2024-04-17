@@ -76,5 +76,19 @@ namespace FoodDeliveryApp.Controllers
 				return StatusCode(500, $"Възникна грешка: {ex.Message}");
 			}
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> CalculateItemsTotalPrice(int cartId)
+		{
+			try
+			{
+				var itemsTotalPrice = await shoppingCartService.CalculateItemsTotalPriceAsync(cartId);
+				return Ok($"Общо: {itemsTotalPrice}");
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"Възникна грешка: {ex.Message}");
+			}
+		}
 	}
 }
