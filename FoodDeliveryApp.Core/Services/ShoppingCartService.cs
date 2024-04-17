@@ -53,7 +53,7 @@ namespace FoodDeliveryApp.Core.Services
 
 			if (cartItem == null)
 			{
-				cartItem = new CartItem(itemId, quantity, 0);
+				cartItem = new CartItem(itemId, quantity);
 				cartItem.CartId = cartId;
 				await repository.AddAsync(cartItem);
 			}
@@ -70,9 +70,20 @@ namespace FoodDeliveryApp.Core.Services
 			throw new NotImplementedException();
 		}
 
-		public Task<decimal> CalculateTotalPriceAsync(int cartId)
+		public async Task<decimal> CalculateTotalPriceAsync(int cartId)
 		{
-			throw new NotImplementedException();
+			var cartItems = await repository.AllReadOnly<CartItem>()
+							.Where(ci => ci.CartId == cartId)
+							.ToListAsync();
+
+			decimal totalPrice = 0;
+
+			foreach (var cartItem in cartItems)
+			{
+				totalPrice += cartItem.Quantity * cartItem.Item.Price;
+			}
+
+			return totalPrice;
 		}
 
 		public async Task<int> CreateCartAsync(string userId)
