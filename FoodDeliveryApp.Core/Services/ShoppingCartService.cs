@@ -20,9 +20,25 @@ namespace FoodDeliveryApp.Core.Services
 			logger = _logger;
 		}
 
-		public Task AddAddOnToCartAsync(int addOnId, int quantity, int cartId)
+		public async Task AddAddOnToCartAsync(int itemId, int addOnId, int quantity, int cartId)
 		{
-			throw new NotImplementedException();
+			var cartItem = await repository.AllReadOnly<CartItem>()
+						.FirstOrDefaultAsync(ci => ci.ItemId == itemId && ci.CartId == cartId);
+
+			if (cartItem == null)
+			{
+				this.logger.LogError($"Продуктът не е добавен към количката.");
+				return;
+			}
+
+			var itemAddon = new ItemAddOn
+			{ 
+				ItemId = itemId,
+				AddOnId = addOnId 
+			};
+
+			await repository.AddAsync(itemAddon);
+			await repository.SaveChangesAsync();
 		}
 
 		public async Task AddItemToCartAsync(int itemId, int quantity, int cartId)
@@ -52,6 +68,24 @@ namespace FoodDeliveryApp.Core.Services
 		public Task<decimal> CalculateTotalPriceAsync(int cartId)
 		{
 			throw new NotImplementedException();
+		}
+
+		public async Task<int> CreateCartAsync(string userId)
+		{
+			if (string.IsNullOrEmpty(userId))
+			{
+				throw new ArgumentNullException(nameof(userId));
+			}
+
+			var cart = new Cart()
+			{
+				UserId = userId
+			};
+
+			await repository.AddAsync(cart);
+			await repository.SaveChangesAsync();
+
+			return cart.Id;
 		}
 
 		public Task<bool> ExistsCartAsync(int cartId)
