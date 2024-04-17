@@ -43,10 +43,11 @@ namespace FoodDeliveryApp.Core.Services
 
 		public async Task AddItemToCartAsync(int itemId, int quantity, int cartId, string userId)
 		{
-			var cart = await repository.AllReadOnly<Cart>()
-					.FirstOrDefaultAsync(c => c.Id == cartId && c.UserId == userId);
-
-			if (cart == null)
+			if (await ExistsCartAsync(cartId) == false)
+			{
+				throw new ArgumentException("Количката не съществува.");
+			}
+			else
 			{
 				cartId = await CreateCartAsync(userId);
 			}
@@ -96,9 +97,10 @@ namespace FoodDeliveryApp.Core.Services
 			return cart.Id;
 		}
 
-		public Task<bool> ExistsCartAsync(int cartId)
+		public async Task<bool> ExistsCartAsync(int cartId)
 		{
-			throw new NotImplementedException();
+			return await repository
+				.AllReadOnly<Cart>().AnyAsync(c => c.Id == cartId);
 		}
 
 		public Task<IEnumerable<RecommendedItemViewModel>> GetRecommendedItemsAsync()
