@@ -122,8 +122,13 @@ namespace FoodDeliveryApp.Core.Services
 			throw new NotImplementedException();
 		}
 
-		public async Task RemoveAddOnFromCartAsync(int addOnId)
+		public async Task RemoveAddOnFromCartAsync(int addOnId, int cartId)
 		{
+			if (await ExistsCartAsync(cartId) == false)
+			{
+				throw new InvalidOperationException("Количката не е намерена.");
+			}
+
 			var itemAddon = await repository.All<ItemAddOn>()
 				.FirstOrDefaultAsync(ia => ia.AddOnId == addOnId);
 
