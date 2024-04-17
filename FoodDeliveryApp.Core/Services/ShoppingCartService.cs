@@ -1,42 +1,75 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
+using FoodDeliveryApp.Core.Models.ShoppingCart;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace FoodDeliveryApp.Core.Services
 {
 	public class ShoppingCartService : IShoppingCartService
 	{
 		private readonly IRepository repository;
-		private readonly IProductService productService;
+		private readonly ILogger<ShoppingCartService> logger;
 
 		public ShoppingCartService(
 			IRepository _repository,
-			IProductService _productService)
+			ILogger<ShoppingCartService> _logger)
 		{
 			repository = _repository;
-			productService = _productService;
+			logger = _logger;
 		}
 
-		public async Task AddProductToCartAsync(int productId, int quantity)
-		{
-			var product = await productService.GetProductByIdAsync(productId);
-
-			if (product == null)
-			{
-				throw new ArgumentException("Product not found.");
-			}
-
-
-
-			await repository.SaveChangesAsync();
-		}
-
-		public Task<decimal> CalculateTotalPriceAsync()
+		public Task AddAddOnToCartAsync(int addOnId, int quantity, int cartId)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task RemoveProductFromCartAsync(int productId)
+		public async Task AddItemToCartAsync(int itemId, int quantity, int cartId)
+		{
+			var cartItem = await repository.AllReadOnly<CartItem>()
+							.FirstOrDefaultAsync(ci => ci.ItemId == itemId && ci.CartId == cartId);
+
+			if (cartItem == null)
+			{
+				cartItem = new CartItem(itemId, quantity, 0);
+				cartItem.CartId = cartId;
+				await repository.AddAsync(cartItem);
+			}
+			else
+			{
+				cartItem.Quantity += quantity;
+			}
+
+			await repository.SaveChangesAsync();
+		}
+
+		public Task CalculateServiceFeeAsync(int cartId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<decimal> CalculateTotalPriceAsync(int cartId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<bool> ExistsCartAsync(int cartId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<IEnumerable<RecommendedItemViewModel>> GetRecommendedItemsAsync()
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task RemoveAddOnFromCartAsync(int addOnId, int quantity, int cartId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task RemoveItemFromCartAsync(int itemId, int quantity, int cartId)
 		{
 			throw new NotImplementedException();
 		}
