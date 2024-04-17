@@ -6,10 +6,11 @@ namespace FoodDeliveryApp.Core.Contracts
 	{
 		Task<int> CreateCartAsync(string userId);
 		Task<bool> ExistsCartAsync(int cartId);
-		Task AddItemToCartAsync(int itemId, int quantity, int cartId, string userId);
+		Task AddItemToCartAsync(int itemId, int quantity, string userId);
 		Task AddAddOnToCartAsync(int itemId, int addOnId, int quantity, int cartId);
 		Task RemoveItemFromCartAsync(int itemId, int cartId);
 		Task RemoveAddOnFromCartAsync(int addOnId, int cardId);
+		Task<ShoppingCartViewModel> GetShopCartByIdAsync(int cartId);
 		Task<decimal> UpdateCartItemQuantityAsync(int cartItemId, int quantity);
 		Task<IEnumerable<RecommendedItemViewModel>> GetRecommendedItemsAsync();
 		Task<decimal> CalculateServiceFeeAsync(int cartId);

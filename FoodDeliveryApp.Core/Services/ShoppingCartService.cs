@@ -27,39 +27,52 @@ namespace FoodDeliveryApp.Core.Services
 
 			if (cartItem == null)
 			{
-				this.logger.LogError($"Продуктът не е добавен към количката.");
+				logger.LogError($"Продуктът не е добавен към количката.");
 				return;
 			}
 
 			var itemAddon = new ItemAddOn
-			{ 
+			{
 				ItemId = itemId,
-				AddOnId = addOnId 
+				AddOnId = addOnId
 			};
 
 			await repository.AddAsync(itemAddon);
 			await repository.SaveChangesAsync();
 		}
 
-		public async Task AddItemToCartAsync(int itemId, int quantity, int cartId, string userId)
+		public async Task AddItemToCartAsync(int itemId, int quantity, string userId)
 		{
-			if (!await ExistsCartAsync(cartId))
+			if (string.IsNullOrEmpty(userId))
 			{
-				cartId = await CreateCartAsync(userId);
+				throw new ArgumentNullException(nameof(userId));
+			}
+
+			var cart = await repository.AllReadOnly<Cart>()
+				.FirstOrDefaultAsync(c => c.UserId == userId);
+
+			if (cart == null)
+			{
+				cart = new Cart { UserId = userId };
+				cart.Id = await CreateCartAsync(userId);
 			}
 
 			var cartItem = await repository.AllReadOnly<CartItem>()
-				.FirstOrDefaultAsync(ci => ci.ItemId == itemId && ci.CartId == cartId);
+				.FirstOrDefaultAsync(ci => ci.ItemId == itemId && ci.CartId == cart.Id);
 
 			if (cartItem == null)
 			{
-				cartItem = new CartItem(itemId, quantity);
-				cartItem.CartId = cartId;
+				cartItem = new CartItem(itemId, quantity) { CartId = cart.Id };
 				await repository.AddAsync(cartItem);
+			}
+			else
+			{
+				cartItem.Quantity += quantity;
 			}
 
 			await repository.SaveChangesAsync();
 		}
+
 
 		public async Task<decimal> CalculateServiceFeeAsync(int cartId)
 		{
@@ -174,6 +187,44 @@ namespace FoodDeliveryApp.Core.Services
 			await repository.SaveChangesAsync();
 
 			return cartItem.Item.Price * cartItem.Quantity;
+		}
+
+		public async Task<ShoppingCartViewModel> GetShopCartByIdAsync(int cartId)
+		{
+			var cart = await repository.AllReadOnly<Cart>()
+				.Where(c => c.Id == cartId)
+				.Include(c => c.CartItems)
+					.ThenInclude(ci => ci.Item)
+						.ThenInclude(i => i.Restaurant)
+				.FirstOrDefaultAsync(c => c.Id == cartId);
+
+			if (cart == null)
+			{
+				throw new InvalidOperationException("Количката не е намерена.");
+			}
+
+			var itemsTotalPrice = cart.CartItems.Sum(ci => ci.Item.Price * ci.Quantity);
+			var serviceFee = cart.CartItems.Sum(ci => ci.Item.Restaurant.ServiceFee);
+			var totalPrice = itemsTotalPrice + serviceFee;
+
+			var cartViewModel = new ShoppingCartViewModel
+			{
+				Id = cart.Id,
+				UserId = cart.UserId,
+				ItemsTotalPrice = itemsTotalPrice,
+				ServiceFee = serviceFee,
+				TotalPrice = totalPrice,
+				CartItems = cart.CartItems.Select(ci => new CartItemViewModel
+				{
+					Id = ci.Id,
+					Title = ci.Item.Title,
+					ImageURL = ci.Item.ImageURL,
+					Quantity = ci.Quantity,
+					Price = ci.Item.Price
+				}).ToList(),
+			};
+
+			return cartViewModel;
 		}
 	}
 }
