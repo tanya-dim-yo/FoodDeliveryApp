@@ -1,6 +1,8 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
+using FoodDeliveryApp.Core.Models.ShoppingCart;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.ShopCartErrorMessagesConstants;
 
 namespace FoodDeliveryApp.Controllers
 {
@@ -13,8 +15,35 @@ namespace FoodDeliveryApp.Controllers
 			shoppingCartService = _shoppingCartService;
 		}
 
+		[HttpGet]
+		public async Task<IActionResult> ShopCart()
+		{
+			if (!User.Identity.IsAuthenticated)
+			{
+				return RedirectToAction("Login", "Account");
+			}
+			
+			var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+			if (string.IsNullOrEmpty(userId))
+			{
+				return Unauthorized();
+			}
+
+			int cartId = await shoppingCartService.CreateCartAsync(userId);
+
+			ShoppingCartViewModel? model = await shoppingCartService.GetShopCartByIdAsync(cartId);
+
+			if (model == null)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = NoExistingShopCartErrorMessage });
+			}
+
+			return View(model);
+		}
+
 		[HttpPost]
-		public async Task<IActionResult> AddItemToCart(int itemId, int quantity, int cartId)
+		public async Task<IActionResult> AddItemToCart(int itemId, int quantity)
 		{
 			try
 			{
@@ -25,7 +54,7 @@ namespace FoodDeliveryApp.Controllers
 					return Unauthorized();
 				}
 
-				await shoppingCartService.AddItemToCartAsync(itemId, quantity, cartId, userId);
+				await shoppingCartService.AddItemToCartAsync(itemId, quantity, userId);
 
 				return Ok("Продуктът е добавен успешно към количката!");
 			}
