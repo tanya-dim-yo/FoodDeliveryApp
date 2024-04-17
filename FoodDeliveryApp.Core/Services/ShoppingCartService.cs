@@ -111,9 +111,18 @@ namespace FoodDeliveryApp.Core.Services
 			throw new NotImplementedException();
 		}
 
-		public Task RemoveAddOnFromCartAsync(int addOnId, int quantity, int cartId)
+		public async Task RemoveAddOnFromCartAsync(int addOnId)
 		{
-			throw new NotImplementedException();
+			var itemAddon = await repository.All<ItemAddOn>()
+				.FirstOrDefaultAsync(ia => ia.AddOnId == addOnId);
+
+			if (itemAddon == null)
+			{
+				throw new InvalidOperationException("Добавката не е намерена в количката.");
+			}
+
+			await repository.DeleteAsync<ItemAddOn>(itemAddon.AddOnId);
+			await repository.SaveChangesAsync();
 		}
 
 		public async Task RemoveItemFromCartAsync(int itemId, int cartId)
@@ -129,6 +138,5 @@ namespace FoodDeliveryApp.Core.Services
 			await repository.DeleteAsync<CartItem>(cartItem.Id);
 			await repository.SaveChangesAsync();
 		}
-
 	}
 }
