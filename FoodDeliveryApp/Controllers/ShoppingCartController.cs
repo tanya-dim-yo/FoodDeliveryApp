@@ -90,5 +90,33 @@ namespace FoodDeliveryApp.Controllers
 				return StatusCode(500, $"Възникна грешка: {ex.Message}");
 			}
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> CalculateServiceFee(int cartId)
+		{
+			try
+			{
+				var serviceFeeTotalPrice = await shoppingCartService.CalculateServiceFeeAsync(cartId);
+				return Ok($"Общо: {serviceFeeTotalPrice}");
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"Възникна грешка: {ex.Message}");
+			}
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> CalculateTotalPriceAsync(int cartId)
+		{
+			try
+			{
+				var totalPrice = await shoppingCartService.CalculateTotalPriceAsync(cartId);
+				return Ok($"Общо: {totalPrice}");
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"Възникна грешка: {ex.Message}");
+			}
+		}
 	}
 }
