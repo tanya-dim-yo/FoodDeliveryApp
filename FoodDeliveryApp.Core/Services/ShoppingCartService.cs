@@ -154,5 +154,21 @@ namespace FoodDeliveryApp.Core.Services
 		{
 			return await CalculateItemsTotalPriceAsync(cartId) + await CalculateServiceFeeAsync(cartId);
 		}
+
+		public async Task<decimal> UpdateCartItemQuantityAsync(int cartItemId, int quantity)
+		{
+			var cartItem = await repository.GetByIdAsync<CartItem>(cartItemId);
+
+			if (cartItem == null)
+			{
+				throw new InvalidOperationException("Продуктът не е намерен.");
+			}
+
+			cartItem.Quantity = quantity;
+
+			await repository.SaveChangesAsync();
+
+			return cartItem.Item.Price * cartItem.Quantity;
+		}
 	}
 }
