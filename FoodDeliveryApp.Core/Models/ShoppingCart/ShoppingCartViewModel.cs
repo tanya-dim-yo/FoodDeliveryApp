@@ -16,6 +16,6 @@ namespace FoodDeliveryApp.Core.Models.ShoppingCart
 
 		public virtual IEnumerable<CartItemViewModel> CartItems { get; set; } = new List<CartItemViewModel>();
 
-		public virtual IEnumerable<RecommendedItemViewModel> RecommendedItems { get; set; } = new List<RecommendedItemViewModel>();
+		//public virtual IEnumerable<RecommendedItemViewModel> RecommendedItems { get; set; } = new List<RecommendedItemViewModel>();
 	}
 }
