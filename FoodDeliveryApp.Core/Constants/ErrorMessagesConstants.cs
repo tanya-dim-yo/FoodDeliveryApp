@@ -18,5 +18,10 @@
         {
             public const string NotAdminErrorMessage = "Текущият потребител не е администратор!";
         }
-    }
+
+		public static class ShopCartErrorMessagesConstants
+		{
+			public const string NoExistingShopCartErrorMessage = "Количката не съществува!";
+		}
+	}
 }
