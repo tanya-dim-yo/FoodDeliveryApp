@@ -5,19 +5,15 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
     public class CartItem
     {
-        public CartItem(int itemId, int quantity, decimal price)
+        public CartItem(int itemId, int quantity)
         {
             ItemId = itemId;
             Quantity = quantity;
-            Price = price;
         }
 
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal Price { get; set; }
 
         [Required]
         public int Quantity { get; set; }
