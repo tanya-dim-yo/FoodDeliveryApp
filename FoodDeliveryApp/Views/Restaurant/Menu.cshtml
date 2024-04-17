@@ -269,6 +269,21 @@
 									<p>@product.Description</p>
 									<span class="price">@product.Price лв.</span>
 								</div>
+								<div class="d-lg-flex justify-content-between">
+									<ul style="list-style-type: none; padding-bottom: 20px; padding-left: 50px; display: flex; align-items: center;">
+										<li style="display: inline-block; margin-right: 10px;">
+											<a href="@Url.Action("AddItemToCart","ShoppingCart")" class="btn btn-primary btn-hover-1">
+												<span>Добави<i class="flaticon-shopping-bag-1 m-l10"></i></span>
+											</a>
+										</li>
+										<li style="display: inline-block; margin-right: 10px;">
+											<a href="@Url.Action("ShopCart","ShoppingCart")" class="btn btn-outline-secondary btn-hover-1">
+												<span>Количка<i class="flaticon-shopping-cart m-l10"></i></span>
+											</a>
+										</li>
+									</ul>
+
+								</div>
 								@if (User.IsAdmin())
 								{
 									<div class="dz-action" style="padding-bottom: 20px;">
