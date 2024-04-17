@@ -77,7 +77,7 @@ namespace FoodDeliveryApp.Core.Services
 			return serviceFeeTotalPrice;
 		}
 
-		public async Task<decimal> CalculateTotalPriceAsync(int cartId)
+		public async Task<decimal> CalculateItemsTotalPriceAsync(int cartId)
 		{
 			var cartItems = await repository.AllReadOnly<CartItem>()
 							.Where(ci => ci.CartId == cartId)
@@ -148,6 +148,11 @@ namespace FoodDeliveryApp.Core.Services
 
 			await repository.DeleteAsync<CartItem>(cartItem.Id);
 			await repository.SaveChangesAsync();
+		}
+
+		public async Task<decimal> CalculateTotalPriceAsync(int cartId)
+		{
+			return await CalculateItemsTotalPriceAsync(cartId) + await CalculateServiceFeeAsync(cartId);
 		}
 	}
 }
