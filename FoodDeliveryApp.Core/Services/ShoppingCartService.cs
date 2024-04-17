@@ -61,9 +61,20 @@ namespace FoodDeliveryApp.Core.Services
 			await repository.SaveChangesAsync();
 		}
 
-		public Task CalculateServiceFeeAsync(int cartId)
+		public async Task<decimal> CalculateServiceFeeAsync(int cartId)
 		{
-			throw new NotImplementedException();
+			decimal serviceFeeTotalPrice = 0;
+
+			var cartItems = await repository.AllReadOnly<CartItem>()
+				.Where(ci => ci.CartId == cartId)
+				.ToListAsync();
+
+			foreach (var cartItem in cartItems)
+			{
+				serviceFeeTotalPrice += cartItem.Item.Restaurant.ServiceFee;
+			}
+
+			return serviceFeeTotalPrice;
 		}
 
 		public async Task<decimal> CalculateTotalPriceAsync(int cartId)

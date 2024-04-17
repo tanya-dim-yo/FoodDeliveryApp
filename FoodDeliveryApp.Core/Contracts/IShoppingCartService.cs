@@ -11,7 +11,7 @@ namespace FoodDeliveryApp.Core.Contracts
 		Task RemoveItemFromCartAsync(int itemId, int cartId);
 		Task RemoveAddOnFromCartAsync(int addOnId);
 		Task<IEnumerable<RecommendedItemViewModel>> GetRecommendedItemsAsync();
-		Task CalculateServiceFeeAsync(int cartId);
+		Task<decimal> CalculateServiceFeeAsync(int cartId);
 		Task<decimal> CalculateTotalPriceAsync(int cartId);
 	}
 }
