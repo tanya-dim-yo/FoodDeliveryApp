@@ -7,12 +7,12 @@
 	<div class="dz-bnr-inr style-1 text-center bg-parallax" style="background-image:url('../foodtime/images/banner/bnr4.jpg'); background-size:cover; background-position:center;">
 		<div class="container">
 			<div class="dz-bnr-inr-entry">
-				<h1>Shop Cart</h1>
+				<h1>Количка</h1>
 				<!-- Breadcrumb Row -->
 				<nav aria-label="breadcrumb" class="breadcrumb-row">
 					<ul class="breadcrumb">
-						<li class="breadcrumb-item"><a href="@Url.Action("Index","FoodTime")">Home</a></li>
-						<li class="breadcrumb-item active" aria-current="page">Shop Cart</li>
+						<li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Начало</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Количка</li>
 					</ul>
 				</nav>
 				<!-- Breadcrumb Row End -->
@@ -26,7 +26,7 @@
 			<div class="row">
 				<div class="col-lg-8">
 					<div class="d-flex justify-content-between align-items-center">
-						<h5 class="title m-b15 m-lg-30">Related Products</h5>
+						<h5 class="title m-b15 m-lg-30">Добавете също:</h5>
 						<a href="javascript:void(0);" class="btn btn-primary panel-btn">Filter</a>
 					</div>
 					<div class="dz-shop-card style-1">
@@ -191,84 +191,51 @@
 						<div class="shop-filter style-1">
 							<div class="d-flex justify-content-between">
 								<div class="widget-title">
-									<h5 class="title m-b30">Cart <span class="text-primary">(03)</span></h5>
+									<h5 class="title m-b30">Количка <span class="text-primary">(@Model.CartItems.Count() продукта)</span></h5>
 								</div>
 								<a href="javascript:void(0);" class="panel-close-btn"><i class="fa-solid fa-xmark"></i></a>
 							</div>
-							<div class="cart-item style-1">
-								<div class="dz-media">
-									<img src="~/foodtime/images/shop/pic1.jpg" alt="/">
-								</div>
-								<div class="dz-content">
-									<div class="dz-head">
-										<h6 class="title mb-0">Double Patty Burger</h6>
-										<a href="javascript:void(0);"><i class="fa-solid fa-xmark text-danger"></i></a>
-									</div>
-									<div class="dz-body">
-										<div class="btn-quantity style-1">
-											<input id="demo_vertical2" type="text" value="1" name="demo_vertical2">
+							@{
+								foreach (var cartItem in Model.CartItems)
+								{
+									<div class="cart-item style-1">
+										<div class="dz-media">
+											<img src="@Url.Content(cartItem.ImageURL)" alt="@cartItem.Title">
 										</div>
-										<h5 class="price text-primary mb-0">$14.20</h5>
-									</div>
-								</div>
-							</div>
-							<div class="cart-item style-1">
-								<div class="dz-media">
-									<img src="~/foodtime/images/shop/pic2.jpg" alt="/">
-								</div>
-								<div class="dz-content">
-									<div class="dz-head">
-										<h6 class="title mb-0">All Combo</h6>
-										<a href="javascript:void(0);"><i class="fa-solid fa-xmark text-danger"></i></a>
-									</div>
-									<div class="dz-body">
-										<div class="btn-quantity style-1">
-											<input id="demo_vertical3" type="text" value="1" name="demo_vertical2">
+										<div class="dz-content">
+											<div class="dz-head">
+												<h6 class="title mb-0">@cartItem.Title</h6>
+												<a href="javascript:void(0);"><i class="fa-solid fa-xmark text-danger"></i></a>
+											</div>
+											<div class="dz-body">
+												<div class="btn-quantity style-1">
+													<input id="demo_vertical2" type="text" value="1" name="demo_vertical2">
+												</div>
+												<h5 class="price text-primary mb-0">@cartItem.Price лв.</h5>
+											</div>
 										</div>
-										<h5 class="price text-primary mb-0">$50.20</h5>
 									</div>
-								</div>
-							</div>
-							<div class="cart-item style-1">
-								<div class="dz-media">
-									<img src="~/foodtime/images/shop/pic3.jpg" alt="/">
-								</div>
-								<div class="dz-content">
-									<div class="dz-head">
-										<h6 class="title mb-0">Veg And crispy Burger</h6>
-										<a href="javascript:void(0);"><i class="fa-solid fa-xmark text-danger"></i></a>
-									</div>
-									<div class="dz-body">
-										<div class="btn-quantity style-1">
-											<input id="demo_vertical4" type="text" value="1" name="demo_vertical2">
-										</div>
-										<h5 class="price text-primary mb-0">$25.20</h5>
-									</div>
-								</div>
-							</div>
+								}
+							}
 							<div class="order-detail">
-								<h6>Bill Details</h6>
+								<h6>Поръчка обобщение:</h6>
 								<table>
 									<tbody>
 										<tr>
-											<td>Item Total</td>
+											<td>Продукти:</td>
 											<td class="price text-primary">$55.00</td>
 										</tr>
 										<tr class="charges">
-											<td>Delivery Charges</td>
+											<td>Такса доставка:</td>
 											<td class="price text-primary">$5.00</td>
 										</tr>
-										<tr class="tax">
-											<td>Govt Taxes & Other Charges</td>
-											<td class="price text-primary">$3.50</td>
-										</tr>
 										<tr class="total">
-											<td><h6>Total</h6></td>
+											<td><h6>Общо:</h6></td>
 											<td class="price text-primary">$63.50</td>
 										</tr>
 									</tbody>
 								</table>
-								<a href="@Url.Action("ShopCheckout","FoodTime")" class="btn btn-primary d-block text-center btn-md w-100 btn-hover-1"><span>Order Now <i class="fa-solid fa-arrow-right"></i></span></a>
+								<a href="@Url.Action("ShopCheckout","FoodTime")" class="btn btn-primary d-block text-center btn-md w-100 btn-hover-1"><span>Поръчка <i class="fa-solid fa-arrow-right"></i></span></a>
 							</div>
 						</div>
 					</aside>
@@ -277,7 +244,6 @@
 		</div>
 	</section>
 	<!-- cart Section -->
-
 </div>
 
 @section foodtime_style
