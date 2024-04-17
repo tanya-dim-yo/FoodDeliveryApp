@@ -1,5 +1,6 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FoodDeliveryApp.Controllers
 {
@@ -17,7 +18,15 @@ namespace FoodDeliveryApp.Controllers
 		{
 			try
 			{
-				await shoppingCartService.AddItemToCartAsync(itemId, quantity, cartId);
+				var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+				if (string.IsNullOrEmpty(userId))
+				{
+					return Unauthorized();
+				}
+
+				await shoppingCartService.AddItemToCartAsync(itemId, quantity, cartId, userId);
+
 				return Ok("Продуктът е добавен успешно към количката!");
 			}
 			catch (Exception ex)
@@ -25,7 +34,5 @@ namespace FoodDeliveryApp.Controllers
 				return StatusCode(500, $"Възникна грешка: {ex.Message}");
 			}
 		}
-
-		
 	}
 }

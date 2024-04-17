@@ -41,10 +41,18 @@ namespace FoodDeliveryApp.Core.Services
 			await repository.SaveChangesAsync();
 		}
 
-		public async Task AddItemToCartAsync(int itemId, int quantity, int cartId)
+		public async Task AddItemToCartAsync(int itemId, int quantity, int cartId, string userId)
 		{
+			var cart = await repository.AllReadOnly<Cart>()
+					.FirstOrDefaultAsync(c => c.Id == cartId && c.UserId == userId);
+
+			if (cart == null)
+			{
+				cartId = await CreateCartAsync(userId);
+			}
+
 			var cartItem = await repository.AllReadOnly<CartItem>()
-							.FirstOrDefaultAsync(ci => ci.ItemId == itemId && ci.CartId == cartId);
+					.FirstOrDefaultAsync(ci => ci.ItemId == itemId && ci.CartId == cartId);
 
 			if (cartItem == null)
 			{
