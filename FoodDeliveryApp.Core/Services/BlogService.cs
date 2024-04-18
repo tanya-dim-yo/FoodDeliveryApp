@@ -21,9 +21,13 @@ namespace FoodDeliveryApp.Core.Services
 			throw new NotImplementedException();
 		}
 
-		public Task<IEnumerable<BlogArticleViewModel>> ArticlesByCategoryAsync(int categoryId)
+		public async Task<IEnumerable<BlogArticleViewModel>> ArticlesByCategoryAsync(int categoryId)
 		{
-			throw new NotImplementedException();
+			return await repository
+				.AllReadOnly<BlogArticle>()
+				.Where(p => p.BlogArticleCategoryId == categoryId)
+				.ProjectToBlogArticleViewModel()
+				.ToListAsync();
 		}
 
 		public async Task<IEnumerable<BlogArticleViewModel>> AllArticlesAsync()
@@ -36,9 +40,11 @@ namespace FoodDeliveryApp.Core.Services
 			throw new NotImplementedException();
 		}
 
-		public Task<bool> ExistsBlogCategoryAsync(int categoryId)
+		public async Task<bool> ExistsBlogCategoryAsync(int categoryId)
 		{
-			throw new NotImplementedException();
+			return await repository
+				.AllReadOnly<BlogArticleCategory>()
+				.AnyAsync(p => p.Id == categoryId);
 		}
 
 		public async Task<(IEnumerable<BlogArticleViewModel> Articles, IEnumerable<(int Id, string Title)> Categories)> GetAllArticlesAndCategoriesAsync()
