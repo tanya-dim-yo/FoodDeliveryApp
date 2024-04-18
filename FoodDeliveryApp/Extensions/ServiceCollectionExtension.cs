@@ -16,6 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRestaurantService, RestaurantService>();
             services.AddScoped<IProductService, ProductService>();
 			services.AddScoped<ICartService, CartService>();
+			services.AddScoped<IBlogService, BlogService>();
 
 			return services;
         }
