@@ -37,12 +37,17 @@ namespace FoodDeliveryApp.Core.Services
 
 		public async Task<IEnumerable<BlogArticleViewModel>> AllArticlesAsync()
 		{
-			throw new NotImplementedException();
+			return await repository
+				.AllReadOnly<BlogArticle>()
+				.ProjectToBlogArticleViewModel()
+				.ToListAsync();
 		}
 
-		public Task<bool> ExistsBlogArticleAsync(int articleId)
+		public async Task<bool> ExistsBlogArticleAsync(int articleId)
 		{
-			throw new NotImplementedException();
+			return await repository
+				.AllReadOnly<BlogArticle>()
+				.AnyAsync(a => a.Id == articleId);
 		}
 
 		public async Task<bool> ExistsBlogCategoryAsync(int categoryId)
