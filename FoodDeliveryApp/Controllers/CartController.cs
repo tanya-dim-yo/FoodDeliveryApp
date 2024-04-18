@@ -1,22 +1,23 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
-using FoodDeliveryApp.Core.Models.ShoppingCart;
+using FoodDeliveryApp.Core.Models.Cart;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.ShopCartErrorMessagesConstants;
 
 namespace FoodDeliveryApp.Controllers
 {
-	public class ShoppingCartController : BaseController
+	public class CartController : BaseController
 	{
-		private readonly IShoppingCartService shoppingCartService;
+		private readonly ICartService cartService;
 
-		public ShoppingCartController(IShoppingCartService _shoppingCartService)
+		public CartController(ICartService _cartService)
 		{
-			shoppingCartService = _shoppingCartService;
+			cartService = _cartService;
 		}
 
-		[HttpGet]
-		public async Task<IActionResult> ShopCart()
+		[HttpPost]
+		public async Task<IActionResult> Cart()
 		{
 			if (!User.Identity.IsAuthenticated)
 			{
@@ -30,9 +31,7 @@ namespace FoodDeliveryApp.Controllers
 				return Unauthorized();
 			}
 
-			int cartId = await shoppingCartService.CreateCartAsync(userId);
-
-			ShoppingCartViewModel? model = await shoppingCartService.GetShopCartByIdAsync(cartId);
+			ShoppingCartViewModel? model = await cartService.GetShopCartByIdAsync(userId);
 
 			if (model == null)
 			{
@@ -43,7 +42,7 @@ namespace FoodDeliveryApp.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddItemToCart(int itemId, int quantity)
+		public async Task<IActionResult> Add(int itemId, int quantity)
 		{
 			try
 			{
@@ -54,9 +53,9 @@ namespace FoodDeliveryApp.Controllers
 					return Unauthorized();
 				}
 
-				await shoppingCartService.AddItemToCartAsync(itemId, quantity, userId);
+				var cartId = await cartService.AddItemToCartAsync(itemId, quantity, userId);
 
-				return Ok("Продуктът е добавен успешно към количката!");
+				return RedirectToAction(nameof(Cart), new { cartId });
 			}
 			catch (Exception ex)
 			{
@@ -64,12 +63,13 @@ namespace FoodDeliveryApp.Controllers
 			}
 		}
 
+
 		[HttpPost]
 		public async Task<IActionResult> AddAddOnToCart(int itemId, int addOnId, int quantity, int cartId)
 		{
 			try
 			{
-				await shoppingCartService.AddAddOnToCartAsync(itemId, addOnId, quantity, cartId);
+				await cartService.AddAddOnToCartAsync(itemId, addOnId, quantity, cartId);
 				return Ok("Добавката беше добавена успешно към количката!");
 			}
 			catch (Exception ex)
@@ -83,7 +83,7 @@ namespace FoodDeliveryApp.Controllers
 		{
 			try
 			{
-				await shoppingCartService.RemoveItemFromCartAsync(itemId, cartId);
+				await cartService.RemoveItemFromCartAsync(itemId, cartId);
 				return Ok("Продуктът е премахнат успешно от количката!");
 			}
 			catch (Exception ex)
@@ -97,7 +97,7 @@ namespace FoodDeliveryApp.Controllers
 		{
 			try
 			{
-				await shoppingCartService.RemoveAddOnFromCartAsync(addOnId, cartId);
+				await cartService.RemoveAddOnFromCartAsync(addOnId, cartId);
 				return Ok("Добавката е премахната успешно от количката!");
 			}
 			catch (Exception ex)
@@ -111,7 +111,7 @@ namespace FoodDeliveryApp.Controllers
 		{
 			try
 			{
-				var itemsTotalPrice = await shoppingCartService.CalculateItemsTotalPriceAsync(cartId);
+				var itemsTotalPrice = await cartService.CalculateItemsTotalPriceAsync(cartId);
 				return Ok($"Общо: {itemsTotalPrice}");
 			}
 			catch (Exception ex)
@@ -125,7 +125,7 @@ namespace FoodDeliveryApp.Controllers
 		{
 			try
 			{
-				var serviceFeeTotalPrice = await shoppingCartService.CalculateServiceFeeAsync(cartId);
+				var serviceFeeTotalPrice = await cartService.CalculateServiceFeeAsync(cartId);
 				return Ok($"Общо: {serviceFeeTotalPrice}");
 			}
 			catch (Exception ex)
@@ -139,7 +139,7 @@ namespace FoodDeliveryApp.Controllers
 		{
 			try
 			{
-				var totalPrice = await shoppingCartService.CalculateTotalPriceAsync(cartId);
+				var totalPrice = await cartService.CalculateTotalPriceAsync(cartId);
 				return Ok($"Общо: {totalPrice}");
 			}
 			catch (Exception ex)
