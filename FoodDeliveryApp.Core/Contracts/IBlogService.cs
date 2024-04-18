@@ -1,4 +1,5 @@
 ﻿using FoodDeliveryApp.Core.Models.Blog;
+using FoodDeliveryApp.Core.Models.Restaurant;
 
 namespace FoodDeliveryApp.Core.Contracts
 {
@@ -10,6 +11,7 @@ namespace FoodDeliveryApp.Core.Contracts
 		Task<IEnumerable<(int Id, string Title)>> AllBlogCategoriesAsync();
 		Task<IEnumerable<BlogArticleViewModel>> ArticlesByCategoryAsync(int categoryId);
 		Task<IEnumerable<string>> AllBlogCategoriesNamesAsync();
+		Task<(string SanitizedKeyword, IEnumerable<BlogArticleViewModel> Results)> SearchBlogArticlesAsync(string keyword);
 		Task<(IEnumerable<BlogArticleViewModel> Articles, IEnumerable<(int Id, string Title)> Categories)> GetAllArticlesAndCategoriesAsync();
 	}
 }
