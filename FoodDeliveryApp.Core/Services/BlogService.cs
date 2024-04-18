@@ -10,14 +10,10 @@ namespace FoodDeliveryApp.Core.Services
 	public class BlogService : IBlogService
 	{
 		private readonly IRepository repository;
-		private readonly ILogger<BlogService> logger;
 
-		public BlogService(
-			IRepository _repository,
-			ILogger<BlogService> _logger)
+		public BlogService(IRepository _repository)
 		{
 			repository = _repository;
-			logger = _logger;
 		}
 
 		public Task<IEnumerable<string>> AllBlogCategoriesNamesAsync()

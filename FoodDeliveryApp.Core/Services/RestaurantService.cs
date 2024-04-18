@@ -49,7 +49,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
         public async Task<(IEnumerable<RestaurantViewModel> Restaurants, IEnumerable<(int Id, string Title)> Categories)> GetAllRestaurantsAndCategoriesAsync()
         {
-            var model = new ArticlesWithCategoriesViewModel();
+            var model = new RestaurantsWithCategoriesViewModel();
 
             var categories = await AllRestaurantCategoriesAsync();
 

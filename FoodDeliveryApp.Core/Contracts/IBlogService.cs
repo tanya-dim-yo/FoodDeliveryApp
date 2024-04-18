@@ -1,5 +1,4 @@
 ﻿using FoodDeliveryApp.Core.Models.Blog;
-using FoodDeliveryApp.Core.Models.Restaurant;
 
 namespace FoodDeliveryApp.Core.Contracts
 {
