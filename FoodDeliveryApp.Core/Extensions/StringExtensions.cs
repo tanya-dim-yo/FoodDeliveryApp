@@ -24,7 +24,10 @@ namespace FoodDeliveryApp.Core.Extensions
 
 			input = Regex.Replace(input, @"\s+", " ");
 
-			const string AllowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_/~.";
+			const string AllowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_/~." +
+							 "абвгдежзийклмнопрстуфхцчшщъыьюя" +
+							 "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЮЯ";
+
 			input = new string(input.Where(c => AllowedChars.Contains(c)).ToArray());
 
 			input = input.Replace("..", "");
