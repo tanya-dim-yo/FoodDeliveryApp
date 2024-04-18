@@ -270,19 +270,18 @@
 									<span class="price">@product.Price лв.</span>
 								</div>
 								<div class="d-lg-flex justify-content-between">
-									<ul style="list-style-type: none; padding-bottom: 20px; padding-left: 50px; display: flex; align-items: center;">
-										<li style="display: inline-block; margin-right: 10px;">
-											<a href="@Url.Action("AddItemToCart", "ShoppingCart")?itemId=@product.Id&quantity=1" class="btn btn-primary btn-hover-1">
-												<span>Добави<i class="flaticon-shopping-bag-1 m-l10"></i></span>
+									<ul class="list-unstyled d-flex align-items-center">
+										<li class="mr-2">
+											<a href="@Url.Action("Add", "Cart", new { itemId = product.Id, quantity = 1 })" class="btn btn-primary btn-hover-1">
+												<span>Добави <i class="flaticon-shopping-bag-1 ml-1"></i></span>
 											</a>
 										</li>
-										<li style="display: inline-block; margin-right: 10px;">
-											<a href="@Url.Action("ShopCart","ShoppingCart")" class="btn btn-outline-secondary btn-hover-1">
-												<span>Количка<i class="flaticon-shopping-cart m-l10"></i></span>
+										<li>
+											<a href="@Url.Action("Cart","Cart")" class="btn btn-outline-secondary btn-hover-1">
+												<span>Количка <i class="flaticon-shopping-cart ml-1"></i></span>
 											</a>
 										</li>
 									</ul>
-
 								</div>
 								@if (User.IsAdmin())
 								{
