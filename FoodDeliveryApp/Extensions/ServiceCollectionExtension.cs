@@ -15,7 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<IRestaurantService, RestaurantService>();
             services.AddScoped<IProductService, ProductService>();
-			services.AddScoped<IShoppingCartService, ShoppingCartService>();
+			services.AddScoped<ICartService, CartService>();
 
 			return services;
         }
@@ -43,6 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection
 				options.Password.RequireLowercase = false;
 				options.Password.RequireUppercase = false;
 			})
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<FoodDeliveryAppDbContext>();
 
             return services;

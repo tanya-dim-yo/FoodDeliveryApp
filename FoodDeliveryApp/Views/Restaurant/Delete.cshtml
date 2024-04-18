@@ -1,4 +1,4 @@
-﻿@model RestaurantFormModel
+﻿@model RestaurantDeleteModel
 
 @{
 	Layout = "~/Views/Shared/_LayoutFoodTime.cshtml";
@@ -51,7 +51,6 @@
 								</div>
 								<div class="tagcloud">
 									<a href="@Url.Action("ProductDetail","FoodTime")">Близо до мен</a>
-									<a href="@Url.Action("HighestRating","Restaurant")">С най-висок рейтинг</a>
 									<a href="@Url.Action("ServiceFee","Restaurant")">Такса за доставка</a>
 								</div>
 							</div>
@@ -92,89 +91,34 @@
 				</div>
 				<div class="col-lg-9">
 					<div class="d-flex justify-content-between align-items-center">
-						<h5 class="title mb-md-3 mb-lg-4 m-b20 d-none d-lg-block">Добавяне на ресторант</h5>
+						<h5 class="title mb-md-3 mb-lg-4 m-b20 d-none d-lg-block">Изтриване на ресторант</h5>
 					</div>
 					<div class="row">
-	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-		<form asp-action="Add" asp-controller="Restaurant" method="post">
-			<div class="mb-3">
-				<label asp-for="@Model.Title" class="form-label-add-edit">Заглавие</label>
-				<input asp-for="@Model.Title" class="form-control" aria-required="true" />
-				<span asp-validation-for="@Model.Title" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for="@Model.Address" class="form-label-add-edit">Адрес</label>
-				<input asp-for="@Model.Address" class="form-control" aria-required="true" />
-				<span asp-validation-for="@Model.Address" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for="@Model.CityId" class="form-label-add-edit">Град</label>
-				<select asp-for="@Model.CityId" class="form-control" aria-required="true">
-					<option disabled selected value="">Изберете град...</option>
-							@foreach (var city in Model.Cities)
-							{
-								<option value="@city.Id">@city.Name</option>
-							}
-				</select>
-				<span asp-validation-for="@Model.CityId" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for="@Model.OpeningHour" class="form-label-add-edit">Начален час</label>
-				<input asp-for="@Model.OpeningHour" class="form-control" aria-required="true" placeholder="HH:mm" )" />
-				<span asp-validation-for="@Model.OpeningHour" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for="@Model.ClosingHour" class="form-label-add-edit">Краен час</label>
-				<input asp-for="@Model.ClosingHour" class="form-control" aria-required="true" placeholder="HH:mm" )" />
-				<span asp-validation-for="@Model.ClosingHour" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for="@Model.Latitude" class="form-label-add-edit">Latitude</label>
-				<input asp-for="@Model.Latitude" class="form-control" placeholder="Latitude" />
-				<span asp-validation-for="@Model.Latitude" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for="@Model.Longitude" class="form-label-add-edit">Longitude</label>
-				<input asp-for="@Model.Longitude" class="form-control" placeholder="Longitude" />
-				<span asp-validation-for="@Model.Longitude" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for="@Model.ServiceFee" class="form-label-add-edit">Такса за доставка</label>
-				<input asp-for="@Model.ServiceFee" class="form-control" placeholder="Longitude" />
-				<span asp-validation-for="@Model.ServiceFee" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for="@Model.MinDeliveryTimeInMinutes" class="form-label-add-edit">Минимално време за доставка в минути</label>
-									<input asp-for="@Model.MinDeliveryTimeInMinutes" class="form-control" placeholder="Минимално време за доставка в минути" />
-				<span asp-validation-for="@Model.MinDeliveryTimeInMinutes" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for="@Model.MaxDeliveryTimeInMinutes" class="form-label-add-edit">Максимално време за доставка в минути</label>
-									<input asp-for="@Model.MaxDeliveryTimeInMinutes" class="form-control" placeholder="Максимално време за доставка в минути" />
-				<span asp-validation-for="@Model.MaxDeliveryTimeInMinutes" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for="@Model.ImageURL" class="form-label-add-edit">Image URL</label>
-				<input asp-for="@Model.ImageURL" class="form-control" placeholder="Image URL" />
-				<span asp-validation-for="@Model.ImageURL" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for="@Model.RestaurantCategoryId" class="form-label-add-edit">Категория</label>
-				<select asp-for="@Model.RestaurantCategoryId" class="form-control" aria-required="true">
-					<option disabled selected value="">Изберете категория...</option>
-							@foreach (var category in Model.Categories)
-							{
-								<option value="@category.Id">@category.Title</option>
-						}
-				</select>
-				<span asp-validation-for="@Model.RestaurantCategoryId" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Добавете ресторант" />
-			</div>
-		</form>
-	</div>
-</div>
+						<div class="row justify-content-center">
+							<div class="col-md-6">
+								<div class="card">
+									<div class="card-body">
+										<h3 class="card-title text-center">@Model.Title</h3>
+										<p class="mb-0"><strong>Адрес:</strong> @Model.Address</p>
+										<p class="mb-0"><strong>Град:</strong> @Model.City</p>
+										<p class="mb-0"><strong>Час на отваряне:</strong> @Model.OpeningHour</p>
+										<p class="mb-0"><strong>Час на затваряне:</strong> @Model.ClosingHour</p>
+										<p class="mb-0"><strong>Такса доставка:</strong> @Model.ServiceFee лв.</p>
+										<p class="mb-0"><strong>Категория:</strong> @Model.RestaurantCategory</p>
+										<p class="text-danger mt-3">"Сигурни ли сте, че искате да изтриете ресторанта?"</p>
+									</div>
+									<div class="card-footer">
+										<form asp-controller="Restaurant" asp-action="DeleteConfirmed" method="post">
+											<input type="hidden" name="restaurantId" value="@Model.Id" />
+											<button type="submit" class="btn btn-danger">Потвърдете изтриването</button>
+											<a asp-controller="Restaurant" asp-action="All" class="btn btn-secondary">Отказ</a>
+										</form>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 
 				</div>
 			</div>

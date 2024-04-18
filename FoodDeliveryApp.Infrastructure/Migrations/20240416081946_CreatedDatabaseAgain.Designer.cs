@@ -4,6 +4,7 @@ using FoodDeliveryApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodDeliveryApp.Infrastructure.Migrations
 {
     [DbContext(typeof(FoodDeliveryAppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240416081946_CreatedDatabaseAgain")]
+    partial class CreatedDatabaseAgain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,7 +129,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e9e8b039-26c3-4a70-bbf8-3c06897c3f0e",
+                            ConcurrencyStamp = "1fbf0d65-12cc-4022-aaeb-adb20a20459d",
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Tanya",
@@ -135,9 +137,9 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "guest@mail.com",
                             NormalizedUserName = "guest@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKqKCEhs8XC8EAmaj09uRRpCnGysTbOT1d3eRvwcCpCYSQNLnuWuZ0Lo2D5Jlfo6nQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEpRWzslzHAbM/wLgbmZ9zk3ZST14hs7dt6InwmQd9Qfe+C3KBs/e3hwJP+cV9Folw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d107f1fa-7f7b-408a-bd43-e9b56e9e2ff1",
+                            SecurityStamp = "b44dc259-3bc1-41a7-8d3d-364978a29a8b",
                             TwoFactorEnabled = false,
                             UserName = "guest@mail.com"
                         },
@@ -145,7 +147,7 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                         {
                             Id = "ec6b753c-96eb-4fd3-a6b4-5b4cadb367ac",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ee20f7f6-bbbe-44e5-a315-bf676528da43",
+                            ConcurrencyStamp = "9c5d4122-e207-4375-a7fd-9c7681f87f4f",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Tanya",
@@ -153,9 +155,9 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEA+z4PPldgcKG65FAPUSEHaUGtmT2saNhwl1gnrkhMUDorJwhrOophIMXFS4GlZSZg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFiHoO3nxfn2ACKcRzSCEWrOkDwoRCdu8FbzCL89X5kzQjiXWLdpNBXH/TEYDz5iuQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f2f2b46c-d4bc-4b8e-b46b-f01ca47d00a7",
+                            SecurityStamp = "2eaf809b-d806-450a-aec0-903a37ab1519",
                             TwoFactorEnabled = false,
                             UserName = "admin@mail.com"
                         });
@@ -291,6 +293,9 @@ namespace FoodDeliveryApp.Infrastructure.Migrations
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");

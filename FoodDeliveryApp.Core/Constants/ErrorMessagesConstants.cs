@@ -13,5 +13,15 @@
 			public const string InvalidProductErrorMessage = "Продуктът не съществува.";
 			public const string InvalidProductCategoryErrorMessage = "Категорията на продукта не съществува.";
 		}
+
+        public static class UserErrorMessagesConstants
+        {
+            public const string NotAdminErrorMessage = "Текущият потребител не е администратор!";
+        }
+
+		public static class ShopCartErrorMessagesConstants
+		{
+			public const string NoExistingShopCartErrorMessage = "Количката не съществува!";
+		}
 	}
 }

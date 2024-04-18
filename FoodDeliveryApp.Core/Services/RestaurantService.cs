@@ -3,6 +3,7 @@ using FoodDeliveryApp.Core.Models.City;
 using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
+using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using static FoodDeliveryApp.Core.Extensions.StringExtensions;
@@ -66,7 +67,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
         private async Task<IEnumerable<(int Id, string Title)>> AllRestaurantCategoriesAsync()
 		{
 			var categories = await repository
-				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
+				.AllReadOnly<RestaurantCategory>()
 				.Select(c => new { c.Id, c.Title })
 				.ToListAsync();
 
@@ -76,7 +77,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 		public async Task<IEnumerable<CityServiceModel>> AllRestaurantCitiesAsync()
 		{
 			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.City>()
+				.AllReadOnly<City>()
 				.Select(c => new CityServiceModel
 				{
 					Id = c.Id,
@@ -88,7 +89,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 		public async Task<IEnumerable<string>> AllRestaurantCategoriesNamesAsync()
 		{
 			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
+				.AllReadOnly<RestaurantCategory>()
 				.OrderBy(c => c.Title)
 				.Select(c => c.Title)
 				.Distinct()
@@ -121,19 +122,10 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 				.FirstOrDefaultAsync();
 		}
 
-		public async Task<IEnumerable<RestaurantViewModel>> HighestRatingRestaurantsAsync()
-		{
-			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
-				.OrderByDescending(p => p.AverageRating)
-				.ProjectToRestaurantViewModel()
-				.ToListAsync();
-		}
-
 		public async Task<IEnumerable<ProductViewModel>> MenuRestaurantAsync(int restaurantId)
 		{
 			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.Item>()
+				.AllReadOnly<Item>()
 				.Where(i => i.RestaurantId == restaurantId)
 				.Select(i => new ProductViewModel()
 				{
@@ -184,7 +176,7 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 		public async Task<bool> ExistsCityAsync(int cityId)
 		{
 			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.City>()
+				.AllReadOnly<City>()
 				.AnyAsync(p => p.Id == cityId);
 		}
 
@@ -198,11 +190,11 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 		public async Task<bool> ExistsRestaurantCategoryAsync(int categoryId)
 		{
 			return await repository
-				.AllReadOnly<Infrastructure.Data.Models.RestaurantCategory>()
+				.AllReadOnly<RestaurantCategory>()
 				.AnyAsync(p => p.Id == categoryId);
 		}
 
-		public async Task EditAsync(int restaurantId, RestaurantFormModel model)
+		public async Task EditRestaurantAsync(int restaurantId, RestaurantFormModel model)
 		{
 			var restaurant = await repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
 
@@ -260,35 +252,88 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 					})
 					.ToList();
 
-				var cities = await AllRestaurantCitiesAsync();
+                restaurant.Cities = await AllRestaurantCitiesAsync();
 			}
 
 			return restaurant;
 		}
 
-		public async Task DeleteAsync(int restaurantId)
+        public async Task DeleteRestaurantAsync(int restaurantId)
+        {
+            var restaurant = await repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
+
+            if (restaurant == null)
+            {
+                this.logger.LogError($"Restaurant with id {restaurantId} not found.");
+                return;
+            }
+
+            var itemsToBeDeleted = await repository
+                .AllReadOnly<Item>()
+                .Where(i => i.RestaurantId == restaurantId)
+                .ToListAsync();
+
+            foreach (var item in itemsToBeDeleted)
+            {
+                await DeleteRelatedEntitiesAsync(item);
+                await repository.DeleteAsync<Item>(item.Id);
+            }
+
+            await repository.DeleteAsync<Infrastructure.Data.Models.Restaurant>(restaurant.Id);
+            await repository.SaveChangesAsync();
+        }
+
+        private async Task DeleteRelatedEntitiesAsync(Item item)
+        {
+            var addOns = await repository
+                .AllReadOnly<ItemAddOn>()
+                .Where(a => a.ItemId == item.Id)
+                .ToListAsync();
+
+            foreach (var addOn in addOns)
+            {
+                await repository.DeleteAsync<ItemAddOn>(addOn.ItemId);
+            }
+
+            var reviews = await repository
+                .AllReadOnly<ItemReview>()
+                .Where(r => r.ItemId == item.Id)
+                .ToListAsync();
+
+            foreach (var review in reviews)
+            {
+                await repository.DeleteAsync<ItemReview>(review.Id);
+            }
+
+            var cartItems = await repository
+                .AllReadOnly<CartItem>()
+                .Where(c => c.ItemId == item.Id)
+                .ToListAsync();
+
+            foreach (var cartItem in cartItems)
+            {
+                await repository.DeleteAsync<CartItem>(cartItem.Id);
+            }
+        }
+
+		public async Task<RestaurantDeleteModel?> GetRestaurantDeleteModelByIdAsync(int restaurantId)
 		{
-			var restaurant = await repository.GetByIdAsync<Infrastructure.Data.Models.Restaurant>(restaurantId);
+			var restaurant = await repository.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+				.Where(r => r.Id == restaurantId)
+				.Include(r => r.City)
+				.Include(r => r.RestaurantCategory)
+				.Select(r => new RestaurantDeleteModel(
+					r.Id,
+					r.Title,
+					r.Address,
+					r.City.Name,
+					r.OpeningHour,
+					r.ClosingHour,
+					r.ServiceFee,
+					r.RestaurantCategory.Title))
+				.FirstOrDefaultAsync();
 
-			if (restaurant == null)
-			{
-				this.logger.LogError($"Restaurant with id {restaurantId} not found.");
-				return;
-			}
-
-			var itemsToBeRemoved = await repository
-				.AllReadOnly<Infrastructure.Data.Models.Item>()
-				.Where(i => i.RestaurantId == restaurantId)
-				.ToListAsync();
-
-			foreach (var item in itemsToBeRemoved)
-			{
-				await repository.DeleteAsync<Infrastructure.Data.Models.Item>(item);
-			}
-
-			await repository.DeleteAsync<Infrastructure.Data.Models.Restaurant>(restaurant);
-
-			await repository.SaveChangesAsync();
+			return restaurant;
 		}
 	}
 }

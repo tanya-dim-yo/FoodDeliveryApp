@@ -1,0 +1,76 @@
+﻿@model ProductDeleteModel
+
+@{
+	Layout = "~/Views/Shared/_LayoutFoodTime.cshtml";
+}
+
+	<!-- Product Detail Section -->
+<div class="col-lg-9">
+	<div class="d-flex justify-content-between align-items-center">
+		<h5 class="title mb-md-3 mb-lg-4 m-b20 d-none d-lg-block">Изтриване на продукт</h5>
+	</div>
+	<div class="row">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-body">
+						<h3 class="card-title text-center">@Model.Title</h3>
+						<p class="mb-0"><strong>Описание:</strong> @Model.Description</p>
+						<p class="mb-0"><strong>Цена:</strong> @Model.Price лв.</p>
+						<p class="mb-0">
+							<strong>Вегетарианско ястие:</strong>
+							@(Model.IsVeggie ? "Да" : "Не")
+						</p>
+						<p class="mb-0"><strong>Категория:</strong> @Model.ItemCategory</p>
+						<p class="mb-0"><strong>Степен на лютивост:</strong> @Model.SpicyCategory</p>
+						<p class="mb-0"><strong>Ресторант:</strong> @Model.Restaurant</p>
+						<p class="text-danger mt-3">"Сигурни ли сте, че искате да изтриете продукта?"</p>
+					</div>
+					<div class="card-footer">
+						<form asp-controller="Product" asp-action="DeleteConfirmed" method="post">
+							<input type="hidden" name="productId" value="@Model.Id" />
+							<button type="submit" class="btn btn-danger">Потвърдете изтриването</button>
+							<a href="@Url.Action("Menu", "Restaurant", new { restaurantId = @Model.RestaurantId })" class="btn btn-secondary">Отказ</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Product Detail Section -->
+
+@section foodtime_style
+{
+		<!-- Stylesheet -->
+		<link href="~/foodtime/vendor/magnific-popup/magnific-popup.min.css" rel="stylesheet">
+		<link href="~/foodtime/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+		<link href="~/foodtime/vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+}
+
+@section foodtime_script
+{
+		<!-- JAVASCRIPT FILES ========================================= -->
+		<script src="~/foodtime/js/jquery.min.js"></script><!-- JQUERY.MIN JS -->
+		<script src="~/foodtime/js/favorite.js"></script>
+		<script src="~/foodtime/vendor/bootstrap/js/bootstrap.bundle.min.js"></script><!-- BOOTSTRAP.MIN JS -->
+		<script src="~/foodtime/vendor/bootstrap-select/js/bootstrap-select.min.js"></script><!-- BOOTSTRAP SELEECT -->
+		<script src="~/foodtime/vendor/bootstrap-touchspin/bootstrap-touchspin.js"></script><!-- BOOTSTRAP TOUCHSPIN -->
+		<script src="~/foodtime/vendor/magnific-popup/magnific-popup.js"></script><!-- MAGNIFIC POPUP JS -->
+		<script src="~/foodtime/vendor/counter/waypoints-min.js"></script><!-- WAYPOINTS JS -->
+		<script src="~/foodtime/vendor/wow/wow.js"></script><!-- WOW JS -->
+		<script src="~/foodtime/vendor/bootstrap-touchspin/bootstrap-touchspin.js"></script><!-- TOUCHSPIN -->
+		<script src="~/foodtime/vendor/counter/counterup.min.js"></script><!-- COUNTERUP JS -->
+		<script src="~/foodtime/vendor/swiper/swiper-bundle.min.js"></script><!-- OWL-CAROUSEL -->
+		<script src="~/foodtime/js/dz.carousel.min.js"></script><!-- OWL-CAROUSEL -->
+		<script src="~/foodtime/vendor/particles/particles.js"></script>
+		<script src="~/foodtime/vendor/particles/particles-app.js"></script>
+		<script src="~/foodtime/js/dz.ajax.js"></script><!-- AJAX -->
+		<script src="~/foodtime/js/custom.min.js"></script><!-- CUSTOM JS -->
+		<script src="~/foodtime/js/jquery.star-rating-svg.js"></script><!-- Star Rating JS -->
+
+		<script src="~/foodtime/vendor/rangeslider/rangeslider.js"></script><!-- CUSTOM JS -->
+}
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

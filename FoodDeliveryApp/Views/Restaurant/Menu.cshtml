@@ -1,4 +1,5 @@
-﻿@model RestaurantWithProductsViewModel
+﻿@using System.Security.Claims
+@model RestaurantWithProductsViewModel
 
 @{
 	Layout = "~/Views/Shared/_LayoutFoodTime.cshtml";
@@ -268,6 +269,27 @@
 									<p>@product.Description</p>
 									<span class="price">@product.Price лв.</span>
 								</div>
+								<div class="d-lg-flex justify-content-between">
+									<ul class="list-unstyled d-flex align-items-center">
+										<li class="mr-2">
+											<a href="@Url.Action("Add", "Cart", new { itemId = product.Id, quantity = 1 })" class="btn btn-primary btn-hover-1">
+												<span>Добави <i class="flaticon-shopping-bag-1 ml-1"></i></span>
+											</a>
+										</li>
+										<li>
+											<a href="@Url.Action("Cart","Cart")" class="btn btn-outline-secondary btn-hover-1">
+												<span>Количка <i class="flaticon-shopping-cart ml-1"></i></span>
+											</a>
+										</li>
+									</ul>
+								</div>
+								@if (User.IsAdmin())
+								{
+									<div class="dz-action" style="padding-bottom: 20px;">
+										<button type="button" class="btn btn-warning btn-sm" onclick="location.href='@Url.Action("Edit", "Product", new { productId = product.Id })'">Редактирай</button>
+										<button type="button" class="btn btn-danger btn-sm" onclick="location.href='@Url.Action("Delete", "Product", new { productId = product.Id })'">Изтрий</button>
+									</div>
+								}
 							</div>
 						</li>
 					}

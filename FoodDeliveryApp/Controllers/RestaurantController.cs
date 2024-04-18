@@ -4,12 +4,14 @@ using FoodDeliveryApp.Core.Models.Restaurant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
+using System.Security.Claims;
 using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.RestaurantErrorMessagesConstants;
+using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.UserErrorMessagesConstants;
 using static FoodDeliveryApp.Core.Constants.MessageConstants.RestaurantMessageConstants;
 
 namespace FoodDeliveryApp.Controllers
 {
-	public class RestaurantController : BaseController
+    public class RestaurantController : BaseController
 	{
 		private readonly IRestaurantService restaurantService;
 
@@ -140,12 +142,18 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
+			if (User.IsAdmin() == false)
+			{
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
 			var (restaurants, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 			var categoryViewModels = categories.Select(c => new RestaurantCategoryViewModel { Id = c.Id, Title = c.Title });
 
 			var model = new RestaurantFormModel()
 			{
-				Categories = categoryViewModels
+				Categories = categoryViewModels,
+				Cities = await restaurantService.AllRestaurantCitiesAsync()
 			};
 
 			return View(model);
@@ -154,7 +162,12 @@ namespace FoodDeliveryApp.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Add(RestaurantFormModel model)
 		{
-			if (await restaurantService.ExistsCityAsync(model.CityId) == false)
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await restaurantService.ExistsCityAsync(model.CityId) == false)
 			{
 				ModelState.AddModelError(nameof(model.CityId), InvalidCityMessage);
 			}
@@ -187,7 +200,7 @@ namespace FoodDeliveryApp.Controllers
 				ModelState.AddModelError(nameof(model.ClosingHour), InvalidTimeMessage);
 			}
 
-			if (model.OpeningHour == model.ClosingHour)
+			if (openHour == closeHour)
 			{
 				ModelState.AddModelError(nameof(model.OpeningHour), InvalidSameTimeMessage);
 			}
@@ -226,12 +239,19 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Edit(int restaurantId)
 		{
-			if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
 			{
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
 			}
 
 			var model = await restaurantService.GetRestaurantFormModelByIdAsync(restaurantId);
+
+			ViewBag.RestaurantId = restaurantId;
 
 			return View(model);
 		}
@@ -239,7 +259,12 @@ namespace FoodDeliveryApp.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Edit(int restaurantId, RestaurantFormModel model)
 		{
-			if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
 			{
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
 			}
@@ -248,6 +273,42 @@ namespace FoodDeliveryApp.Controllers
 			{
 				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantCategoryMessage });
 			}
+
+			DateTime openHour = DateTime.MinValue;
+			DateTime closeHour = DateTime.MinValue;
+
+			if (!DateTime.TryParseExact(
+				model.OpeningHour,
+				"HH:mm",
+				CultureInfo.InvariantCulture,
+				DateTimeStyles.None,
+				out openHour))
+			{
+				ModelState.AddModelError(nameof(model.OpeningHour), InvalidTimeMessage);
+			}
+
+			if (!DateTime.TryParseExact(
+				model.ClosingHour,
+				"HH:mm",
+				CultureInfo.InvariantCulture,
+				DateTimeStyles.None,
+				out closeHour))
+			{
+				ModelState.AddModelError(nameof(model.ClosingHour), InvalidTimeMessage);
+			}
+
+			if (openHour == closeHour)
+			{
+				ModelState.AddModelError(nameof(model.OpeningHour), InvalidSameTimeMessage);
+			}
+
+			if (openHour > closeHour)
+			{
+				ModelState.AddModelError(nameof(model.OpeningHour), OpenHourBiggerMessage);
+			}
+
+			model.OpenHourDateTime = openHour;
+			model.CloseHourDateTime = closeHour;
 
 			if (ModelState.IsValid == false)
 			{
@@ -258,9 +319,45 @@ namespace FoodDeliveryApp.Controllers
 				return View(model);
 			}
 
-			await restaurantService.EditAsync(restaurantId, model);
+			await restaurantService.EditRestaurantAsync(restaurantId, model);
 
 			return RedirectToAction("Menu", new { restaurantId });
+		}
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int restaurantId)
+        {
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
+            }
+
+            var model = await restaurantService.GetRestaurantDeleteModelByIdAsync(restaurantId);
+
+            return View(model);
+        }
+
+		[HttpPost]
+		public async Task<IActionResult> DeleteConfirmed(int restaurantId)
+		{
+			if (User.IsAdmin() == false)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+			}
+
+			if (await restaurantService.ExistsRestaurantAsync(restaurantId) == false)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = InvalidRestaurantErrorMessage });
+			}
+
+			await restaurantService.DeleteRestaurantAsync(restaurantId);
+
+			return RedirectToAction(nameof(All));
 		}
 	}
 }
