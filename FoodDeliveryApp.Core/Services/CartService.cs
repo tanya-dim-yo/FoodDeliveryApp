@@ -1,5 +1,5 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
-using FoodDeliveryApp.Core.Models.ShoppingCart;
+using FoodDeliveryApp.Core.Models.Cart;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -7,14 +7,14 @@ using Microsoft.Extensions.Logging;
 
 namespace FoodDeliveryApp.Core.Services
 {
-	public class ShoppingCartService : IShoppingCartService
+	public class CartService : ICartService
 	{
 		private readonly IRepository repository;
-		private readonly ILogger<ShoppingCartService> logger;
+		private readonly ILogger<CartService> logger;
 
-		public ShoppingCartService(
+		public CartService(
 			IRepository _repository,
-			ILogger<ShoppingCartService> _logger)
+			ILogger<CartService> _logger)
 		{
 			repository = _repository;
 			logger = _logger;
@@ -41,7 +41,7 @@ namespace FoodDeliveryApp.Core.Services
 			await repository.SaveChangesAsync();
 		}
 
-		public async Task AddItemToCartAsync(int itemId, int quantity, string userId)
+		public async Task<int> AddItemToCartAsync(int itemId, int quantity, string userId)
 		{
 			if (string.IsNullOrEmpty(userId))
 			{
@@ -54,7 +54,6 @@ namespace FoodDeliveryApp.Core.Services
 			if (cart == null)
 			{
 				cart = new Cart { UserId = userId };
-				cart.Id = await CreateCartAsync(userId);
 			}
 
 			var cartItem = await repository.AllReadOnly<CartItem>()
@@ -65,14 +64,11 @@ namespace FoodDeliveryApp.Core.Services
 				cartItem = new CartItem(itemId, quantity) { CartId = cart.Id };
 				await repository.AddAsync(cartItem);
 			}
-			else
-			{
-				cartItem.Quantity += quantity;
-			}
 
 			await repository.SaveChangesAsync();
-		}
 
+			return cart.Id;
+		}
 
 		public async Task<decimal> CalculateServiceFeeAsync(int cartId)
 		{
@@ -189,14 +185,14 @@ namespace FoodDeliveryApp.Core.Services
 			return cartItem.Item.Price * cartItem.Quantity;
 		}
 
-		public async Task<ShoppingCartViewModel> GetShopCartByIdAsync(int cartId)
+		public async Task<ShoppingCartViewModel> GetShopCartByIdAsync(string userId)
 		{
 			var cart = await repository.AllReadOnly<Cart>()
-				.Where(c => c.Id == cartId)
+				.Where(c => c.UserId == userId)
 				.Include(c => c.CartItems)
 					.ThenInclude(ci => ci.Item)
 						.ThenInclude(i => i.Restaurant)
-				.FirstOrDefaultAsync(c => c.Id == cartId);
+				.FirstOrDefaultAsync();
 
 			if (cart == null)
 			{
@@ -209,7 +205,7 @@ namespace FoodDeliveryApp.Core.Services
 
 			var cartViewModel = new ShoppingCartViewModel
 			{
-				Id = cart.Id,
+				CartId = cart.Id,
 				UserId = cart.UserId,
 				ItemsTotalPrice = itemsTotalPrice,
 				ServiceFee = serviceFee,
