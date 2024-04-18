@@ -16,9 +16,14 @@ namespace FoodDeliveryApp.Core.Services
 			repository = _repository;
 		}
 
-		public Task<IEnumerable<string>> AllBlogCategoriesNamesAsync()
+		public async Task<IEnumerable<string>> AllBlogCategoriesNamesAsync()
 		{
-			throw new NotImplementedException();
+			return await repository
+				.AllReadOnly<BlogArticleCategory>()
+				.OrderBy(c => c.Title)
+				.Select(c => c.Title)
+				.Distinct()
+				.ToListAsync();
 		}
 
 		public async Task<IEnumerable<BlogArticleViewModel>> ArticlesByCategoryAsync(int categoryId)
