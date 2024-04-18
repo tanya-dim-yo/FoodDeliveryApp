@@ -14,7 +14,8 @@ namespace System.Linq
 					Title = a.Title,
 					ImageUrl = a.Image,
 					PublicationDate = a.PublicationDate.ToString("d"),
-					Resume = (a.Content.Length > 90) ? a.Content.Substring(0, 90) + "..." : a.Content
+					Resume = (a.Content.Length > 90) ? a.Content.Substring(0, 90) + "..." : a.Content,
+					Category = a.BlogArticleCategory.Title
 				});
 		}
 	}

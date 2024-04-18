@@ -7,5 +7,6 @@
 		public string ImageUrl { get; set; } = string.Empty;
 		public string PublicationDate { get; set; } = string.Empty;
 		public string Resume { get; set; } = string.Empty;
+		public string Category { get; set; } = string.Empty;
 	}
 }
