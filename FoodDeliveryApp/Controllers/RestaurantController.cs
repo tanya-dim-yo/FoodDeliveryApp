@@ -26,7 +26,7 @@ namespace FoodDeliveryApp.Controllers
         {
             var (model, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
-            var modelWrapper = new ArticlesWithCategoriesViewModel
+            var modelWrapper = new RestaurantsWithCategoriesViewModel
             {
                 RestaurantViewModels = model,
                 CategoryNames = categories.Select(c => c.Title),
@@ -50,7 +50,7 @@ namespace FoodDeliveryApp.Controllers
 			var restaurants = await restaurantService.RestaurantsByServiceFeeAsync();
 			var categories = Enumerable.Empty<(int Id, string Title)>();
 
-			var modelWrapper = new ArticlesWithCategoriesViewModel
+			var modelWrapper = new RestaurantsWithCategoriesViewModel
 			{
 				RestaurantViewModels = restaurants,
 				CategoryNames = categories.Select(c => c.Title),
@@ -82,7 +82,7 @@ namespace FoodDeliveryApp.Controllers
 
 			var filteredRestaurants = restaurants.Where(r => r.RestaurantCategory == categoryName);
 
-			var model = new ArticlesWithCategoriesViewModel
+			var model = new RestaurantsWithCategoriesViewModel
 			{
 				CategoryNames = categories.Select(c => c.Title),
 				CategoryIds = categories.Select(c => c.Id),
@@ -104,7 +104,7 @@ namespace FoodDeliveryApp.Controllers
 
 			var (_, categories) = await restaurantService.GetAllRestaurantsAndCategoriesAsync();
 
-			var modelWrapper = new ArticlesWithCategoriesViewModel
+			var modelWrapper = new RestaurantsWithCategoriesViewModel
 			{
 				CategoryNames = categories.Select(c => c.Title),
 				CategoryIds = categories.Select(c => c.Id),
@@ -228,7 +228,7 @@ namespace FoodDeliveryApp.Controllers
 		[HttpGet]
 		public async Task<IActionResult> RestaurantCategories()
 		{
-			var model = new ArticlesWithCategoriesViewModel
+			var model = new RestaurantsWithCategoriesViewModel
 			{
 				CategoryNames = await restaurantService.AllRestaurantCategoriesNamesAsync()
 			};
