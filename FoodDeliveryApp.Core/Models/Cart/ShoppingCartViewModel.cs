@@ -1,10 +1,8 @@
-﻿using FoodDeliveryApp.Infrastructure.Data.Models;
-
-namespace FoodDeliveryApp.Core.Models.ShoppingCart
+﻿namespace FoodDeliveryApp.Core.Models.Cart
 {
-	public class ShoppingCartViewModel
+    public class ShoppingCartViewModel
 	{
-		public int Id { get; set; }
+		public int CartId { get; set; }
 
 		public string UserId { get; set; } = string.Empty;
 

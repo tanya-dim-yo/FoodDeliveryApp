@@ -1,4 +1,4 @@
-﻿namespace FoodDeliveryApp.Core.Models.ShoppingCart
+﻿namespace FoodDeliveryApp.Core.Models.Cart
 {
 	public class RecommendedItemViewModel
 	{
