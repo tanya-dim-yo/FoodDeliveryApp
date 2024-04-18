@@ -23,5 +23,10 @@
 		{
 			public const string NoExistingShopCartErrorMessage = "Количката не съществува!";
 		}
+
+		public static class BlogErrorMessagesConstants
+		{
+			public const string NoExistingBlogCategoryErrorMessage = "Категорията не съществува!";
+		}
 	}
 }
