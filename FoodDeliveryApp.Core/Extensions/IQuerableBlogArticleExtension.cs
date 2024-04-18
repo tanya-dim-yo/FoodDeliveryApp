@@ -13,8 +13,8 @@ namespace System.Linq
 					Id = a.Id,
 					Title = a.Title,
 					ImageUrl = a.Image,
-					PublicationDate = a.PublicationDate,
-					Resume = a.Content.Substring(0, 90)
+					PublicationDate = a.PublicationDate.ToString("d"),
+					Resume = (a.Content.Length > 90) ? a.Content.Substring(0, 90) + "..." : a.Content
 				});
 		}
 	}
