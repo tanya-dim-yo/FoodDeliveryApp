@@ -49,5 +49,13 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
-    }
+
+		public static IServiceCollection AddSessionAndHttpContextAccessor(this IServiceCollection services)
+		{
+			services.AddSession();
+			services.AddHttpContextAccessor();
+
+			return services;
+		}
+	}
 }
