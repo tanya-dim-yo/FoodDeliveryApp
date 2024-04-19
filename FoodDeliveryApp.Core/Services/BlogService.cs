@@ -122,6 +122,7 @@ namespace FoodDeliveryApp.Core.Services
 					ReadingTime = p.ReadingTime,
 					Content = p.Content,
 					Image = p.Image,
+					CategoryId = p.BlogArticleCategoryId,
 					Category = p.BlogArticleCategory.Title
 				})
 				.FirstOrDefaultAsync();
