@@ -1,6 +1,8 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Blog;
+using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Core.Models.Restaurant;
+using FoodDeliveryApp.Core.Services;
 using FoodDeliveryApp.Core.Services.Restaurant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +26,7 @@ namespace FoodDeliveryApp.Controllers
 		{
 			var (articles, categories) = await blogService.GetAllArticlesAndCategoriesAsync();
 
-			var modelWrapper = new ArticlesWithCategoriesViewModel
+			var modelWrapper = new BlogArticlesWithCategoriesViewModel
 			{
 				CategoryNames = categories.Select(c => c.Title),
 				CategoryIds = categories.Select(c => c.Id),
@@ -54,7 +56,7 @@ namespace FoodDeliveryApp.Controllers
 
 			var filteredArticles = articles.Where(a => a.Category == categoryName);
 
-			var model = new ArticlesWithCategoriesViewModel
+			var model = new BlogArticlesWithCategoriesViewModel
 			{
 				CategoryNames = categories.Select(c => c.Title),
 				CategoryIds = categories.Select(c => c.Id),
@@ -75,7 +77,7 @@ namespace FoodDeliveryApp.Controllers
 
 			var (_, categories) = await blogService.GetAllArticlesAndCategoriesAsync();
 
-			var modelWrapper = new ArticlesWithCategoriesViewModel
+			var modelWrapper = new BlogArticlesWithCategoriesViewModel
 			{
 				CategoryNames = categories.Select(c => c.Title),
 				CategoryIds = categories.Select(c => c.Id),
@@ -85,6 +87,28 @@ namespace FoodDeliveryApp.Controllers
 			ViewData["ListTitle"] = $"{searchResults.Results.Count()} Обекти, съответстващи на търсенето на ‘{searchResults.SanitizedKeyword}‘";
 
 			return View(nameof(All), modelWrapper);
+		}
+
+		[HttpGet]
+		[AllowAnonymous]
+		public async Task<IActionResult> Article(int articleId)
+		{
+			BlogArticleDetailsViewModel? model = await blogService.GetArticleByIdAsync(articleId);
+
+			if (model == null)
+			{
+				return RedirectToAction("Error", "Home", new { errorMessage = NoExistingBlogArticleErrorMessage });
+			}
+
+			string? facebookUrl = Url.Action("Article", "Blog", new { articleId = model.Id }, Request.Scheme);
+			string? twitterUrl = Url.Action("Article", "Blog", new { articleId = model.Id }, Request.Scheme);
+			string? linkedInUrl = Url.Action("Article", "Blog", new { articleId = model.Id }, Request.Scheme);
+
+			model.FacebookUrl = facebookUrl;
+			model.TwitterUrl = twitterUrl;
+			model.LinkedInUrl = linkedInUrl;
+
+			return View(model);
 		}
 	}
 }
