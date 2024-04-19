@@ -3,27 +3,30 @@ using FoodDeliveryApp.Core.Models.Cart;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.ShopCartErrorMessagesConstants;
+using System.Text.Json;
 
 namespace FoodDeliveryApp.Controllers
 {
 	public class CartController : BaseController
 	{
 		private readonly ICartService cartService;
+		private readonly IHttpContextAccessor httpContextAccessor;
 
-		public CartController(ICartService _cartService)
+		public CartController(ICartService _cartService, IHttpContextAccessor _httpContextAccessor)
 		{
 			cartService = _cartService;
+			httpContextAccessor = _httpContextAccessor;
 		}
 
-		[HttpPost]
+		[HttpGet]
+		[AllowAnonymous]
 		public async Task<IActionResult> Cart()
 		{
 			if (!User.Identity.IsAuthenticated)
 			{
 				return RedirectToAction("Login", "Account");
 			}
-			
+
 			var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
 			if (string.IsNullOrEmpty(userId))
@@ -31,11 +34,22 @@ namespace FoodDeliveryApp.Controllers
 				return Unauthorized();
 			}
 
-			ShoppingCartViewModel? model = await cartService.GetShopCartByIdAsync(userId);
+			ShoppingCartViewModel model;
 
-			if (model == null)
+			if (httpContextAccessor.HttpContext.Session.TryGetValue("Cart", out byte[] cartData))
 			{
-				return RedirectToAction("Error", "Home", new { errorMessage = NoExistingShopCartErrorMessage });
+				model = JsonSerializer.Deserialize<ShoppingCartViewModel>(cartData);
+			}
+			else
+			{
+				model = await cartService.GetShopCartByIdAsync(userId);
+
+				if (model == null)
+				{
+					return RedirectToAction("Error", "Home", new { errorMessage = "No existing shop cart." });
+				}
+
+				httpContextAccessor.HttpContext.Session.Set("Cart", JsonSerializer.SerializeToUtf8Bytes(model));
 			}
 
 			return View(model);
@@ -55,14 +69,16 @@ namespace FoodDeliveryApp.Controllers
 
 				var cartId = await cartService.AddItemToCartAsync(itemId, quantity, userId);
 
+				var model = await cartService.GetShopCartByIdAsync(userId);
+				httpContextAccessor.HttpContext.Session.Set("Cart", JsonSerializer.SerializeToUtf8Bytes(model));
+
 				return RedirectToAction(nameof(Cart), new { cartId });
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(500, $"Възникна грешка: {ex.Message}");
+				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
-
 
 		[HttpPost]
 		public async Task<IActionResult> AddAddOnToCart(int itemId, int addOnId, int quantity, int cartId)
@@ -70,11 +86,11 @@ namespace FoodDeliveryApp.Controllers
 			try
 			{
 				await cartService.AddAddOnToCartAsync(itemId, addOnId, quantity, cartId);
-				return Ok("Добавката беше добавена успешно към количката!");
+				return Ok("Add-on was successfully added to the cart!");
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(500, $"Възникна грешка: {ex.Message}");
+				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
 
@@ -84,11 +100,11 @@ namespace FoodDeliveryApp.Controllers
 			try
 			{
 				await cartService.RemoveItemFromCartAsync(itemId, cartId);
-				return Ok("Продуктът е премахнат успешно от количката!");
+				return Ok("Item was successfully removed from the cart!");
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(500, $"Възникна грешка: {ex.Message}");
+				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
 
@@ -98,11 +114,11 @@ namespace FoodDeliveryApp.Controllers
 			try
 			{
 				await cartService.RemoveAddOnFromCartAsync(addOnId, cartId);
-				return Ok("Добавката е премахната успешно от количката!");
+				return Ok("Add-on was successfully removed from the cart!");
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(500, $"Възникна грешка: {ex.Message}");
+				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
 
@@ -112,11 +128,11 @@ namespace FoodDeliveryApp.Controllers
 			try
 			{
 				var itemsTotalPrice = await cartService.CalculateItemsTotalPriceAsync(cartId);
-				return Ok($"Общо: {itemsTotalPrice}");
+				return Ok($"Total: {itemsTotalPrice}");
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(500, $"Възникна грешка: {ex.Message}");
+				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
 
@@ -126,11 +142,11 @@ namespace FoodDeliveryApp.Controllers
 			try
 			{
 				var serviceFeeTotalPrice = await cartService.CalculateServiceFeeAsync(cartId);
-				return Ok($"Общо: {serviceFeeTotalPrice}");
+				return Ok($"Total: {serviceFeeTotalPrice}");
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(500, $"Възникна грешка: {ex.Message}");
+				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
 
@@ -140,11 +156,11 @@ namespace FoodDeliveryApp.Controllers
 			try
 			{
 				var totalPrice = await cartService.CalculateTotalPriceAsync(cartId);
-				return Ok($"Общо: {totalPrice}");
+				return Ok($"Total: {totalPrice}");
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(500, $"Възникна грешка: {ex.Message}");
+				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
 	}
