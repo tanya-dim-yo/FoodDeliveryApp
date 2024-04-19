@@ -4,148 +4,75 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
-	string userName = string.Empty;
+    string userName = string.Empty;
 
-	if (SignInManager.IsSignedIn(User))
-	{
-		var user = await UserManager.GetUserAsync(User);
-		userName = $"{user.FirstName} {user.LastName}";
-	}
+    if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
+        userName = $"{user.FirstName} {user.LastName}";
+    }
 }
 
 <!-- Header -->
 <header class="site-header mo-left header header-transparent style-1">
-	<!-- Main Header -->
-	<div class="sticky-header main-bar-wraper navbar-expand-lg">
-		<div class="main-bar clearfix">
-			<div class="container clearfix">
-				<!-- Website Logo -->
-				<div class="logo-header mostion">
-					<a href="@Url.Action("Index","Home")" class="logo-dark"><img src="~/foodtime/images/logo.png" alt="/"></a>
-					<a href="@Url.Action("Index","Home")" class="logo-white"><img src="~/foodtime/images/logo-white.png" alt="/"></a>
-				</div>
+    <!-- Main Header -->
+    <div class="sticky-header main-bar-wraper navbar-expand-lg">
+        <div class="main-bar clearfix">
+            <div class="container clearfix">
+                <!-- Website Logo -->
+                <div class="logo-header mostion">
+                    <a href="@Url.Action("Index","Home")" class="logo-dark"><img src="~/foodtime/images/logo.png" alt="/"></a>
+                    <a href="@Url.Action("Index","Home")" class="logo-white"><img src="~/foodtime/images/logo-white.png" alt="/"></a>
+                </div>
 
-				<!-- Nav Toggle Button -->
-				<button class="navbar-toggler collapsed navicon justify-content-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-					<span></span>
-					<span></span>
-					<span></span>
-				</button>
+                <!-- Nav Toggle Button -->
+                <button class="navbar-toggler collapsed navicon justify-content-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
 
-				<!-- EXTRA NAV -->
-				<div class="extra-nav">
-					<div class="extra-cell">
-						<ul>
-							<li>
-								<ul class="navbar-nav">
-									@if (SignInManager.IsSignedIn(User))
-									{
-										<li class="nav-item">
-											<a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Здравей, @userName!</a>
-										</li>
-										<li class="nav-item">
-											<form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-												<button  type="submit" class="nav-link btn btn-link text-dark">Изход</button>
-											</form>
-										</li>
-									}
-									else
-									{
-										<li class="nav-item">
-											<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Регистрация</a>
-										</li>
-										<li class="nav-item">
-											<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Вход</a>
-										</li>
-									}
-							</li>
-							<li>
-								<button type="button" class="btn btn-white btn-square btn-shadow cart-btn">
-									<i class="flaticon-shopping-bag-1"></i>
-									<span class="badge">6</span>
-								</button>
-							</li>
-						</ul>
-								<ul class="dropdown-menu cart-list">
-									<li class="cart-item">
-										<div class="media">
-											<div class="media-left">
-												<a href="@Url.Action("ProductDetail","FoodTime")">
-													<img alt="/" class="media-object" src="~/foodtime/images/shop/pic2.jpg">
-												</a>
-											</div>
-											<div class="media-body">
-												<h6 class="dz-title"><a href="@Url.Action("ProductDetail","FoodTime")" class="media-heading">Double Burger</a></h6>
-												<span class="dz-price">$28.00</span>
-												<span class="item-close">&times;</span>
-											</div>
-										</div>
-									</li>
-									<li class="cart-item">
-										<div class="media">
-											<div class="media-left">
-												<a href="@Url.Action("ProductDetail","FoodTime")">
-													<img alt="/" class="media-object" src="~/foodtime/images/shop/pic3.jpg">
-												</a>
-											</div>
-											<div class="media-body">
-												<h6 class="dz-title"><a href="@Url.Action("ProductDetail","FoodTime")" class="media-heading">Cheese Burger</a></h6>
-												<span class="dz-price">$20.00</span>
-												<span class="item-close">&times;</span>
-											</div>
-										</div>
-									</li>
-									<li class="cart-item">
-										<div class="media">
-											<div class="media-left">
-												<a href="@Url.Action("ProductDetail","FoodTime")">
-													<img alt="/" class="media-object" src="~/foodtime/images/shop/pic4.jpg">
-												</a>
-											</div>
-											<div class="media-body">
-												<h6 class="dz-title"><a href="@Url.Action("ProductDetail","FoodTime")" class="media-heading">Burger</a></h6>
-												<span class="dz-price">$15.00</span>
-												<span class="item-close">&times;</span>
-											</div>
-										</div>
-									</li>
-									<li class="cart-item text-center d-flex justify-content-between">
-										<h6 class="text-primary mb-0">Total:</h6>
-										<h6 class="text-primary mb-0">$63</h6>
-									</li>
-									<li class="text-center d-flex">
-										<a href="@Url.Action("ShopCart","FoodTime")" class="btn btn-primary me-2 w-100 d-block btn-hover-1"><span>View Cart</span></a>
-										<a href="@Url.Action("OurMenu1","FoodTime")" class="btn btn-outline-primary w-100 d-block btn-hover-1"><span>Menu</span></a>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<!-- EXTRA NAV -->
-				<!-- Header Nav -->
-				<div class="header-nav navbar-collapse collapse justify-content-end" id="navbarNavDropdown">
-					<div class="logo-header">
-						<a href="@Url.Action("Index","Home")"><img src="~/foodtime/images/logo.png" alt="/"></a>
-					</div>
-					<ul class="nav navbar-nav navbar navbar-left">
-						<li><a href="@Url.Action("Index","Home")">Начало</a></li>
-						<li><a href="@Url.Action("All","Restaurant")">Ресторанти</a></li>
-						<li><a href="@Url.Action("All","Blog")">Блог</a></li>
-						<li><a href="@Url.Action("Index","Contact")">Контакти</a></li>
-					</ul>
-					<div class="dz-social-icon">
-						<ul>
-							<li><a target="_blank" class="fab fa-facebook-f" href="https://www.facebook.com/"></a></li>
-							<li><a target="_blank" class="fab fa-twitter" href="https://twitter.com/"></a></li>
-							<li><a target="_blank" class="fab fa-linkedin-in" href="https://www.linkedin.com/"></a></li>
-							<li><a target="_blank" class="fab fa-instagram" href="https://www.instagram.com/"></a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Main Header End -->
+                <!-- EXTRA NAV -->
+                <div class="extra-nav">
+                    <div class="extra-cell">
+                        <ul>
+                            <li>
+                                <ul class="navbar-nav">
+                                    @if (SignInManager.IsSignedIn(User))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@userName</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                                <button type="submit" class="nav-link btn btn-link text-dark mr-2">Изход</button>
+                                            </form>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Регистрация</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Вход</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                            <li>
+                                <button type="button" class="btn btn-white btn-square btn-shadow cart-btn">
+                                    <i class="flaticon-shopping-bag-1"></i>
+                                    <span class="badge">6</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- EXTRA NAV -->
+            </div>
+        </div>
+    </div>
+    <!-- Main Header End -->
 </header>
 <!-- Header -->
