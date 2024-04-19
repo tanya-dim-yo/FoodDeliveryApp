@@ -1,4 +1,5 @@
-﻿@model BlogArticleDetailsViewModel
+﻿@using Microsoft.AspNetCore.Mvc;
+@model BlogArticleDetailsViewModel
 @{
 	Layout = "~/Views/Shared/_LayoutFoodTimeBlog.cshtml";
 }
@@ -36,23 +37,12 @@
 							</div>
 							<div class="dz-post-text">
 								<p>@Model.Content</p>
-								<blockquote class="wp-block-quote">
-									<p>Create An Information Architecture That’s Easy To Use Way Precise Usability Considerations For Partially</p>
-									<cite>Ronald M. Spino</cite>
-									<i class="flaticon-right-quote quotes"></i>
-								</blockquote>
-								<ul>
-									<li>A wonderful serenity has taken possession.</li>
-									<li>Of my entire soul, like these sweet mornings of spring which.</li>
-									<li>I enjoy with my whole heart.</li>
-									<li>This spot, which was created For the bliss of souls like mine.</li>
-								</ul>
 							</div>
 						</div>
 						<div class="dz-share-post">
 							<div class="post-tags">
 								<h6 class="font-14 m-b0 m-r10 d-inline">Категория:</h6>
-								<a href="@Url.Action("ProductDetail","FoodTime")">@Model.Category</a>
+								<a href="@Url.Action("ByCategory", "Blog", new { categoryId = @Model.CategoryId })">@Model.Category</a>
 							</div>
 							<div class="dz-social-icon">
 								<ul>
