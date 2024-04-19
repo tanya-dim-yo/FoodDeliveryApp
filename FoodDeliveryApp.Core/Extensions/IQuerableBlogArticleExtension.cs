@@ -13,7 +13,7 @@ namespace System.Linq
 					Id = a.Id,
 					Title = a.Title,
 					ImageUrl = a.Image,
-					PublicationDate = a.PublicationDate.ToString("d"),
+					PublicationDate = a.PublicationDate.ToString("dd.MM.yyyy"),
 					Resume = (a.Content.Length > 90) ? a.Content.Substring(0, 90) + "..." : a.Content,
 					Category = a.BlogArticleCategory.Title
 				});
