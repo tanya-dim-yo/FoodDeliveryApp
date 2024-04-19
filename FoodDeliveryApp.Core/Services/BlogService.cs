@@ -1,5 +1,6 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Blog;
+using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -59,7 +60,7 @@ namespace FoodDeliveryApp.Core.Services
 
 		public async Task<(IEnumerable<BlogArticleViewModel> Articles, IEnumerable<(int Id, string Title)> Categories)> GetAllArticlesAndCategoriesAsync()
 		{
-			var model = new ArticlesWithCategoriesViewModel();
+			var model = new BlogArticlesWithCategoriesViewModel();
 
 			var categories = await AllBlogCategoriesAsync();
 
@@ -106,6 +107,24 @@ namespace FoodDeliveryApp.Core.Services
 				.ToListAsync();
 
 			return (sanitizedKeyword, results);
+		}
+
+		public async Task<BlogArticleDetailsViewModel?> GetArticleByIdAsync(int articleId)
+		{
+			return await repository
+				.AllReadOnly<BlogArticle>()
+				.Where(a => a.Id == articleId)
+				.Select(p => new BlogArticleDetailsViewModel()
+				{
+					Id = p.Id,
+					Title = p.Title,
+					PublicationDate = p.PublicationDate.ToString("dd.MM.yyyy"),
+					ReadingTime = p.ReadingTime,
+					Content = p.Content,
+					Image = p.Image,
+					Category = p.BlogArticleCategory.Title
+				})
+				.FirstOrDefaultAsync();
 		}
 	}
 }
