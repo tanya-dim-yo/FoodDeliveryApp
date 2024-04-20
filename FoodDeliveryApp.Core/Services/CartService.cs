@@ -199,7 +199,14 @@ namespace FoodDeliveryApp.Core.Services
 
 			if (cart == null)
 			{
-				throw new InvalidOperationException("Количката не е намерена.");
+				var cartId = await CreateCartAsync(userId);
+
+				cart = await repository.AllReadOnly<Cart>()
+					.Where(c => c.UserId == userId)
+					.Include(c => c.CartItems)
+						.ThenInclude(ci => ci.Item)
+							.ThenInclude(i => i.Restaurant)
+					.FirstOrDefaultAsync();
 			}
 
 			var session = httpContextAccessor.HttpContext.Session;
@@ -239,5 +246,6 @@ namespace FoodDeliveryApp.Core.Services
 
 			return cartViewModel;
 		}
+
 	}
 }
