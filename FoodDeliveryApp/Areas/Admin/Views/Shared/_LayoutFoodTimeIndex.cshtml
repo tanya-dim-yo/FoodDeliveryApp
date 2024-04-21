@@ -1,4 +1,5 @@
 ﻿@{
+@using FoodDeliveryApp.Areas.Admin.Components
     @using Microsoft.Extensions.Configuration
     @inject IConfiguration Configuration
 }
@@ -30,9 +31,7 @@
 </head>
 <body id="bg">
     <div class="page-wraper">
-        <partial name="FoodTime/_Header" />
-        <partial name="FoodTime/_Login" />
-        <partial name="FoodTime/_Register" />
+        @await Component.InvokeAsync(nameof(AdminMenuComponent))
         <partial name="_AdminPartial" />
         @RenderBody()
         <partial name="FoodTime/_Footer" />
