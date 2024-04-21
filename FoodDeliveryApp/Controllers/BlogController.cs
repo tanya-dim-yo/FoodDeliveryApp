@@ -1,17 +1,17 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Blog;
 using FoodDeliveryApp.Core.Models.Product;
-using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Core.Services;
-using FoodDeliveryApp.Core.Services.Restaurant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.BlogErrorMessagesConstants;
-using static FoodDeliveryApp.Core.Constants.MessageConstants.BlogConstants;
+using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.UserErrorMessagesConstants;
+using static FoodDeliveryApp.Core.Constants.MessageConstants.BlogArticleMessageConstants;
 
 namespace FoodDeliveryApp.Controllers
 {
-	public class BlogController : BaseController
+    public class BlogController : BaseController
 	{
 		private readonly IBlogService blogService;
 
@@ -110,5 +110,55 @@ namespace FoodDeliveryApp.Controllers
 
 			return View(model);
 		}
-	}
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int articleId)
+        {
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await blogService.ExistsBlogArticleAsync(articleId) == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NoExistingBlogArticleErrorMessage });
+            }
+
+            var model = await blogService.GetArticleFormModelByIdAsync(articleId);
+
+            ViewBag.RestaurantId = articleId;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(BlogArticleFormModel model, int articleId)
+        {
+            if (User.IsAdmin() == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NotAdminErrorMessage });
+            }
+
+            if (await blogService.ExistsBlogArticleAsync(articleId) == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NoExistingBlogArticleErrorMessage });
+            }
+
+            if (await blogService.ExistsBlogCategoryAsync(model.BlogArticleCategoryId) == false)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = NoExistingBlogCategoryErrorMessage });
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                model.Categories = await blogService.AllBlogCategoriesAsync();
+
+                return View(model);
+            }
+
+            await blogService.EditArticleAsync(model, articleId);
+
+            return RedirectToAction(nameof(Article), new { articleId });
+        }
+    }
 }
