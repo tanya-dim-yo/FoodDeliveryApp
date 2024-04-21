@@ -4,6 +4,7 @@ using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Security.Claims;
 using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.BlogErrorMessagesConstants;
 using static FoodDeliveryApp.Core.Constants.ErrorMessagesConstants.UserErrorMessagesConstants;
@@ -126,7 +127,7 @@ namespace FoodDeliveryApp.Controllers
 
             var model = await blogService.GetArticleFormModelByIdAsync(articleId);
 
-            ViewBag.RestaurantId = articleId;
+            ViewBag.ArticleId = articleId;
 
             return View(model);
         }
@@ -149,7 +150,21 @@ namespace FoodDeliveryApp.Controllers
                 return RedirectToAction("Error", "Home", new { errorMessage = NoExistingBlogCategoryErrorMessage });
             }
 
-            if (ModelState.IsValid == false)
+			DateTime pubDate = DateTime.MinValue;
+
+			if (!DateTime.TryParseExact(
+				model.PublicationDate,
+				"dd.MM.yyyy",
+				CultureInfo.InvariantCulture,
+				DateTimeStyles.None,
+				out pubDate))
+			{
+				ModelState.AddModelError(nameof(model.PublicationDate), InvalidDateMessage);
+			}
+
+			model.PublicationDateDT = pubDate;
+
+			if (ModelState.IsValid == false)
             {
                 model.Categories = await blogService.AllBlogCategoriesAsync();
 

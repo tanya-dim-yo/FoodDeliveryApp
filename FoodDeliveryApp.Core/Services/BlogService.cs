@@ -1,7 +1,5 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Blog;
-using FoodDeliveryApp.Core.Models.Product;
-using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +7,7 @@ using static FoodDeliveryApp.Core.Extensions.StringExtensions;
 
 namespace FoodDeliveryApp.Core.Services
 {
-    public class BlogService : IBlogService
+	public class BlogService : IBlogService
 	{
 		private readonly IRepository repository;
 
@@ -155,7 +153,7 @@ namespace FoodDeliveryApp.Core.Services
                             .Select(r => new BlogArticleFormModel()
                             {
                                 Title = r.Title,
-								PublicationDateDT = r.PublicationDate,
+								PublicationDate = r.PublicationDate.ToString("dd.MM.yyyy"),
 								ReadingTime = r.ReadingTime,
 								Content = r.Content,
 								Image = r.Image,
