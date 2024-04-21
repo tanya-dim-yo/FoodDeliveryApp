@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.BlogArticleValidationConstants;
 
@@ -15,12 +14,6 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public string Title { get; set; } = string.Empty;
 
         [Required]
-        public string UserId { get; set; } = string.Empty;
-
-        [ForeignKey(nameof(UserId))]
-        public virtual ApplicationUser User { get; set; } = null!;
-
-        [Required]
         public DateTime PublicationDate { get; set; }
 
         [Required]
@@ -34,7 +27,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public string Content { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(BlogArticleImageMaxLength)]
+        [MaxLength(BlogArticleImageURLMaxLength)]
         public string Image { get; set; } = string.Empty;
 
         [Required]

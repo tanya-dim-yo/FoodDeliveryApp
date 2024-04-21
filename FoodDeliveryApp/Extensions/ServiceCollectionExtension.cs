@@ -16,6 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRestaurantService, RestaurantService>();
             services.AddScoped<IProductService, ProductService>();
 			services.AddScoped<ICartService, CartService>();
+			services.AddScoped<IBlogService, BlogService>();
 
 			return services;
         }
@@ -48,5 +49,13 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
-    }
+
+		public static IServiceCollection AddSessionAndHttpContextAccessor(this IServiceCollection services)
+		{
+			services.AddSession();
+			services.AddHttpContextAccessor();
+
+			return services;
+		}
+	}
 }

@@ -1,0 +1,106 @@
+﻿@using Microsoft.AspNetCore.Mvc;
+@model BlogArticleDetailsViewModel
+@{
+	Layout = "~/Views/Shared/_LayoutFoodTimeBlog.cshtml";
+}
+<div class="page-content bg-white">
+
+	<!-- Banner  -->
+	<div class="dz-breadcrumb-bnr">
+		<div class="container">
+			<nav aria-label="breadcrumb" class="breadcrumb-row">
+				<ul class="breadcrumb">
+					<li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Начало</a></li>
+					<li class="breadcrumb-item"><a href="@Url.Action("All","Blog")">Блог</a></li>
+					<li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<!-- Banner End -->
+	<!-- Blog Detail -->
+	<section class="content-inner">
+		<div class="min-container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12">
+					<div class="blog-single dz-card sidebar">
+						<div class="dz-media rounded-md">
+							<img src="@Url.Content(@Model.Image)" alt="@Model.Title">
+						</div>
+						<div class="dz-info">
+							<h1 class="title">@Model.Title</h1>
+							<div class="dz-meta">
+								<ul>
+									<li class="dz-date"><a href="javascript:void(0);"><i class="flaticon-calendar-date"></i>@Model.PublicationDate</a></li>
+									<li class="dz-comment"><a href="javascript:void(0);"><i class="flaticon-chat-bubble"></i>Време за четене: @Model.ReadingTime мин.</a></li>
+								</ul>
+							</div>
+							<div class="dz-post-text">
+								<p>@Model.Content</p>
+							</div>
+						</div>
+						<div class="dz-share-post">
+							<div class="post-tags">
+								<h6 class="font-14 m-b0 m-r10 d-inline">Категория:</h6>
+								<a href="@Url.Action("ByCategory", "Blog", new { categoryId = @Model.CategoryId })">@Model.Category</a>
+							</div>
+							<div class="dz-social-icon">
+								<ul>
+									<li>
+										<a target="_blank" class="btn-social btn-sm text-primary" href="https://www.facebook.com/">
+											<i class="fab fa-facebook-f"></i>
+										</a>
+									</li>
+									<li>
+										<a target="_blank" class="btn-social btn-sm text-primary" href="https://twitter.com/">
+											<i class="fab fa-twitter"></i>
+										</a>
+									</li>
+									<li>
+										<a target="_blank" class="btn-social btn-sm text-primary" href="https://www.instagram.com/">
+											<i class="fab fa-instagram"></i>
+										</a>
+									</li>
+									<li>
+										<a target="_blank" class="btn-social btn-sm text-primary" href="https://www.linkedin.com/">
+											<i class="fa-brands fa-linkedin-in"></i>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Blog Detail End -->
+</div>
+
+@section foodtime_style
+	{
+	<!-- Stylesheet -->
+	<link href="~/foodtime/vendor/magnific-popup/magnific-popup.min.css" rel="stylesheet">
+	<link href="~/foodtime/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+	<link href="~/foodtime/vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+}
+@section foodtime_script
+	{
+	<!-- JAVASCRIPT FILES ========================================= -->
+	<script src="~/foodtime/js/jquery.min.js"></script><!-- JQUERY.MIN JS -->
+	<script src="~/foodtime/vendor/bootstrap/js/bootstrap.bundle.min.js"></script><!-- BOOTSTRAP.MIN JS -->
+	<script src="~/foodtime/vendor/bootstrap-select/js/bootstrap-select.min.js"></script><!-- BOOTSTRAP SELEECT -->
+	<script src="~/foodtime/vendor/magnific-popup/magnific-popup.js"></script><!-- MAGNIFIC POPUP JS -->
+	<script src="~/foodtime/vendor/counter/waypoints-min.js"></script><!-- WAYPOINTS JS -->
+	<script src="~/foodtime/vendor/wow/wow.js"></script><!-- WOW JS -->
+	<script src="~/foodtime/vendor/counter/counterup.min.js"></script><!-- COUNTERUP JS -->
+	<script src="~/foodtime/vendor/swiper/swiper-bundle.min.js"></script><!-- OWL-CAROUSEL -->
+	<script src="~/foodtime/vendor/particles/particles.js"></script>
+	<script src="~/foodtime/vendor/particles/particles-app.js"></script>
+	<script src="~/foodtime/js/dz.carousel.min.js"></script><!-- OWL-CAROUSEL -->
+	<script src="~/foodtime/js/dz.ajax.js"></script><!-- AJAX -->
+	<script src="~/foodtime/js/custom.min.js"></script><!-- CUSTOM JS -->
+	
+	<script src="~/foodtime/vendor/rangeslider/rangeslider.js"></script><!-- CUSTOM JS -->
+	
+}

@@ -19,8 +19,13 @@
         public static class BlogArticleValidationConstants
         {
             public const int BlogArticleTitleMaxLength = 100;
-            public const int BlogArticleContentMaxLength = 6000;
-            public const int BlogArticleImageMaxLength = 200;
+            public const int BlogArticleTitleMinLength = 2;
+            public const int BlogArticleContentMaxLength = 15000;
+            public const int BlogArticleContentMinLength = 600;
+            public const int BlogArticleImageURLMaxLength = 200;
+            public const int BlogArticleImageURLMinLength = 10;
+            public const string BlogArticleReadingTimeMaxValue = "10";
+            public const string BlogArticleReadingTimeMinValue = "1";
         }
 
         public static class BlogArticleCategoryValidationConstants

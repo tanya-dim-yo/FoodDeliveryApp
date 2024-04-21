@@ -23,6 +23,8 @@ namespace FoodDeliveryApp.Infrastructure.Data
             builder.ApplyConfiguration(new ItemCategoryConfiguration());
             builder.ApplyConfiguration(new ItemConfiguration());
 			builder.ApplyConfiguration(new CityConfiguration());
+			builder.ApplyConfiguration(new BlogArticleCategoryConfiguration());
+			builder.ApplyConfiguration(new BlogArticleConfiguration());
 
 			base.OnModelCreating(builder);
         }

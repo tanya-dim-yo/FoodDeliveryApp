@@ -4,6 +4,8 @@ using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
 
 namespace FoodDeliveryApp.Core.Services
 {
@@ -11,13 +13,14 @@ namespace FoodDeliveryApp.Core.Services
 	{
 		private readonly IRepository repository;
 		private readonly ILogger<CartService> logger;
+		private readonly IHttpContextAccessor httpContextAccessor;
 
 		public CartService(
-			IRepository _repository,
-			ILogger<CartService> _logger)
+		IRepository _repository,
+		IHttpContextAccessor _httpContextAccessor)
 		{
 			repository = _repository;
-			logger = _logger;
+			httpContextAccessor = _httpContextAccessor;
 		}
 
 		public async Task AddAddOnToCartAsync(int itemId, int addOnId, int quantity, int cartId)
@@ -196,31 +199,53 @@ namespace FoodDeliveryApp.Core.Services
 
 			if (cart == null)
 			{
-				throw new InvalidOperationException("Количката не е намерена.");
+				var cartId = await CreateCartAsync(userId);
+
+				cart = await repository.AllReadOnly<Cart>()
+					.Where(c => c.UserId == userId)
+					.Include(c => c.CartItems)
+						.ThenInclude(ci => ci.Item)
+							.ThenInclude(i => i.Restaurant)
+					.FirstOrDefaultAsync();
 			}
 
-			var itemsTotalPrice = cart.CartItems.Sum(ci => ci.Item.Price * ci.Quantity);
-			var serviceFee = cart.CartItems.Sum(ci => ci.Item.Restaurant.ServiceFee);
-			var totalPrice = itemsTotalPrice + serviceFee;
+			var session = httpContextAccessor.HttpContext.Session;
+			ShoppingCartViewModel cartViewModel;
 
-			var cartViewModel = new ShoppingCartViewModel
+			byte[] cartData = session.Get("Cart");
+
+			if (cartData == null)
 			{
-				CartId = cart.Id,
-				UserId = cart.UserId,
-				ItemsTotalPrice = itemsTotalPrice,
-				ServiceFee = serviceFee,
-				TotalPrice = totalPrice,
-				CartItems = cart.CartItems.Select(ci => new CartItemViewModel
+				var itemsTotalPrice = cart.CartItems.Sum(ci => ci.Item.Price * ci.Quantity);
+				var serviceFee = cart.CartItems.Sum(ci => ci.Item.Restaurant.ServiceFee);
+				var totalPrice = itemsTotalPrice + serviceFee;
+
+				cartViewModel = new ShoppingCartViewModel
 				{
-					Id = ci.Id,
-					Title = ci.Item.Title,
-					ImageURL = ci.Item.ImageURL,
-					Quantity = ci.Quantity,
-					Price = ci.Item.Price
-				}).ToList(),
-			};
+					CartId = cart.Id,
+					UserId = cart.UserId,
+					ItemsTotalPrice = itemsTotalPrice,
+					ServiceFee = serviceFee,
+					TotalPrice = totalPrice,
+					CartItems = cart.CartItems.Select(ci => new CartItemViewModel
+					{
+						Id = ci.Id,
+						Title = ci.Item.Title,
+						ImageURL = ci.Item.ImageURL,
+						Quantity = ci.Quantity,
+						Price = ci.Item.Price
+					}).ToList(),
+				};
+
+				session.Set("Cart", JsonSerializer.SerializeToUtf8Bytes(cartViewModel));
+			}
+			else
+			{
+				cartViewModel = JsonSerializer.Deserialize<ShoppingCartViewModel>(cartData);
+			}
 
 			return cartViewModel;
 		}
+
 	}
 }

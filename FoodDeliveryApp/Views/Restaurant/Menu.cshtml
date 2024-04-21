@@ -269,14 +269,14 @@
 									<p>@product.Description</p>
 									<span class="price">@product.Price лв.</span>
 								</div>
-								<div class="d-lg-flex justify-content-between">
+								<div class="d-lg-flex justify-content-lg-center" style="padding-bottom: 20px;">
 									<ul class="list-unstyled d-flex align-items-center">
-										<li class="mr-2">
+										<li class="mr-lg-4" style="padding-right: 5px;">
 											<a href="@Url.Action("Add", "Cart", new { itemId = product.Id, quantity = 1 })" class="btn btn-primary btn-hover-1">
 												<span>Добави <i class="flaticon-shopping-bag-1 ml-1"></i></span>
 											</a>
 										</li>
-										<li>
+										<li class="ml-lg-4">
 											<a href="@Url.Action("Cart","Cart")" class="btn btn-outline-secondary btn-hover-1">
 												<span>Количка <i class="flaticon-shopping-cart ml-1"></i></span>
 											</a>
