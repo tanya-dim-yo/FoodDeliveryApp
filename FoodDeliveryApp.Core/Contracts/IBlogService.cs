@@ -1,15 +1,14 @@
 ﻿using FoodDeliveryApp.Core.Models.Blog;
-using FoodDeliveryApp.Core.Models.Product;
-using FoodDeliveryApp.Core.Models.Restaurant;
 
 namespace FoodDeliveryApp.Core.Contracts
 {
-	public interface IBlogService
+    public interface IBlogService
 	{
 		Task<bool> ExistsBlogCategoryAsync(int categoryId);
 		Task<bool> ExistsBlogArticleAsync(int articleId);
 		Task<BlogArticleDetailsViewModel?> GetArticleByIdAsync(int articleId);
-		Task<IEnumerable<BlogArticleViewModel>> AllArticlesAsync();
+        Task EditArticleAsync(BlogArticleFormModel model, int articleId);
+        Task<IEnumerable<BlogArticleViewModel>> AllArticlesAsync();
 		Task<IEnumerable<(int Id, string Title)>> AllBlogCategoriesAsync();
 		Task<IEnumerable<BlogArticleViewModel>> ArticlesByCategoryAsync(int categoryId);
 		Task<IEnumerable<string>> AllBlogCategoriesNamesAsync();

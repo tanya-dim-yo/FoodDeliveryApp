@@ -1,6 +1,5 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Blog;
-using FoodDeliveryApp.Core.Models.Product;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +7,7 @@ using static FoodDeliveryApp.Core.Extensions.StringExtensions;
 
 namespace FoodDeliveryApp.Core.Services
 {
-	public class BlogService : IBlogService
+    public class BlogService : IBlogService
 	{
 		private readonly IRepository repository;
 
@@ -127,5 +126,22 @@ namespace FoodDeliveryApp.Core.Services
 				})
 				.FirstOrDefaultAsync();
 		}
-	}
+
+        public async Task EditArticleAsync(BlogArticleFormModel model, int articleId)
+        {
+            var article = await repository.GetByIdAsync<BlogArticle>(articleId);
+
+            if (article != null)
+            {
+                article.Title = model.Title;
+				article.PublicationDate = model.PublicationDateDT;
+				article.ReadingTime = model.ReadingTime;
+				article.Content = model.Content;
+				article.Image = model.Image;
+				article.BlogArticleCategoryId = model.BlogArticleCategoryId;
+
+                await repository.SaveChangesAsync();
+            }
+        }
+    }
 }
