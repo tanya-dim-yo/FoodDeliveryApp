@@ -39,6 +39,17 @@ app.UseAuthorization();
 
 app.UseSession();
 
+app.UseEndpoints(endpoints =>
+{
+	endpoints.MapControllerRoute(
+			name: "areas",
+			pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+	);
+
+	endpoints.MapDefaultControllerRoute();
+	endpoints.MapRazorPages();
+});
+
 app.MapDefaultControllerRoute();
 app.MapRazorPages();
 
