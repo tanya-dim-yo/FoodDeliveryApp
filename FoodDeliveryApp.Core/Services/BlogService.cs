@@ -1,5 +1,7 @@
 ﻿using FoodDeliveryApp.Core.Contracts;
 using FoodDeliveryApp.Core.Models.Blog;
+using FoodDeliveryApp.Core.Models.Product;
+using FoodDeliveryApp.Core.Models.Restaurant;
 using FoodDeliveryApp.Infrastructure.Data.Common;
 using FoodDeliveryApp.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -74,15 +76,17 @@ namespace FoodDeliveryApp.Core.Services
 			return (articles, categories.Select(c => (c.Id, c.Title)));
 		}
 
-		public async Task<IEnumerable<(int Id, string Title)>> AllBlogCategoriesAsync()
+		public async Task<IEnumerable<BlogArticleCategoryViewModel>> AllBlogCategoriesAsync()
 		{
-			var categories = await repository
-				.AllReadOnly<BlogArticleCategory>()
-				.Select(c => new { c.Id, c.Title })
-				.ToListAsync();
-
-			return categories.Select(c => (c.Id, c.Title));
-		}
+            return await repository
+                .AllReadOnly<BlogArticleCategory>()
+                .Select(c => new BlogArticleCategoryViewModel
+                {
+                    Id = c.Id,
+                    Title = c.Title
+                })
+                .ToListAsync();
+        }
 
 		public async Task<(string SanitizedKeyword, IEnumerable<BlogArticleViewModel> Results)> SearchBlogArticlesAsync(string keyword)
 		{
@@ -142,6 +146,29 @@ namespace FoodDeliveryApp.Core.Services
 
                 await repository.SaveChangesAsync();
             }
+        }
+
+        public async Task<BlogArticleFormModel?> GetArticleFormModelByIdAsync(int articleId)
+        {
+            var article = await repository.AllReadOnly<BlogArticle>()
+                            .Where(r => r.Id == articleId)
+                            .Select(r => new BlogArticleFormModel()
+                            {
+                                Title = r.Title,
+								PublicationDateDT = r.PublicationDate,
+								ReadingTime = r.ReadingTime,
+								Content = r.Content,
+								Image = r.Image,
+								BlogArticleCategoryId = r.BlogArticleCategoryId
+                            })
+                            .FirstOrDefaultAsync();
+
+            if (article != null)
+            {
+                article.Categories = await AllBlogCategoriesAsync();
+            }
+
+            return article;
         }
     }
 }
