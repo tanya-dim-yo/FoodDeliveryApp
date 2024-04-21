@@ -27,7 +27,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public string Content { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(BlogArticleImageMaxLength)]
+        [MaxLength(BlogArticleImageURLMaxLength)]
         public string Image { get; set; } = string.Empty;
 
         [Required]
