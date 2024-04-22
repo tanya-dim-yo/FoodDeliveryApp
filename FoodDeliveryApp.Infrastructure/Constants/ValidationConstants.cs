@@ -101,5 +101,22 @@
         {
             public const int RestaurantCategoryTitleMaxLength = 50;
         }
-    }
+
+		public static class ReservationValidationConstants
+		{
+			public const int UserIdMaxLength = 450;
+			public const int UserEmailMaxLength = 256;
+			public const int ReservationMessageMaxLength = 600;
+		}
+
+		public static class CartValidationConstants
+		{
+			public const int UserIdMaxLength = 450;
+		}
+
+		public static class OrderValidationConstants
+		{
+			public const int UserIdMaxLength = 450;
+		}
+	}
 }
