@@ -335,5 +335,17 @@ namespace FoodDeliveryApp.Core.Services.Restaurant
 
 			return restaurant;
 		}
+
+		public async Task<IEnumerable<RestaurantReservationViewModel>> GetRestaurantsAsync()
+		{
+			return await repository
+				.AllReadOnly<Infrastructure.Data.Models.Restaurant>()
+				.Select(r => new RestaurantReservationViewModel
+				{
+					Id = r.Id,
+					Title = r.Title,
+				})
+				.ToListAsync();
+		}
 	}
 }
