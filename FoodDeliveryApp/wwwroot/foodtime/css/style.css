@@ -13319,13 +13319,14 @@ footer {
 
 .site-footer.style-2 {
   background-color: #fff; }
-  .site-footer.style-2 .footer-bg-wrapper {
-    margin-left: 100px;
-    margin-right: 100px;
-    z-index: 1;
-    position: relative;
-    border-radius: 30px;
-    background-color: #222222; }
+    .site-footer.style-2 .footer-bg-wrapper {
+        margin-left: 100px;
+        margin-right: 100px;
+        z-index: 1;
+        position: relative;
+        border-radius: 30px;
+        background-color: #FE9F10;
+    }
     .site-footer.style-2 .footer-bg-wrapper .particles-js-canvas-el {
       position: absolute;
       bottom: 0;
