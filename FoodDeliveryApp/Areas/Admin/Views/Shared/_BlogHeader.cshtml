@@ -1,0 +1,60 @@
+﻿@using FoodDeliveryApp.Infrastructure.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!-- Header -->
+<header class="site-header mo-left header style-1">
+	<!-- Main Header -->
+	<div class="sticky-header main-bar-wraper navbar-expand-lg">
+		<div class="main-bar clearfix ">
+			<div class="container clearfix">
+
+				<!-- Website Logo -->
+				<div class="logo-header mostion">
+					<a href="@Url.Action("Index","Home")" class="logo-dark"><img src="~/foodtime/images/logo.png" alt="/"></a>
+				</div>
+
+				<!-- Nav Toggle Button -->
+				<button class="navbar-toggler collapsed navicon justify-content-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+					<span></span>
+					<span></span>
+					<span></span>
+				</button>
+
+				<!-- Header Nav -->
+				<div class="header-nav navbar-collapse collapse justify-content-end" id="navbarNavDropdown">
+					<div class="logo-header">
+						<a href="@Url.Action("Index","Home")"><img src="~/foodtime/images/logo.png" alt="/"></a>
+					</div>
+					<ul class="nav navbar-nav navbar navbar-left">
+						<li>
+							<a asp-area="" asp-controller="Home" asp-action="Index" title="Back">Към сайта</a>
+						</li>
+					</ul>
+					<ul class="navbar-nav">
+						@if (SignInManager.IsSignedIn(User))
+						{
+							<li class="nav-item">
+								<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+									<button type="submit" class="nav-link btn btn-link text-dark mr-2">Изход</button>
+								</form>
+							</li>
+						}
+						else
+						{
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Регистрация</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Вход</a>
+							</li>
+						}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Main Header End -->
+</header>
+<!-- Header -->
