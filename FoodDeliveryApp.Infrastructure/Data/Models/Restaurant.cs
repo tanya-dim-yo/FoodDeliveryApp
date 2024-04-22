@@ -63,6 +63,8 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
 
         public virtual IEnumerable<Item> Items { get; set; } = new List<Item>();
 
+		public virtual IEnumerable<Reservation> Reservations { get; set; } = new List<Reservation>();
+
 		public void UpdateRating(double newRating)
 		{
 			AverageRating = (AverageRating * TotalReviews + newRating) / (TotalReviews + 1);

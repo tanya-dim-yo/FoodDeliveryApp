@@ -46,6 +46,7 @@ namespace FoodDeliveryApp.Infrastructure.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
-        public DbSet<RestaurantCategory> RestaurantCategories { get; set; }
+		public DbSet<Reservation> Reservations { get; set; }
+		public DbSet<RestaurantCategory> RestaurantCategories { get; set; }
     }
 }

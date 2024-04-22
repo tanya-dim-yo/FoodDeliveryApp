@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.CartValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
@@ -12,6 +13,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public bool IsActive { get; set; } = true;
 
         [Required]
+        [MaxLength(UserIdMaxLength)]
         public string UserId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(UserId))]

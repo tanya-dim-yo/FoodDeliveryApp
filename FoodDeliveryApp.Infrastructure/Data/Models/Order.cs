@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static FoodDeliveryApp.Infrastructure.Constants.ValidationConstants.OrderValidationConstants;
 
 namespace FoodDeliveryApp.Infrastructure.Data.Models
 {
-    public class Order
+	public class Order
     {
         [Key]
         public int Id { get; set; }
@@ -41,6 +41,7 @@ namespace FoodDeliveryApp.Infrastructure.Data.Models
         public DateTime TimeOfDelivery { get; set; }
 
         [Required]
+        [MaxLength(UserIdMaxLength)]
         public string UserId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(UserId))]
