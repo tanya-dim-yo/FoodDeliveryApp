@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ReservationFormModel
+@{
 	Layout = "~/Views/Shared/_LayoutFoodTime.cshtml";
 }
 <div class="page-content bg-white">
@@ -22,64 +23,56 @@
 	<!-- Contact Section -->
 	<section class="section-wrapper-8 content-inner-1">
 		<div class="container">
-			<div class="row inner-section-wrapper align-items-center">
-				<div class="col-lg-3 col-sm-6">
-					<div class="icon-bx-wraper style-5 hover-aware box-hover">
-						<div class="icon-bx">
-							<div class="icon-cell">
-								<i class="flaticon-placeholder"></i>
-							</div>
-						</div>
-						<div class="icon-content">
-							<h5 class="title">Адрес</h5>
-							<p>гр. София, ул. 6-ти септември</p>
-							<div class="effect bg-primary"></div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 col-sm-6">
-					<div class="icon-bx-wraper style-5 hover-aware box-hover active">
-						<div class="icon-bx">
-							<div class="icon-cell">
-								<i class="flaticon-telephone"></i>
-							</div>
-						</div>
-						<div class="icon-content">
-							<h5 class="title">Телефон</h5>
-							<p>+222 33 567 8665</p>
-							<div class="effect bg-primary"></div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 col-sm-6">
-					<div class="icon-bx-wraper style-5 hover-aware box-hover">
-						<div class="icon-bx ">
-							<div class="icon-cell">
-								<i class="flaticon-email-1"></i>
-							</div>
-						</div>
-						<div class="icon-content">
-							<h5 class="title">Имейл</h5>
-							<p>contacts@foodtime.com</p>
-							<div class="effect bg-primary"></div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 col-sm-6">
-					<div class="icon-bx-wraper style-5 hover-aware box-hover">
-						<div class="icon-bx ">
-							<div class="icon-cell">
-								<i class="flaticon-clock-1"></i>
-							</div>
-						</div>
-						<div class="icon-content">
-							<h5 class="title">Работно време</h5>
-							<p>Всеки ден:<br> от 09:00 до 22.00 ч.</p>
-							<div class="effect bg-primary"></div>
-						</div>
-					</div>
-				</div>
+			<div class="section-head text-center">
+				<h2 class="title">Резервация</h2>
 			</div>
+			<form class="dzForm dezPlaceAni" method="POST" action="@Url.Action("Reservation", "Contact")">
+				<div class="dzFormMsg"></div>
+				<input type="hidden" class="form-control" name="dzToDo" value="Contact">
+				<input type="hidden" name="userName" value="@Model.Name" />
+				<input type="hidden" name="userEmail" value="@Model.Email" />
+				<input type="hidden" name="restaurantId" value="@Model.RestaurantID" />
+				<div class="row">
+					<div class="col-lg-6 col-md-6 m-b30 m-sm-b50">
+						<label class="form-label text-primary">@Model.Name</label>
+						<div class="input-group input-line input-black">
+							<input name="dzName" required type="text" class="form-control" placeholder="">
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6 m-b30 m-sm-b50">
+						<label class="form-label text-primary">@Model.Email</label>
+						<div class="input-group input-line input-black">
+							<input name="dzEmail" required type="text" class="form-control" placeholder="">
+						</div>
+					</div>
+					<div class="mb-3">
+						<label asp-for="@Model.RestaurantID" class="form-label-add-edit">Ресторант</label>
+						<select asp-for="@Model.RestaurantID" class="form-control" aria-required="true">
+							<option disabled selected value="">Изберете ресторант...</option>
+							@foreach (var restaurant in Model.Restaurants)
+							{
+								<option value="@restaurant.Id">@restaurant.Title</option>
+							}
+						</select>
+						<span asp-validation-for="@Model.RestaurantID" class="text-danger"></span>
+					</div>
+					<div class="col-lg-6 col-md-6 m-b30 m-sm-b50">
+						<label class="form-label text-primary">Брой хора</label>
+						<div class="input-group input-line input-black">
+							<input name="dzOther[Person]" required type="text" class="form-control" placeholder="">
+						</div>
+					</div>
+					<div class="col-sm-12 m-b40">
+						<label class="form-label text-primary">@Model.Message</label>
+						<div class="input-group input-line input-black">
+							<textarea name="dzMessage" required class="form-control" placeholder="Напишете Вашето съобщение тук..."></textarea>
+						</div>
+					</div>
+					<div class="col-12 text-center">
+						<button name="submit" value="submit" type="submit" class="btn btn-primary btn-hover-1"><span>Резервирай</span></button>
+					</div>
+				</div>
+			</form>
 		</div>
 	</section>
 	<!-- Contact Section -->
