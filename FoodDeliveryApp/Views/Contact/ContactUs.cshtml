@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ReservationFormModel
+@{
 	Layout = "~/Views/Shared/_LayoutFoodTime.cshtml";
 }
 <div class="page-content bg-white">
@@ -31,7 +32,7 @@
 							</div>
 						</div>
 						<div class="icon-content">
-							<h5 class="title">Location</h5>
+							<h5 class="title">Адрес</h5>
 							<p>6952 Shelley St <br>Melbource</p>
 							<div class="effect bg-primary"></div>
 						</div>
@@ -45,7 +46,7 @@
 							</div>
 						</div>
 						<div class="icon-content">
-							<h5 class="title">Phone Number</h5>
+							<h5 class="title">Телефон</h5>
 							<p>+(800) 800-900-100 <br>+222 33 567 8665</p>
 							<div class="effect bg-primary"></div>
 						</div>
@@ -59,7 +60,7 @@
 							</div>
 						</div>
 						<div class="icon-content">
-							<h5 class="title">Email Address</h5>
+							<h5 class="title">Имейл</h5>
 							<p>Info@Webmail.com <br>Info@Example.web.com</p>
 							<div class="effect bg-primary"></div>
 						</div>
@@ -73,15 +74,15 @@
 							</div>
 						</div>
 						<div class="icon-content">
-							<h5 class="title">Open & Closing</h5>
-							<p>Mon - Fri: 09:00am <br>to  07.00pm </p>
+							<h5 class="title">Работно време</h5>
+							<p>Всеки ден: 09:00 <br>до 22.00 ч. </p>
 							<div class="effect bg-primary"></div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="section-head text-center">
-				<h2 class="title">Reservation</h2>
+				<h2 class="title">Резервация</h2>
 			</div>
 			<form class="dzForm dezPlaceAni" method="POST">
 				<div class="dzFormMsg"></div>
@@ -115,12 +116,6 @@
 						<label class="form-label text-primary">Message</label>
 						<div class="input-group input-line input-black">
 							<textarea name="dzMessage" required class="form-control" placeholder="Hi, do you Have a moment to talk About !"></textarea>
-						</div>
-					</div>
-					<div class="col-sm-12 m-b20">
-						<div class="input-recaptcha">
-							<div class="g-recaptcha" data-sitekey="6Lf1KykpAAAAAE1zshitq_jP0QE8nODP93n8xYf3" data-callback="verifyRecaptchaCallback" data-expired-callback="expiredRecaptchaCallback"></div>
-							<input class="form-control d-none" style="display:none;" data-recaptcha="true" required data-error="Please complete the Captcha">
 						</div>
 					</div>
 					<div class="col-12 text-center">
